@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_rowCart"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="10dp">
+
+    <ImageView
+        android:id="@+id/imageView_product"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginHorizontal="5dp"
+        android:scaleType="fitCenter" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_nameProduct"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Chuột Không Dây Logitech M331 Silent"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/textView_priceDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="269.000đ"
+            android:textColor="@color/colorTikiRedLight" />
+
+        <TextView
+            android:id="@+id/textView_priceOrigin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="399.000đ"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#E7EAE3"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/imageButton_minus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_minus_64" />
+
+            <TextView
+                android:id="@+id/textView_count"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:paddingHorizontal="10dp"
+                android:text="1" />
+
+            <ImageButton
+                android:id="@+id/imageButton_plus"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_plus_math_64" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@null"
+        android:padding="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icons8_delete_64" />
+
+</LinearLayout>

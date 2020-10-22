@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AccountInfoActivity"
+    android:background="@color/colorTikiBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorTikiToolbar"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/layoutButton_exit"
+            android:layout_width="50dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/custom_item_2"
+            android:gravity="center"
+            >
+
+            <ImageButton
+                android:clickable="false"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_left_white_64" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Thông tin tài khoản"
+            android:textColor="#fff"
+            android:textSize="20sp" />
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cá nhân"
+        android:textSize="18sp"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="20dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:background="#fff"
+        >
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginVertical="10dp"
+            app:endIconMode="clear_text"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Họ tên"
+                android:textSize="14sp"
+                android:inputType="text"
+                android:textColorHint="#000" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zalo Pay"
+            android:textSize="18sp"
+            android:paddingVertical="10dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            android:layout_marginVertical="10dp"
+            android:id="@+id/textInputLayout_email"
+
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:textSize="14sp"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:errorEnabled="true"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/textInputLayout_phoneNumber"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số điện thoại"
+                android:textSize="14sp"
+                android:enabled="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+
+            >
+
+            <EditText
+                android:id="@+id/editText_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusableInTouchMode="false"
+                android:hint="Ngày sinh"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/imageButton_editDate"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="end|center"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_edit_calendar_64" />
+        </FrameLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroup_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nam" />
+
+            <RadioButton
+                android:id="@+id/radioButton_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="Nữ" />
+        </RadioGroup>
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:text="Lưu thay đổi"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            app:backgroundTint="#e53935"
+            />
+    </LinearLayout>
+</LinearLayout>

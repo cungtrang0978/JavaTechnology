@@ -1,0 +1,22 @@
+KeyStorePassword : thang123
+
+username: epiz_26081334
+password: Cppqi0VIrpZ
+
+shoualan.epizy.com
+anbpdglr.epizy.com
+
+
+- add more loading
+
+- filter 
+
+-set menu
+
+-search history
+
+-add message
+
+
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.LoginActivity"
+    android:background="@android:color/white"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorTikiToolbar"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:layout_width="50dp"
+            android:layout_height="?attr/actionBarSize"
+            android:gravity="center"
+            android:id="@+id/layoutButton_exit"
+            android:background="@drawable/custom_item_2"
+            >
+
+            <ImageButton
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_delete2_64"
+                android:clickable="false"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:text="Đăng nhập / Đăng ký"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTikiBackground"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="#FBC02D"
+        app:tabMode="fixed">
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager_login"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorTikiBackgroundWhite"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+</LinearLayout>

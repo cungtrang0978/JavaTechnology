@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Tiki Clone App</string>
+    <string name="shipInfo">Phí giao hàng được thiết lập bởi nhà bán tùy theo trọng lượng và địa điểm giao. Bạn vui lòng kiểm tra thông tin
+        phí chính xác nhất tại bước thanh toán. Mọi thắc mắc xin liên hệ tổng đài Tiki: 19006035</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#189eff</color>
+    <color name="colorPrimaryDark">#189eff</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="colorTikiBottomNavigation">#137bdc</color>
+    <color name="colorTikiToolbar">#1ba9ff</color>
+    <color name="colorTikiUnselected">#918E8E</color>
+    <color name="colorTikiUnselectedLighter">#eeeeee</color>
+    <color name="colorTikiBackground">#eeeeee</color>
+    <color name="colorTikiBackgroundWhite">#fff</color>
+    <color name="colorTikiGreenDark">#134f09</color>
+    <color name="colorTikiRedLight">#F6443F</color>
+    <color name="colorTikiBlueDark">#137bdc</color>
+    <color name="colorTikiBackgroundDark">#cbd0d6</color>
+    <color name="colorTikiYellow">#FBC02D</color>
+
+
+</resources>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorTikiBackgroundWhite"
+    android:orientation="vertical"
+    tools:context=".activities.ListProductActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorTikiToolbar"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/imageButton_back"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@null"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icons8_left_white_64" />
+
+        <LinearLayout
+            android:id="@+id/layout_searchName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_search_name"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp">
+
+            <ImageButton
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@android:color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_search_unselected_64" />
+
+            <TextView
+                android:id="@+id/textView_searchName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@android:color/white"
+                android:ellipsize="end"
+                android:hint="Every thing you want to buy..."
+                android:maxLines="1"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sản phẩm đã xem"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:layout_weight="1"
+            android:id="@+id/textView_title"
+            android:visibility="gone"/>
+
+        <ImageButton
+            android:id="@+id/imageButton_cart"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/custom_item_2"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icons8_shopping_cart_64" />
+
+        <ImageButton
+            android:id="@+id/imageButton_menu"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/custom_item_2"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icons8_more_64"
+
+            />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_collapsing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingVertical="5dp">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/icons8_marker_64" />
+
+                    <TextView
+                        android:id="@+id/textView_address"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text=""
+                        android:textStyle="" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sắp xếp:" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:text="Chọn lọc" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/colorTikiUnselectedLighter" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_productList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingHorizontal="10dp"/>
+
+                <TextView
+                    android:id="@+id/textView_nonProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="Không có sản phẩm\nphù hợp"
+                    android:textColor="@color/colorTikiRedLight"
+                    android:visibility="gone"
+                    android:textSize="35sp" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/loadingPanel_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorTikiBackgroundWhite"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
+        </LinearLayout>
+    </FrameLayout>
+
+
+</LinearLayout>

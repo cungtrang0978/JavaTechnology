@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    android:background="@drawable/custom_item"
+    android:id="@+id/linearLayout_catalog"
+    android:padding="5dp"
+    >
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter"
+        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageView_catalog"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Catalog Name"
+        android:id="@+id/textView_name_catalog"
+        android:textSize="12sp"
+        android:textColor="@android:color/black"
+        android:gravity="center"
+        />
+
+</LinearLayout>

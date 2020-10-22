@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="Trang chủ"
+        android:id="@+id/menu_BottomHome"
+        android:icon="@drawable/icons8_home_64"
+        />
+    <item android:id="@+id/menu_BottomCategory"
+        android:title="Danh mục"
+        android:icon="@drawable/icons8_sorting_64"
+        />
+    <item android:id="@+id/menu_BottomSearch"
+        android:title="Tìm kiếm"
+        android:icon="@drawable/icons8_search_64"
+        />
+    <item android:id="@+id/menu_BottomNotification"
+        android:title="Thông báo"
+        android:icon="@drawable/icons8_alarm_64"
+        />
+    <item android:id="@+id/menu_BottomAccount"
+        android:title="Cá nhân"
+        android:icon="@drawable/icons8_person_64"
+        />
+
+</menu>

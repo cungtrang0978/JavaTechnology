@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".activities.CartActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorTikiToolbar"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/imageButton_exit"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@drawable/custom_item_2"
+                android:padding="15dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icons8_delete2_64" />
+
+            <TextView
+                android:id="@+id/textView_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_weight="1"
+                android:text="Giỏ hàng"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorTikiBackground">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recyclerView_cart"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingHorizontal="10dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:background="@color/colorTikiUnselectedLighter" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <EditText
+                                android:id="@+id/editText_discount"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:layout_weight="1"
+                                android:hint="Mã giảm giá" />
+
+                            <Button
+                                android:id="@+id/button_apply"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:backgroundTint="@color/colorTikiBlueDark"
+                                android:text="Áp Dụng"
+                                android:textAllCaps="false"
+                                android:textColor="@android:color/white" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:background="@color/colorTikiUnselectedLighter" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="Tạm tính"
+                                android:textColor="@android:color/black" />
+
+                            <TextView
+                                android:id="@+id/textView_priceProvisional"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="468.000đ"
+                                android:textColor="@android:color/black" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp"
+                            android:background="@color/colorTikiUnselectedLighter" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Thành tiền"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/textView_priceLast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="468.000đ"
+                            android:textColor="@color/colorTikiRedLight"
+                            android:textSize="20sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/button_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="Tiến Hành Đặt Hàng"
+                        android:textAllCaps="false"
+                        android:textColor="#fff"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/colorTikiRedLight" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_panel_nonOrder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorTikiBackgroundWhite"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="40dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/non_cart2" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bạn chưa có sản phẩm nào trong giỏ hàng" />
+
+                <Button
+                    android:id="@+id/button_shopping"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_margin="10dp"
+                    android:text="Tiếp tục mua sắm"
+                    android:textColor="#fff"
+                    android:textSize="18sp"
+                    app:backgroundTint="@color/colorTikiRedLight" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:background="@color/colorTikiBackground" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/loadingPanel_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:background="@color/colorTikiBackground"
+                android:visibility="gone"
+                >
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </LinearLayout>
+
+</FrameLayout>
