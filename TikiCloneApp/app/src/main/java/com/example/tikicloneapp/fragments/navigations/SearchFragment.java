@@ -173,7 +173,7 @@ public class SearchFragment extends Fragment {
 
     public void closeKeyboard() {
         InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(),0);
+        inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     @Override
@@ -181,7 +181,6 @@ public class SearchFragment extends Fragment {
         super.onDestroyView();
         closeKeyboard();
     }
-
 
 
     @Override
@@ -200,7 +199,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void insertSearchKey(final String searchKey) {
-        if(MainActivity.idUser==0)
+        if (MainActivity.idUser == 0)
             return;
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
@@ -259,8 +258,6 @@ public class SearchFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
         },
                 new Response.ErrorListener() {

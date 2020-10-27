@@ -13,11 +13,11 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ProductViewPagerAdapter extends PagerAdapter {
+public class ImageViewPagerAdapter extends PagerAdapter {
     private Context context;
     private ArrayList<String> imageUrls;
 
-    public ProductViewPagerAdapter(Context context, ArrayList<String> imageUrls) {
+    public ImageViewPagerAdapter(Context context, ArrayList<String> imageUrls) {
         this.context = context;
         this.imageUrls = imageUrls;
     }
@@ -55,4 +55,7 @@ public class ProductViewPagerAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
+
 }
+
+

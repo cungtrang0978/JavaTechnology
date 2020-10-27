@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -26,12 +27,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
-import com.example.tikicloneapp.adapters.ProductViewPagerAdapter;
-import com.example.tikicloneapp.database.DBVolley;
+import com.example.tikicloneapp.adapters.ImageViewPagerAdapter;
 import com.example.tikicloneapp.fragments.SuccessAdded_BottomSheetDialog;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Product;
-import com.example.tikicloneapp.models.Transact;
+import com.example.tikicloneapp.transformers.ZoomOutPageTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +40,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 import static com.example.tikicloneapp.database.DBVolley.getAddress;
@@ -47,15 +49,17 @@ import static com.example.tikicloneapp.database.DBVolley.getAddress;
 
 public class ProductDetailActivity extends AppCompatActivity implements SuccessAdded_BottomSheetDialog.BottomSheetListener {
     private ViewPager viewPagerImageProduct;
-    private ProductViewPagerAdapter pagerAdapter;
+    private ImageViewPagerAdapter pagerAdapter;
     private TextView tvName, tvPriceOrigin, tvPriceDiscount, tvDiscount, tvDescription, tvViews, tvAddress;
     private ImageButton ibBack, ibCart, ibSearch, ibHome;
     private Button btnAddProduct;
+    public LinearLayout lay_loading;
+
     private ArrayList<String> imageUrls = new ArrayList<>();
     private int CODE_ID_PRODUCT = 3;
     private Product product;
 
-    public LinearLayout lay_loading;
+
 
     public static int REQUEST_CODE_UPDATE_ADDRESS = 1234;
     public static int REQUEST_CODE_LOGIN = 1234;
@@ -91,10 +95,18 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
     private void setEachView(final Product product) {
         //Update views of product
-        DBVolley dbVolley = new DBVolley(this);
-        dbVolley.updateViewsProduct(product);
+
+//        dbVolley.updateViewsProduct(product);
 
         setViewPager();
+
+        viewPagerImageProduct.setOnDragListener(new View.OnDragListener() {
+            @Override
+            public boolean onDrag(View view, DragEvent dragEvent) {
+                return false;
+            }
+        });
+
 
         //set Product Information
         getProduct(product.getId());
@@ -108,10 +120,14 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
     private void setViewPager() {
         //set Images for ViewPager
-        pagerAdapter = new ProductViewPagerAdapter(this, imageUrls);
+        pagerAdapter = new ImageViewPagerAdapter(this, imageUrls);
         viewPagerImageProduct.setAdapter(pagerAdapter);
+        viewPagerImageProduct.setPageTransformer(true, new ZoomOutPageTransformer());
         getImageProduct(product.getId());
+
     }
+
+
 
     private void setOnClick() {
         ibBack.setOnClickListener(new View.OnClickListener() {
@@ -214,7 +230,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
                     tvPriceDiscount.setText(CartActivity.formatCurrency(priceDiscount));
                     tvDescription.setText(description);
-                    tvViews.setText(views + "");
+//                    tvViews.setText(views + "");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -257,6 +273,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                         }
                     }
                     pagerAdapter.notifyDataSetChanged();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -372,17 +389,17 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_INSERT_VIEWED_PRODUCT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                switch (response) {
-                    case "insert_success":
-                        Log.d("insertViewedProduct", "insert viewed Product success" + idProduct);
-                        break;
-                    case "insert_fail":
-                        Log.d("insertViewedProduct", "insert viewed Product fail");
-                        break;
-                    case "seen":
-                        Log.d("insertViewedProduct", "insert viewed Product seen");
-                        break;
-                }
+//                switch (response) {
+//                    case "insert_success":
+//                        Log.d("insertViewedProduct", "insert viewed Product success" + idProduct);
+//                        break;
+//                    case "insert_fail":
+//                        Log.d("insertViewedProduct", "insert viewed Product fail");
+//                        break;
+//                    case "seen":
+//                        Log.d("insertViewedProduct", "insert viewed Product seen");
+//                        break;
+//                }
             }
         },
                 new Response.ErrorListener() {

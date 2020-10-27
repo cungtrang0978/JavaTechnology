@@ -29,6 +29,7 @@ import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.database.DBVolley;
+
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
 import com.example.tikicloneapp.models.CatalogParent;
@@ -124,7 +125,7 @@ public class ListProductActivity extends AppCompatActivity {
     }
 
     private void setViewedProductsAdapter() {
-        productsAdapter = new ProductsAdapter(this, R.layout.row_product, products);
+        productsAdapter = new ProductsAdapter(this, R.layout.row_product, products, ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
         rvProductList.setLayoutManager(new GridLayoutManager(this, 2));
         rvProductList.setAdapter(productsAdapter);
 

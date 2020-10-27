@@ -60,14 +60,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <ViewFlipper
-                android:id="@+id/viewFlipper"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager_advertImages"
                 android:layout_width="wrap_content"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="10dp">
 
-            </ViewFlipper>
+            </androidx.viewpager.widget.ViewPager>
 
             <LinearLayout
                 android:id="@+id/layout_viewedProducts"

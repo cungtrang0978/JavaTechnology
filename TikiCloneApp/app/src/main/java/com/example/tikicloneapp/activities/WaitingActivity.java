@@ -22,10 +22,17 @@ public class WaitingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent = new Intent(WaitingActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(WaitingActivity.this).toBundle());
-                }else startActivity(intent);
+                } else startActivity(intent);
+
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finishAffinity();
+
+                    }
+                }, 1500);
 
             }
         }, 3000);

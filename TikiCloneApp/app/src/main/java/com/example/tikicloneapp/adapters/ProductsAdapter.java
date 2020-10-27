@@ -15,12 +15,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.CartActivity;
 import com.example.tikicloneapp.activities.ListProductActivity;
+import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.activities.ProductDetailActivity;
+import com.example.tikicloneapp.fragments.navigations.HomeFragment;
 import com.example.tikicloneapp.models.Product;
 
 import java.util.ArrayList;
@@ -29,6 +32,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     private final Context mContext;
     private final int mResource;
     private final ArrayList<Product> mProducts;
+    private ProductType mProductType;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -40,6 +44,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         private ImageView ivProduct;
         private LinearLayout parentLayout;
         private CardView cvSold;
+
         public MyViewHolder(View itemView) {
             super(itemView);
 
@@ -61,10 +66,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         }
     }
 
-    public ProductsAdapter(Context mContext, int mResource, ArrayList<Product> mProducts) {
+    public ProductsAdapter(Context mContext, int mResource, ArrayList<Product> mProducts, ProductType mProductType) {
         this.mContext = mContext;
         this.mResource = mResource;
         this.mProducts = mProducts;
+        this.mProductType = mProductType;
     }
 
 
@@ -92,11 +98,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         } else if (mResource == R.layout.row_product) {
             holder.tvNameProduct.setText(product.getName());
             holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
-            if(product.getSold()!=0){
+            if (product.getSold() != 0) {
                 holder.cvSold.setVisibility(View.VISIBLE);
-                holder.tvQty.setText("Đã bán "+ product.getSold());
+                holder.tvQty.setText("Đã bán " + product.getSold());
             }
-            if(product.getDiscount()!=0){
+            if (product.getDiscount() != 0) {
                 holder.tvDiscountProduct.setText(-product.getDiscount() + "%");
             }
             ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
@@ -107,11 +113,19 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, ProductDetailActivity.class);
                 intent.putExtra("product", product);
-                Activity activity = (Activity) mContext;
+                int requestCode = -1;
+
+
+                if (mProductType == ProductType.CODE_PRODUCT_LIST) {
+                    requestCode = ListProductActivity.REQUEST_CODE;
+                } else if (mProductType == ProductType.CODE_NOT_LIST) {
+                    requestCode = HomeFragment.REFRESH_CODE;
+                }
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    activity.startActivityForResult(intent, ListProductActivity.REQUEST_CODE, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+                    ((FragmentActivity) view.getContext()).startActivityForResult(intent, requestCode, ActivityOptions.makeSceneTransitionAnimation(((FragmentActivity) view.getContext())).toBundle());
                 } else
-                    activity.startActivityForResult(intent, ListProductActivity.REQUEST_CODE);
+                    ((FragmentActivity) view.getContext()).startActivityForResult(intent, requestCode);
             }
         });
     }
@@ -122,5 +136,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         return mProducts.size();
     }
 
-
+    public enum ProductType {
+        CODE_PRODUCT_LIST,
+        CODE_NOT_LIST
+    }
 }

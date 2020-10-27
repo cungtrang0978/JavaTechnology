@@ -1201,7 +1201,7 @@ public class DBVolley {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d(TAG, "onResponse: " + response);
+//                        Log.d(TAG, "onResponse: " + response);
                         try {
                             ArrayList<Product> _products = new ArrayList<>();
 
