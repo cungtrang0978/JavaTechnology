@@ -33,9 +33,12 @@ import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.database.DBVolley;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -129,7 +132,7 @@ public class RegistrationFragment extends Fragment {
 
         Pattern pattern = Pattern.compile("[^A-Z" + VIETNAMESE_DIACRITIC_CHARACTERS + " ]", Pattern.CASE_INSENSITIVE);
         boolean check = pattern.matcher(nameInput).find();
-        if (check){
+        if (check) {
             textInputLayout.setError("Họ tên không bao gồm những ký tự đặc biệt và số");
             return false;
         }
@@ -138,19 +141,19 @@ public class RegistrationFragment extends Fragment {
         return true;
     }
 
-    public static boolean validateEmail(TextInputLayout textInputLayout){
+    public static boolean validateEmail(TextInputLayout textInputLayout) {
         String emailInput = textInputLayout.getEditText().getText().toString().trim();
-        if(emailInput.isEmpty()){
+        if (emailInput.isEmpty()) {
             textInputLayout.setError(null);
             return true;
         }
-        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\."+
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\." +
                 "[a-zA-Z0-9_+&*-]+)*@" +
                 "(?:[a-zA-Z0-9-]+\\.)+[a-z" +
                 "A-Z]{2,7}$";
 
         Pattern pattern = Pattern.compile(emailRegex);
-        if (emailInput.isEmpty() | !pattern.matcher(emailInput).find()){
+        if (emailInput.isEmpty() | !pattern.matcher(emailInput).find()) {
             textInputLayout.setError("Email không hợp lệ");
             return false;
         }
@@ -159,7 +162,7 @@ public class RegistrationFragment extends Fragment {
         return true;
     }
 
-    public static boolean validatePhoneNumber(TextInputLayout textInputLayout){
+    public static boolean validatePhoneNumber(TextInputLayout textInputLayout) {
         String phoneInput = textInputLayout.getEditText().getText().toString().trim();
         String phoneRegex = "(09[1|2|3|4|5|6|7|8|9]" +
                 "|08[1|2|3|4|5|6|8|9]" +
@@ -168,7 +171,7 @@ public class RegistrationFragment extends Fragment {
                 "|05[6|8|9])+([0-9]{7})\\b";
         Pattern pattern = Pattern.compile(phoneRegex);
 
-        if(phoneInput.isEmpty() | !pattern.matcher(phoneInput).find()){
+        if (phoneInput.isEmpty() | !pattern.matcher(phoneInput).find()) {
             textInputLayout.setError("Số điện thoại không hợp lệ");
             return false;
         }
@@ -177,39 +180,65 @@ public class RegistrationFragment extends Fragment {
         return true;
     }
 
-    public static boolean isValidPassword( TextInputLayout tilPassword)
-    {
+    public static boolean isValidPassword(TextInputLayout tilPassword) {
+        String[] blackList = {
+                "123456",
+                "password",
+                "123456789",
+                "12345678",
+                "12345",
+                "111111",
+                "1234567",
+                "sunshine",
+                "qwerty",
+                "iloveyou",
+                "princess",
+                "admin",
+                "welcome",
+                "666666",
+                "abc123",
+                "football",
+                "123123",
+                "monkey",
+                "654321",
+                "!@#$%^&*",
+                "charlie",
+                "aa123456",
+                "donald",
+                "password1",
+                "qwerty123",
+                "135791113",
+                "motdenchin",
+                "matkhaunaycothutu",
+                "fromonetonine",
+        };
+
         boolean isValid = true;
         String specialChars = "(.*[@,#,$,%,*,&,!,^].*$)";
-        if (!tilPassword.getEditText().getText().toString().matches(specialChars ))
-        {
-            tilPassword.setError("Phải chứa ít nhất một kí tự đặc biệt trong các kí tự: @#$%*&!^");
+        if (!tilPassword.getEditText().getText().toString().matches(specialChars)) {
+            tilPassword.setError("Phải chứa ít nhất một kí tự đặc biệt trong các kí tự: @ # $ % * & ! ^");
             isValid = false;
         }
         String numbers = "(.*[0-9].*)";
-        if (!tilPassword.getEditText().getText().toString().matches(numbers ))
-        {
+        if (!tilPassword.getEditText().getText().toString().matches(numbers)) {
             tilPassword.setError("Chứa ít nhất một chữ số.");
             isValid = false;
         }
         String upperCaseChars = "(.*[A-Z].*)";
-        if (!tilPassword.getEditText().getText().toString().matches(upperCaseChars ))
-        {
+        if (!tilPassword.getEditText().getText().toString().matches(upperCaseChars)) {
             tilPassword.setError("Chứa ít nhất một chữ cái in hoa.");
             isValid = false;
         }
         String lowerCaseChars = "(.*[a-z].*)";
-        if (!tilPassword.getEditText().getText().toString().matches(lowerCaseChars ))
-        {
+        if (!tilPassword.getEditText().getText().toString().matches(lowerCaseChars)) {
             tilPassword.setError("Chứa ít nhất một chữ cái thường.");
             isValid = false;
         }
-        if (tilPassword.getEditText().getText().length() > 15 || tilPassword.getEditText().getText().length() < 8)
-        {
+        if (tilPassword.getEditText().getText().length() > 15 || tilPassword.getEditText().getText().length() < 8) {
             tilPassword.setError("Mật khẩu phải từ 8 đến 15 kí tự.");
             isValid = false;
         }
-        if(isValid) tilPassword.setError(null);
+        if (isValid) tilPassword.setError(null);
         return isValid;
     }
 
@@ -220,7 +249,7 @@ public class RegistrationFragment extends Fragment {
         createAccount();
     }
 
-    public void createAccount(){
+    public void createAccount() {
         final String name = textInputName.getEditText().getText().toString().trim();
         final String phoneNum = textInputPhone.getEditText().getText().toString().trim();
         final String password = textInputPw.getEditText().getText().toString().trim();
@@ -237,32 +266,32 @@ public class RegistrationFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 Log.d("thang", response);
-                if(response.equals(strCode_success)){
+                if (response.equals(strCode_success)) {
                     textInputPhone.setError(null);
                     textInputEmail.setError(null);
                     Toast.makeText(getContext(), "Đăng ký tài khoản thành công!", Toast.LENGTH_SHORT).show();
-                    if(getContext() instanceof LoginActivity){
-                        ((LoginActivity)getContext()).returnTabLogin();
+                    if (getContext() instanceof LoginActivity) {
+                        ((LoginActivity) getContext()).returnTabLogin();
                     }
                     clearTextInput();
 
                     return;
                 }
-                if(response.equals(strCode_error)) {
+                if (response.equals(strCode_error)) {
                     Toast.makeText(getContext(), "Fail insertion", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(response.equals(strCode_exist_phone)){
+                if (response.equals(strCode_exist_phone)) {
                     textInputEmail.setError(null);
                     textInputPhone.setError("Số điện thoại đã được sử dụng");
                     return;
                 }
-                if(response.equals(strCode_exist_email)){
+                if (response.equals(strCode_exist_email)) {
                     textInputPhone.setError(null);
                     textInputEmail.setError("Địa chỉ email đã được sử dụng");
                     return;
                 }
-                if(response.equals(strCode_exist_phone_email)){
+                if (response.equals(strCode_exist_phone_email)) {
                     textInputPhone.setError("Số điện thoại đã được sử dụng");
                     textInputEmail.setError("Địa chỉ email đã được sử dụng");
                 }
@@ -273,7 +302,7 @@ public class RegistrationFragment extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("thang",  "OnErrorResponse: " + error.toString());
+                        Log.d("thang", "OnErrorResponse: " + error.toString());
                     }
                 }) {
             @Override
@@ -284,29 +313,25 @@ public class RegistrationFragment extends Fragment {
                 params.put("password", password);
                 long timeCreated = new Date().getTime(); //get current time
                 params.put("created", String.valueOf(timeCreated));
-
-                if(!email.isEmpty()){
+                if (!email.isEmpty()) {
                     params.put("email", email);
                 }
-
-                if(!date.isEmpty()){
+                if (!date.isEmpty()) {
                     params.put("birthdate", date);
                 }
-
-                if(rbMale.isChecked()){
+                if (rbMale.isChecked()) {
                     params.put("sex", "1");
                 }
-                if(rbFemale.isChecked()){
+                if (rbFemale.isChecked()) {
                     params.put("sex", "2");
                 }
-
                 return params;
             }
         };
         requestQueue.add(stringRequest);
     }
 
-    private void clearTextInput(){
+    private void clearTextInput() {
         textInputName.getEditText().setText("");
         textInputEmail.getEditText().setText("");
         textInputPhone.getEditText().setText("");
@@ -315,5 +340,4 @@ public class RegistrationFragment extends Fragment {
         rbFemale.setChecked(false);
         rbMale.setChecked(false);
     }
-
 }
