@@ -37,9 +37,11 @@ import com.android.volley.toolbox.Volley;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.ListProductActivity;
 import com.example.tikicloneapp.activities.MainActivity;
+import com.example.tikicloneapp.adapters.CatalogAdapter;
 import com.example.tikicloneapp.adapters.ImageViewPagerAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.database.DBManager;
+import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.Product;
 import com.example.tikicloneapp.transformers.ZoomOutPageTransformer;
 import com.squareup.picasso.Picasso;
@@ -55,18 +57,19 @@ import java.util.TimerTask;
 import static com.example.tikicloneapp.activities.MainActivity.dbVolley;
 
 public class HomeFragment extends Fragment {
-    private LinearLayout laySearch, layViewedProducts, layRecommendedProducts;
+    private LinearLayout laySearch, layViewedProducts, layRecommendedProducts, layHotCategories;
     //    private ViewFlipper viewFlipper;
-    private Button btnViewAllViewed, btnViewAllRecommended;
+    private Button btnViewAllViewed, btnViewAllRecommended, btnViewHotCategories;
     private ImageButton ibCart;
-    private RecyclerView rvViewedProducts, rvRecommendedProducts;
+    private RecyclerView rvViewedProducts, rvRecommendedProducts, rvHotCategories;
     private ViewPager vpAdverts;
 
     private ArrayList<String> advertImages = new ArrayList<>();
-    private ArrayList<Product> viewedProducts = new ArrayList<>(),
-            recommendedProducts = new ArrayList<>();
+    private ArrayList<Product> viewedProducts = new ArrayList<>(), recommendedProducts = new ArrayList<>();
+    private ArrayList<Catalog> hotCategories = new ArrayList<>();
     private ProductsAdapter productsAdapter, recommendedProductsAdapter;
     private ImageViewPagerAdapter imageViewPagerAdapter;
+    private CatalogAdapter categoryAdapter;
     private Timer timer;
     private int page = 0;
 
@@ -93,6 +96,9 @@ public class HomeFragment extends Fragment {
         btnViewAllRecommended = view.findViewById(R.id.button_viewAllRecommended);
         layRecommendedProducts = view.findViewById(R.id.layout_recommendedProducts);
         rvRecommendedProducts = view.findViewById(R.id.recyclerView_recommendedProducts);
+        rvHotCategories = view.findViewById(R.id.recyclerView_hotCategories);
+        layHotCategories = view.findViewById(R.id.layout_hotCategories);
+        btnViewHotCategories = view.findViewById(R.id.button_viewHotCategories);
     }
 
     private void setEachView() {
@@ -113,9 +119,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        setHotCategoriesRV();
         setViewedProductsRV();
         setRecommendedProductsRV();
-//        setViewFlipper();
         setViewPager();
 
         btnViewAllViewed.setOnClickListener(new View.OnClickListener() {
@@ -148,6 +154,13 @@ public class HomeFragment extends Fragment {
         rvRecommendedProducts.setAdapter(recommendedProductsAdapter);
         rvRecommendedProducts.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         dbVolley.getRecommendedProducts(layRecommendedProducts, recommendedProducts, recommendedProductsAdapter);
+    }
+
+    private void setHotCategoriesRV() {
+        categoryAdapter = new CatalogAdapter(getActivity(), hotCategories, CatalogAdapter.CatalogType.Home);
+        rvHotCategories.setAdapter(categoryAdapter);
+        rvHotCategories.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false));
+        dbVolley.getCatalog(hotCategories, categoryAdapter, null, 50);
     }
 
 

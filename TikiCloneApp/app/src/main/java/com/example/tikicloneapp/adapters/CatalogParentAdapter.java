@@ -53,7 +53,7 @@ public class CatalogParentAdapter extends RecyclerView.Adapter<CatalogParentAdap
         ArrayList<Catalog> catalogArrayList = new ArrayList<>();
         CatalogAdapter catalogAdapter;
 
-        catalogAdapter = new CatalogAdapter(mContext, catalogArrayList);
+        catalogAdapter = new CatalogAdapter(mContext, catalogArrayList, CatalogAdapter.CatalogType.Category);
 
 //
         holder.rvCatalog.setAdapter(catalogAdapter);

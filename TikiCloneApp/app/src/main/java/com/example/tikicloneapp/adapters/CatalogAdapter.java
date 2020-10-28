@@ -24,17 +24,26 @@ import java.util.ArrayList;
 public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHolder> {
     private Context mContext;
     private ArrayList<Catalog> mCatalogs;
+    private CatalogType mCatalogType;
 
-    public CatalogAdapter(Context mContext, ArrayList<Catalog> mCatalogs) {
+    public CatalogAdapter(Context mContext, ArrayList<Catalog> mCatalogs, CatalogType mCatalogType) {
         this.mContext = mContext;
         this.mCatalogs = mCatalogs;
+        this.mCatalogType = mCatalogType;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-        View catalogView = layoutInflater.inflate(R.layout.row_catalog, parent, false);
+        View catalogView = null;
+        if(mCatalogType==CatalogType.Category){
+            catalogView = layoutInflater.inflate(R.layout.row_catalog, parent, false);
+        }
+        else if(mCatalogType ==CatalogType.Home){
+            catalogView = layoutInflater.inflate(R.layout.item_category, parent, false);
+        }
+        assert catalogView != null;
         return new ViewHolder(catalogView);
     }
 
@@ -107,4 +116,6 @@ public class CatalogAdapter extends RecyclerView.Adapter<CatalogAdapter.ViewHold
     private interface ItemClickListener {
         void onClick(View view, int position,boolean isLongClick);
     }
+
+    public enum CatalogType {Category, Home}
 }
