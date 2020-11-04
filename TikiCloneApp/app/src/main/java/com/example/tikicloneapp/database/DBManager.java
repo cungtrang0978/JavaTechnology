@@ -298,8 +298,9 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL(query_create_table_ipAddress);
 
         //Insert Data
-        db.execSQL(query_insertData_Advertisement);
+//        db.execSQL(query_insertData_Advertisement);
         db.execSQL(query_insertData_User);
+        Log.d("thang", "onCreate: insert user");
         db.execSQL(query_insertData_district);
         db.execSQL(query_insertData_province);
 
@@ -382,6 +383,7 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        Log.d("thang", "getIdUser: " +idUser);
 
         return idUser;
     }
@@ -406,6 +408,7 @@ public class DBManager extends SQLiteOpenHelper {
         cv.put("id", idUser);
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_USER, cv, "id =" + idUserOld, null);
+        Log.d("thang", "updateData_User: " + idUser);
     }
 
     public void updateIPAddress(String ip){

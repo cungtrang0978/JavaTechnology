@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     public int previous_Of_SearchFragment;
 
-    public static String ipAddress;
+    public static String ipAddress = "is updating";
     public static int idUser;
     public static DBManager dbManager;
     public static DBVolley dbVolley;
@@ -59,21 +60,11 @@ public class MainActivity extends AppCompatActivity {
         initWidget();
 
         dbManager = new DBManager(this);
-        ipAddress = dbManager.getIPAddress();
+//        ipAddress = dbManager.getIPAddress();
 
         dbVolley = new DBVolley(this);
+        checkIdUser();
 
-        int idUserOld = dbManager.getIdUser();
-        idUser = getIntent().getIntExtra("idUser", idUserOld);
-        if(idUserOld == 0){
-            dbManager.clearAllData_Order();
-        }
-
-
-
-        if(idUser!=idUserOld){
-            dbManager.updateData_User(idUser, idUserOld);
-        }
 
         ReLoadFragment(homeFragment, NAME_HOME_FRAGMENT);
         bottomNavigationView.setOnNavigationItemSelectedListener(_mOnNavigationItemSelectedListener);
@@ -83,7 +74,17 @@ public class MainActivity extends AppCompatActivity {
     private void initWidget() {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
     }
+    void checkIdUser(){
+        int idUserOld = dbManager.getIdUser();
+        idUser = getIntent().getIntExtra("idUser", idUserOld);
+//        if(idUserOld == 0){
+//            dbManager.clearAllData_Order();
+//        }
 
+        if(idUser!=idUserOld){
+            dbManager.updateData_User(idUser, idUserOld);
+        }
+    }
 
     @Override
     public void onBackPressed() {

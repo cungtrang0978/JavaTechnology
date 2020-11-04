@@ -312,8 +312,8 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         if (idUser == 0) { //No Account
             Log.d("thang", "noAccount");
 
-            Order order = new Order(idProduct, qty, amount);
-            MainActivity.dbManager.insertData_Order(order);
+//            Order order = new Order(idProduct, qty, amount);
+//            MainActivity.dbManager.insertData_Order(order);
         } else {
             Log.d("thang", "Account");
             MainActivity.dbVolley.checkTransact(idUser, idProduct, qty, amount);

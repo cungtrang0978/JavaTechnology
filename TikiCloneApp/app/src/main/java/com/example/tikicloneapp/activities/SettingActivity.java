@@ -26,7 +26,7 @@ public class SettingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_setting);
 
         initWidget();
-        setEvent();
+//        setEvent();
     }
 
     private void initWidget() {
