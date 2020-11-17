@@ -1,24 +1,21 @@
 package com.example.tikicloneapp.fragments.navigations;
 
-import android.app.Activity;
+
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
+
 import android.util.Log;
-import android.view.DragEvent;
+
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+
 import android.widget.LinearLayout;
-import android.widget.ViewFlipper;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,15 +37,14 @@ import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.adapters.CatalogAdapter;
 import com.example.tikicloneapp.adapters.ImageViewPagerAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
-import com.example.tikicloneapp.database.DBManager;
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.Product;
 import com.example.tikicloneapp.transformers.ZoomOutPageTransformer;
-import com.squareup.picasso.Picasso;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.util.ArrayList;
 import java.util.Timer;
