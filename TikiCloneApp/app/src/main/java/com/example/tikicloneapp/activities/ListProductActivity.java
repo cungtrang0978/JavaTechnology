@@ -182,7 +182,7 @@ public class ListProductActivity extends AppCompatActivity {
         lay_loading_parent = findViewById(R.id.loadingPanel_parent);
         tvAddress = findViewById(R.id.textView_address);
         tvNonProduct = findViewById(R.id.textView_nonProduct);
-        tvTitle = findViewById(R.id.textView_title);
+        tvTitle = findViewById(R.id.textView_titleReview);
     }
 
     public static void underlineTextView(TextView tv, String address) {

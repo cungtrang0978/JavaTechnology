@@ -30,13 +30,16 @@ import com.example.tikicloneapp.adapters.CatalogGrParentsAdapter;
 import com.example.tikicloneapp.adapters.CatalogParentAdapter;
 import com.example.tikicloneapp.adapters.CatalogAdapter;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
+import com.example.tikicloneapp.adapters.ReviewedAdapter;
 import com.example.tikicloneapp.adapters.TransactAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
+import com.example.tikicloneapp.adapters.WaitingReviewAdapter;
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
 import com.example.tikicloneapp.models.CatalogParent;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Product;
+import com.example.tikicloneapp.models.Rate;
 import com.example.tikicloneapp.models.Transact;
 import com.example.tikicloneapp.models.User;
 
@@ -93,8 +96,10 @@ public class DBVolley {
     public String URL_INSERT_SEARCH_KEY = IP_ADDRESS + "insertSearchKey.php";
     public String URL_GET_SEARCHES = IP_ADDRESS + "getSearches.php";
     public String URL_GET_RECOMMENDED_PRODUCTS = IP_ADDRESS + "getRecommendedProducts.php";
+    public String URL_GET_REVIEW_PRODUCTS = IP_ADDRESS + "getReviewProducts.php";
+    public String URL_INSERT_RATE = IP_ADDRESS + "insertRate.php";
 
-    private Context context;
+    private final Context context;
 
     public DBVolley(Context context) {
         this.context = context;
@@ -1250,6 +1255,164 @@ public class DBVolley {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("idUser", String.valueOf(MainActivity.idUser));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void getWaitingReviewProducts(final ArrayList<Product> products,
+                                         final WaitingReviewAdapter waitingReviewAdapter) {
+        //status =1: waitingReviews ; 2: reviewed
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d(TAG, "onResponse: " + response);
+                        try {
+                            ArrayList<Product> _products = new ArrayList<>();
+//                            Log.d("thang", "getReviewProducts: " + response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                try {
+                                    JSONObject product = jsonArray.getJSONObject(i);
+                                    Product _product = new Product(
+                                            product.getInt("id"),
+                                            product.getString("name"),
+                                            product.getInt("price"),
+                                            product.getInt("discount"),
+                                            product.getString("imageUrl")
+
+                                    );
+
+                                    _products.add(_product);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            products.clear();
+                            products.addAll(_products);
+                            waitingReviewAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", String.valueOf(MainActivity.idUser));
+                params.put("status", "1"); // status =1: waitingReviews
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void getReviewedProducts(final ArrayList<Rate> rates,
+                                    final ReviewedAdapter reviewedAdapter) {
+        //status =1: waitingReviews ; 2: reviewed
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+//                        Log.d(TAG, "onResponse: " + response);
+                        try {
+                            ArrayList<Rate> _rates = new ArrayList<>();
+                            Log.d("thang", "getReviewedProducts: " + response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                try {
+                                    JSONObject jsonRate = jsonArray.getJSONObject(i);
+                                    Rate rate = new Rate(
+                                            jsonRate.getInt("id"),
+                                            jsonRate.getInt("ratePoint"),
+                                            jsonRate.getString("comment"),
+                                            jsonRate.getInt("idProduct"),
+                                            jsonRate.getString("productName"),
+                                            jsonRate.getInt("price"),
+                                            jsonRate.getInt("discount"),
+                                            jsonRate.getString("imageProductUrl"),
+                                            jsonRate.getInt("idUser")
+                                    );
+                                    _rates.add(rate);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            rates.clear();
+                            rates.addAll(_rates);
+                            reviewedAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", String.valueOf(MainActivity.idUser));
+                params.put("status", "2");// reviewed
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void insertRate(final Rate rate) {
+        final String insert_success = "insert_success";
+        final String insert_fail = "insert_fail";
+        final String non_idUser = "non_idUser";
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_INSERT_RATE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("thang", "insertRate: " + response);
+
+                if (response.equals(insert_fail)) {
+                    Toast.makeText(context, "Đã có lỗi xảy ra!", Toast.LENGTH_SHORT).show();
+                }
+                //response equal insert_success
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", "InsertTransact: " + error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", String.valueOf(rate.getIdUser()));
+                params.put("idProduct", String.valueOf(rate.getIdProduct()));
+                params.put("ratePoint", String.valueOf(rate.getRatePoint()));
+                params.put("comment", rate.getComment());
                 return params;
             }
         };

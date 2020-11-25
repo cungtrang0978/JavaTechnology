@@ -73,9 +73,9 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
             holder.ivIconStatus.setImageResource(R.drawable.icons8_ok_64);
         } else if (transact.getmStatus() == Transact.STATUS_TIKI_RECEIVED) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_synchronize_64);
-        } else if (transact.getmStatus() == Transact.STATUS_DELIVERING){
+        } else if (transact.getmStatus() == Transact.STATUS_DELIVERING) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_motocross_64);
-        }else if(transact.getmStatus() == Transact.STATUS_SELLER_RECEIVED){
+        } else if (transact.getmStatus() == Transact.STATUS_SELLER_RECEIVED) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_received_64);
 
         }
@@ -87,9 +87,9 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
                 intent.putExtra("activity", R.layout.activity_list_transact);
                 intent.putExtra("idTransact", transact.getmId());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ((Activity)mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
-                } else ((Activity)mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT);
-
+                    ((Activity) mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+                } else
+                    ((Activity) mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT);
             }
         });
 

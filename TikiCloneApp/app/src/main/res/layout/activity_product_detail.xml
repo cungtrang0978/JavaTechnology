@@ -110,6 +110,46 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:id="@+id/linearLayout_rate">
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:id="@+id/imageView_star1"
+                            android:src="@drawable/star_on"/>
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:id="@+id/imageView_star2"
+                            android:src="@drawable/star_on"/>
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:id="@+id/imageView_star3"
+                            android:src="@drawable/star_haft"/>
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:id="@+id/imageView_star4"
+                            android:src="@drawable/star_off"/>
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:id="@+id/imageView_star5"
+                            android:src="@drawable/star_off"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textView_rate"
+
+                            />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -152,6 +192,7 @@
                             android:layout_marginStart="5dp"
                             android:textColor="@color/colorTikiToolbar" />
                     </LinearLayout>
+
 
                     <Button
                         android:id="@+id/button_addToCart"

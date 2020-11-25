@@ -33,6 +33,7 @@ import com.example.tikicloneapp.activities.ListTransactActivity;
 import com.example.tikicloneapp.activities.LoginActivity;
 import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.activities.PurchasedProductActivity;
+import com.example.tikicloneapp.activities.ReviewsActivity;
 import com.example.tikicloneapp.activities.SettingActivity;
 import com.example.tikicloneapp.models.Transact;
 
@@ -48,8 +49,8 @@ import static com.example.tikicloneapp.MyClass.convertDate;
 public class AccountFragment extends Fragment {
 
     private LinearLayout lay_login, lay_accountInfo, lay_showHide2, lay_showHide3, lay_showHide4;
-    private LinearLayout layBtn_orderMana, layBtn_purchased, layBtn_viewedProds, layBtn_favoritePros, layBtn_prosInCart, layBtn_myComments;
-    private LinearLayout lay_transact_tiki_received, lay_transact_delivering, lay_transact_success, lay_transact_cancel, lay_setting, lay_seller_receive;
+    private LinearLayout layBtn_orderManagment, layBtn_purchased, layBtn_viewedProds, layBtn_favoritePros, layBtn_prosInCart, layBtn_myComments;
+    private LinearLayout lay_transact_tiki_received, lay_transact_delivering, lay_transact_success, lay_transact_cancel, lay_setting, lay_seller_receive, lay_reviews;
     private LinearLayout lay_change_password;
     private LinearLayout layBtn_address;
     private View view_line_nonlogin;
@@ -80,7 +81,7 @@ public class AccountFragment extends Fragment {
         lay_showHide3 = view.findViewById(R.id.layout_show_hide_3);
         lay_showHide4 = view.findViewById(R.id.layout_show_hide_4);
         btnLogout = view.findViewById(R.id.button_logout);
-        layBtn_orderMana = view.findViewById(R.id.layout_orderManagement);
+        layBtn_orderManagment = view.findViewById(R.id.layout_orderManagement);
         layBtn_purchased = view.findViewById(R.id.layoutButton_purchasedProducts);
         layBtn_viewedProds = view.findViewById(R.id.layoutButton_viewedProducts);
         layBtn_favoritePros = view.findViewById(R.id.layoutButton_favoriteProducts);
@@ -96,6 +97,7 @@ public class AccountFragment extends Fragment {
         lay_transact_delivering = view.findViewById(R.id.layout_transact_delivering);
         lay_seller_receive = view.findViewById(R.id.layout_seller_receive);
         lay_transact_success = view.findViewById(R.id.layout_transact_success);
+        lay_reviews = view.findViewById(R.id.layout_reviews);
         lay_transact_tiki_received = view.findViewById(R.id.layout_transact_tiki_received);
 
         view_line_nonlogin = view.findViewById(R.id.view_line_non_login);
@@ -139,7 +141,7 @@ public class AccountFragment extends Fragment {
         lay_change_password.setVisibility(View.GONE);
 
         lay_login.setOnClickListener(mOnClickLogin);
-        layBtn_orderMana.setOnClickListener(mOnClickLogin);
+        layBtn_orderManagment.setOnClickListener(mOnClickLogin);
         layBtn_purchased.setOnClickListener(mOnClickLogin);
         layBtn_viewedProds.setOnClickListener(mOnClickLogin);
         layBtn_favoritePros.setOnClickListener(mOnClickLogin);
@@ -219,7 +221,7 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        layBtn_orderMana.setOnClickListener(new View.OnClickListener() {
+        layBtn_orderManagment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickTransact(Transact.CODE_GET_ALL);
@@ -243,6 +245,15 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 onClickTransact(Transact.STATUS_SUCCESS);
+            }
+        });
+        lay_reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ReviewsActivity.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                }else startActivity(intent);
             }
         });
 

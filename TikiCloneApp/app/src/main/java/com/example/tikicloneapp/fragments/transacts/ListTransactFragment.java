@@ -39,7 +39,6 @@ public class ListTransactFragment extends Fragment {
     public static int REQUEST_CODE_LIST_TRANSACT = 45645;
 
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list_transact, container, false);
@@ -56,7 +55,6 @@ public class ListTransactFragment extends Fragment {
         lay_loading = view.findViewById(R.id.loadingPanel);
         layPanel_nonOrder = view.findViewById(R.id.layout_panel_nonOrder);
         btnShopping = view.findViewById(R.id.button_shopping);
-
     }
 
     public void setEvent() {
@@ -69,7 +67,6 @@ public class ListTransactFragment extends Fragment {
             }
         });
         setRecyclerView(statusTransact);
-
     }
 
     public void setRecyclerView(int statusTransact) {
@@ -87,7 +84,6 @@ public class ListTransactFragment extends Fragment {
             MainActivity.dbVolley.getTransact(transactArrayList, transactAdapter, null, MainActivity.idUser, layPanel_nonOrder);
         } else
             MainActivity.dbVolley.getTransact(transactArrayList, transactAdapter, statusTransact, MainActivity.idUser, layPanel_nonOrder);
-
     }
 
     public void callLoadingPanel_parent() {

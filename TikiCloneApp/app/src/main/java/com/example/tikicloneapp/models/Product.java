@@ -2,6 +2,9 @@ package com.example.tikicloneapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Product implements Serializable {
@@ -23,6 +26,7 @@ public class Product implements Serializable {
     private int views;
     @SerializedName("qty")
     private int qty;
+    private double rate;
     private int sold;
     private String imageUrl;
 
@@ -32,6 +36,15 @@ public class Product implements Serializable {
         this.id = id;
         this.name = name;
     }
+
+    public Product(int id, String name, int price, int discount, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.imageUrl = imageUrl;
+    }
+
 
     public Product(int id, int idCatalog, String name, String description, int price, int discount, int created, int views) {
         this.id = id;
@@ -54,6 +67,21 @@ public class Product implements Serializable {
         this.created = created;
         this.views = views;
         this.qty = qty;
+    }
+
+    public Product(int id, int idCatalog, String name, String description, int price, int discount, int created, int views, int qty, float rate, int sold, String imageUrl) {
+        this.id = id;
+        this.idCatalog = idCatalog;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.discount = discount;
+        this.created = created;
+        this.views = views;
+        this.qty = qty;
+        this.rate = rate;
+        this.sold = sold;
+        this.imageUrl = imageUrl;
     }
 
     public Product(int price, int discount, int qty) {
@@ -83,6 +111,22 @@ public class Product implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public Product(JSONObject jsonProduct) throws JSONException {
+        this.id = jsonProduct.getInt("id");
+
+        this.idCatalog = jsonProduct.getInt("idCatalog");
+        this.name =  jsonProduct.getString("name");
+        this.description = jsonProduct.getString("description");
+        this.price = jsonProduct.getInt("price");
+        this.discount = jsonProduct.getInt("discount");
+        this.created = jsonProduct.getInt("created");
+        this.views = jsonProduct.getInt("views");
+        this.qty = jsonProduct.getInt("qty");
+        this.rate = jsonProduct.getDouble("rate");
+//        this.sold = jsonProduct.getInt("sold");
+//        this.imageUrl = jsonProduct.getString("imageUrl");
+    }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -93,8 +137,10 @@ public class Product implements Serializable {
                 ", price=" + price +
                 ", discount=" + discount +
                 ", created=" + created +
-                ", view=" + views +
+                ", views=" + views +
                 ", qty=" + qty +
+                ", rate=" + rate +
+                ", sold=" + sold +
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
@@ -190,4 +236,13 @@ public class Product implements Serializable {
     public void setSold(int sold) {
         this.sold = sold;
     }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public void setRate(double rate) {
+        this.rate = rate;
+    }
+
 }

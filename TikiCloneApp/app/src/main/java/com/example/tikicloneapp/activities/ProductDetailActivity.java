@@ -14,6 +14,7 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +41,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 import static com.example.tikicloneapp.database.DBVolley.getAddress;
@@ -50,16 +49,17 @@ import static com.example.tikicloneapp.database.DBVolley.getAddress;
 public class ProductDetailActivity extends AppCompatActivity implements SuccessAdded_BottomSheetDialog.BottomSheetListener {
     private ViewPager viewPagerImageProduct;
     private ImageViewPagerAdapter pagerAdapter;
-    private TextView tvName, tvPriceOrigin, tvPriceDiscount, tvDiscount, tvDescription, tvViews, tvAddress;
+    private TextView tvName, tvPriceOrigin, tvPriceDiscount, tvDiscount, tvDescription, tvRate, tvAddress;
     private ImageButton ibBack, ibCart, ibSearch, ibHome;
     private Button btnAddProduct;
+    private LinearLayout layoutRate;
+    private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
+
     public LinearLayout lay_loading;
 
     private ArrayList<String> imageUrls = new ArrayList<>();
     private int CODE_ID_PRODUCT = 3;
     private Product product;
-
-
 
     public static int REQUEST_CODE_UPDATE_ADDRESS = 1234;
     public static int REQUEST_CODE_LOGIN = 1234;
@@ -72,7 +72,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
         product = (Product) getIntent().getSerializableExtra("product");
 
-        setEachView(product);
+        setEachView();
         setOnClick();
     }
 
@@ -83,7 +83,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         tvPriceDiscount = findViewById(R.id.textView_priceDiscount);
         tvDiscount = findViewById(R.id.textView_discountProduct);
         tvDescription = findViewById(R.id.textView_description);
-        tvViews = findViewById(R.id.textView_views);
+        tvRate = findViewById(R.id.textView_rate);
         ibBack = findViewById(R.id.imageButton_back);
         btnAddProduct = findViewById(R.id.button_addToCart);
         tvAddress = findViewById(R.id.textView_address);
@@ -91,9 +91,16 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         ibSearch = findViewById(R.id.imageButton_search);
         lay_loading = findViewById(R.id.loadingPanel_parent);
         ibHome = findViewById(R.id.imageButton_home);
+        layoutRate = findViewById(R.id.linearLayout_rate);
+        ivStar1 = findViewById(R.id.imageView_star1);
+        ivStar2 = findViewById(R.id.imageView_star2);
+        ivStar3 = findViewById(R.id.imageView_star3);
+        ivStar4 = findViewById(R.id.imageView_star4);
+        ivStar5 = findViewById(R.id.imageView_star5);
+        tvRate = findViewById(R.id.textView_rate);
     }
 
-    private void setEachView(final Product product) {
+    private void setEachView() {
         //Update views of product
 
 //        dbVolley.updateViewsProduct(product);
@@ -128,7 +135,6 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     }
 
 
-
     private void setOnClick() {
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +147,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduct(product.getId());
+                addProductToCart(product.getId());
             }
         });
 
@@ -210,27 +216,30 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                 try {
                     JSONArray jsonArray = new JSONArray(response);
 
-                    JSONObject product = jsonArray.getJSONObject(0);
-                    String name = product.getString("name");
-                    int discount = product.getInt("discount");
-                    int priceOrigin = product.getInt("price");
-                    int priceDiscount = priceOrigin - priceOrigin * discount / 100;
-                    String description = product.getString("description");
-                    int views = product.getInt("views");
+                    JSONObject jsonProduct = jsonArray.getJSONObject(0);
+                    Product product = new Product(jsonProduct);
+                    int priceDiscount = product.getPrice() - product.getPrice() * product.getDiscount() / 100;
 
-                    tvName.setText(name);
-                    if (discount == 0) {
+                    tvName.setText(product.getName());
+                    if (product.getDiscount() == 0) {
                         tvDiscount.setVisibility(View.INVISIBLE);
                         tvPriceOrigin.setVisibility(View.INVISIBLE);
                     } else {
-                        tvDiscount.setText(ProductListAdapter.formatPercent(discount));
-                        tvPriceOrigin.setText(CartActivity.formatCurrency(priceOrigin));
+                        tvDiscount.setText(ProductListAdapter.formatPercent(product.getDiscount()));
+                        tvPriceOrigin.setText(CartActivity.formatCurrency(product.getPrice()));
                     }
 
 
                     tvPriceDiscount.setText(CartActivity.formatCurrency(priceDiscount));
-                    tvDescription.setText(description);
+                    tvDescription.setText(product.getDescription());
 //                    tvViews.setText(views + "");
+
+                    if (product.getRate() > 0) {
+                        Log.d("thang", "rateProduct: " + product.getRate());
+                        setRate(product.getRate());
+                    } else {
+                        layoutRate.setVisibility(View.GONE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -247,7 +256,6 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("idProduct", String.valueOf(idProduct));
-
 
                 return params;
             }
@@ -307,7 +315,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         int qty = 1;
         int discount = product.getDiscount();
         int idProduct = product.getId();
-        int amount = product.getPrice() - product.getPrice() * discount / 100;
+        int discountPrice = product.getPrice() - product.getPrice() * discount / 100;
 
         if (idUser == 0) { //No Account
             Log.d("thang", "noAccount");
@@ -316,7 +324,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 //            MainActivity.dbManager.insertData_Order(order);
         } else {
             Log.d("thang", "Account");
-            MainActivity.dbVolley.checkTransact(idUser, idProduct, qty, amount);
+            MainActivity.dbVolley.checkTransact(idUser, idProduct, qty, discountPrice);
         }
     }
 
@@ -336,6 +344,42 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     public void onBackPressed() {
         super.onBackPressed();
         setResult(RESULT_OK);
+    }
+
+    private void setRate(double rates) {
+        ivStar1.setImageResource(R.drawable.star_on);
+        ivStar2.setImageResource(R.drawable.star_off);
+        ivStar3.setImageResource(R.drawable.star_off);
+        ivStar4.setImageResource(R.drawable.star_off);
+        ivStar5.setImageResource(R.drawable.star_off);
+
+//set star 2
+        if (rates > 1.7) {
+            ivStar2.setImageResource(R.drawable.star_on);
+        } else if (rates > 1.2) {
+            ivStar2.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 3
+        if (rates > 2.7) {
+            ivStar3.setImageResource(R.drawable.star_on);
+        } else if (rates > 2.2) {
+            ivStar3.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 4
+        if (rates > 3.7) {
+            ivStar4.setImageResource(R.drawable.star_on);
+        } else if (rates > 3.2) {
+            ivStar4.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 5
+        if (rates > 4.7) {
+            ivStar5.setImageResource(R.drawable.star_on);
+        } else if (rates > 4.2) {
+            ivStar5.setImageResource(R.drawable.star_haft);
+        }
     }
 
     public void checkQtyProduct(final Integer idProduct, final Integer qty) {
@@ -424,7 +468,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         requestQueue.add(stringRequest);
     }
 
-    public void addProduct(final int idProduct) {
+    public void addProductToCart(final int idProduct) {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_GET_ORDER, new Response.Listener<String>() {
             @Override

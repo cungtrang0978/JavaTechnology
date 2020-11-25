@@ -59,7 +59,7 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"
             android:layout_weight="1"
-            android:id="@+id/textView_title"
+            android:id="@+id/textView_titleReview"
             android:visibility="gone"/>
 
         <ImageButton

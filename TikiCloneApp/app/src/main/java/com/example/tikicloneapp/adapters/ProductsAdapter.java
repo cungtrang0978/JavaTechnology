@@ -115,7 +115,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
                 intent.putExtra("product", product);
                 int requestCode = -1;
 
-
                 if (mProductType == ProductType.CODE_PRODUCT_LIST) {
                     requestCode = ListProductActivity.REQUEST_CODE;
                 } else if (mProductType == ProductType.CODE_NOT_LIST) {
