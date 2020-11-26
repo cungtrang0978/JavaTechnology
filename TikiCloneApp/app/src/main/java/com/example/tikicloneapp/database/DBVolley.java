@@ -30,6 +30,7 @@ import com.example.tikicloneapp.adapters.CatalogGrParentsAdapter;
 import com.example.tikicloneapp.adapters.CatalogParentAdapter;
 import com.example.tikicloneapp.adapters.CatalogAdapter;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
+import com.example.tikicloneapp.adapters.ReviewAdapter;
 import com.example.tikicloneapp.adapters.ReviewedAdapter;
 import com.example.tikicloneapp.adapters.TransactAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
@@ -47,11 +48,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.activities.ListProductActivity.underlineTextView;
 
@@ -96,8 +97,10 @@ public class DBVolley {
     public String URL_INSERT_SEARCH_KEY = IP_ADDRESS + "insertSearchKey.php";
     public String URL_GET_SEARCHES = IP_ADDRESS + "getSearches.php";
     public String URL_GET_RECOMMENDED_PRODUCTS = IP_ADDRESS + "getRecommendedProducts.php";
-    public String URL_GET_REVIEW_PRODUCTS = IP_ADDRESS + "getReviewProducts.php";
+    public String URL_GET_REVIEW_PRODUCTS_BY_USER_ID = IP_ADDRESS + "getReviewProductsByIdUser.php";
     public String URL_INSERT_RATE = IP_ADDRESS + "insertRate.php";
+    public String URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getReviewProductsByIdProduct.php";
+
 
     private final Context context;
 
@@ -1267,7 +1270,7 @@ public class DBVolley {
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS_BY_USER_ID,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -1321,13 +1324,13 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 
-    public void getReviewedProducts(final ArrayList<Rate> rates,
-                                    final ReviewedAdapter reviewedAdapter) {
+    public void getReviewedProductsByIdUser(final ArrayList<Rate> rates,
+                                            final ReviewedAdapter reviewedAdapter) {
         //status =1: waitingReviews ; 2: reviewed
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS_BY_USER_ID,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -1377,6 +1380,61 @@ public class DBVolley {
                 Map<String, String> params = new HashMap<>();
                 params.put("idUser", String.valueOf(MainActivity.idUser));
                 params.put("status", "2");// reviewed
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void getReviewedProductsByProductId(final ArrayList<Rate> rates,
+                                            final ReviewAdapter reviewAdapter, final int productId) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            ArrayList<Rate> _rates = new ArrayList<>();
+                            Log.d("thang", "getReviewedProductsByProductId: " + response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                try {
+                                    JSONObject jsonRate = jsonArray.getJSONObject(i);
+                                    Rate rate = new Rate(
+                                            jsonRate.getInt("id"),
+                                            jsonRate.getInt("ratePoint"),
+                                            jsonRate.getString("comment"),
+                                            Timestamp.valueOf(jsonRate.getString("createdAt")),
+                                            Timestamp.valueOf(jsonRate.getString("modifiedAt")),
+                                            jsonRate.getInt("idUser"),
+                                            jsonRate.getString("userFullName")
+                                    );
+                                    _rates.add(rate);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            rates.clear();
+                            rates.addAll(_rates);
+                            reviewAdapter.notifyDataSetChanged();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idProduct", String.valueOf(productId));
                 return params;
             }
         };

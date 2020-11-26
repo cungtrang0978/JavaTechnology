@@ -2,8 +2,13 @@ package com.example.tikicloneapp.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -29,18 +34,22 @@ import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
 import com.example.tikicloneapp.adapters.ImageViewPagerAdapter;
+import com.example.tikicloneapp.adapters.ReviewAdapter;
 import com.example.tikicloneapp.fragments.SuccessAdded_BottomSheetDialog;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Product;
+import com.example.tikicloneapp.models.Rate;
 import com.example.tikicloneapp.transformers.ZoomOutPageTransformer;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 import static com.example.tikicloneapp.database.DBVolley.getAddress;
@@ -49,15 +58,21 @@ import static com.example.tikicloneapp.database.DBVolley.getAddress;
 public class ProductDetailActivity extends AppCompatActivity implements SuccessAdded_BottomSheetDialog.BottomSheetListener {
     private ViewPager viewPagerImageProduct;
     private ImageViewPagerAdapter pagerAdapter;
-    private TextView tvName, tvPriceOrigin, tvPriceDiscount, tvDiscount, tvDescription, tvRate, tvAddress;
+    private TextView tvName, tvPriceOrigin, tvPriceDiscount, tvDiscount, tvDescription, tvRateQuantity, tvAddress;
+    private TextView tvRatePoint, tvReviewQuantity, tvFiveStars, tvFourStars, tvThreeStars, tvTwoStars, tvOneStar;
     private ImageButton ibBack, ibCart, ibSearch, ibHome;
     private Button btnAddProduct;
-    private LinearLayout layoutRate;
+    private LinearLayout layoutRate, layoutReview;
     private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
+    private ImageView ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5;
+    private RecyclerView rvReviews;
 
     public LinearLayout lay_loading;
 
-    private ArrayList<String> imageUrls = new ArrayList<>();
+    final ArrayList<String> imageUrls = new ArrayList<>();
+    final ArrayList<Rate> rates = new ArrayList<>();
+    private ReviewAdapter reviewAdapter;
+
     private int CODE_ID_PRODUCT = 3;
     private Product product;
 
@@ -72,7 +87,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
         product = (Product) getIntent().getSerializableExtra("product");
 
-        setEachView();
+        setViews();
         setOnClick();
     }
 
@@ -83,7 +98,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         tvPriceDiscount = findViewById(R.id.textView_priceDiscount);
         tvDiscount = findViewById(R.id.textView_discountProduct);
         tvDescription = findViewById(R.id.textView_description);
-        tvRate = findViewById(R.id.textView_rate);
+        tvRateQuantity = findViewById(R.id.textView_rateQuantity);
         ibBack = findViewById(R.id.imageButton_back);
         btnAddProduct = findViewById(R.id.button_addToCart);
         tvAddress = findViewById(R.id.textView_address);
@@ -97,10 +112,23 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         ivStar3 = findViewById(R.id.imageView_star3);
         ivStar4 = findViewById(R.id.imageView_star4);
         ivStar5 = findViewById(R.id.imageView_star5);
-        tvRate = findViewById(R.id.textView_rate);
+        rvReviews = findViewById(R.id.recyclerView_reviews);
+        tvRatePoint = findViewById(R.id.textView_ratePoint);
+        tvReviewQuantity = findViewById(R.id.textView_reviewQuantity);
+        tvFiveStars = findViewById(R.id.textView_fiveStars);
+        tvFourStars = findViewById(R.id.textView_fourStars);
+        tvThreeStars = findViewById(R.id.textView_threeStars);
+        tvTwoStars = findViewById(R.id.textView_twoStars);
+        tvOneStar = findViewById(R.id.textView_oneStar);
+        ivStarDetail_1 = findViewById(R.id.imageView_starDetail_1);
+        ivStarDetail_2 = findViewById(R.id.imageView_starDetail_2);
+        ivStarDetail_3 = findViewById(R.id.imageView_starDetail_3);
+        ivStarDetail_4 = findViewById(R.id.imageView_starDetail_4);
+        ivStarDetail_5 = findViewById(R.id.imageView_starDetail_5);
+        layoutReview = findViewById(R.id.linearLayout_review);
     }
 
-    private void setEachView() {
+    private void setViews() {
         //Update views of product
 
 //        dbVolley.updateViewsProduct(product);
@@ -114,7 +142,6 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
             }
         });
 
-
         //set Product Information
         getProduct(product.getId());
 
@@ -123,6 +150,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         setTextView_StrikeThrough(tvPriceOrigin);
 
         insertViewedProduct(MainActivity.idUser, product.getId());
+        setRvReviews();
     }
 
     private void setViewPager() {
@@ -211,6 +239,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         String URL_GET_PRODUCT = MainActivity.dbVolley.URL_GET_PRODUCT;
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_PRODUCT, new Response.Listener<String>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(String response) {
                 try {
@@ -221,6 +250,9 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                     int priceDiscount = product.getPrice() - product.getPrice() * product.getDiscount() / 100;
 
                     tvName.setText(product.getName());
+                    tvRatePoint.setText(product.getRate() + "");
+                    tvRateQuantity.setText("(Xem " + product.getRateQty() + " đánh giá)");
+                    tvReviewQuantity.setText(product.getRateQty() + " nhận xét");
                     if (product.getDiscount() == 0) {
                         tvDiscount.setVisibility(View.INVISIBLE);
                         tvPriceOrigin.setVisibility(View.INVISIBLE);
@@ -236,9 +268,11 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
                     if (product.getRate() > 0) {
                         Log.d("thang", "rateProduct: " + product.getRate());
-                        setRate(product.getRate());
+                        setRate(ivStar1, ivStar2, ivStar3, ivStar4, ivStar5, product.getRate());
+                        setRate(ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5, product.getRate());
                     } else {
                         layoutRate.setVisibility(View.GONE);
+                        layoutReview.setVisibility(View.GONE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -346,39 +380,39 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         setResult(RESULT_OK);
     }
 
-    private void setRate(double rates) {
-        ivStar1.setImageResource(R.drawable.star_on);
-        ivStar2.setImageResource(R.drawable.star_off);
-        ivStar3.setImageResource(R.drawable.star_off);
-        ivStar4.setImageResource(R.drawable.star_off);
-        ivStar5.setImageResource(R.drawable.star_off);
+    private void setRate(ImageView iv1, ImageView iv2, ImageView iv3, ImageView iv4, ImageView iv5, double rates) {
+        iv1.setImageResource(R.drawable.star_on);
+        iv2.setImageResource(R.drawable.star_off);
+        iv3.setImageResource(R.drawable.star_off);
+        iv4.setImageResource(R.drawable.star_off);
+        iv5.setImageResource(R.drawable.star_off);
 
 //set star 2
         if (rates > 1.7) {
-            ivStar2.setImageResource(R.drawable.star_on);
+            iv2.setImageResource(R.drawable.star_on);
         } else if (rates > 1.2) {
-            ivStar2.setImageResource(R.drawable.star_haft);
+            iv2.setImageResource(R.drawable.star_haft);
         }
 
 //set star 3
         if (rates > 2.7) {
-            ivStar3.setImageResource(R.drawable.star_on);
+            iv3.setImageResource(R.drawable.star_on);
         } else if (rates > 2.2) {
-            ivStar3.setImageResource(R.drawable.star_haft);
+            iv3.setImageResource(R.drawable.star_haft);
         }
 
 //set star 4
         if (rates > 3.7) {
-            ivStar4.setImageResource(R.drawable.star_on);
+            iv4.setImageResource(R.drawable.star_on);
         } else if (rates > 3.2) {
-            ivStar4.setImageResource(R.drawable.star_haft);
+            iv4.setImageResource(R.drawable.star_haft);
         }
 
 //set star 5
         if (rates > 4.7) {
-            ivStar5.setImageResource(R.drawable.star_on);
+            iv5.setImageResource(R.drawable.star_on);
         } else if (rates > 4.2) {
-            ivStar5.setImageResource(R.drawable.star_haft);
+            iv5.setImageResource(R.drawable.star_haft);
         }
     }
 
@@ -517,4 +551,116 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         };
         requestQueue.add(stringRequest);
     }
+
+    public void setRvReviews() {
+//        callLoadingPanel_parent();
+        if (reviewAdapter == null) {
+            DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+            itemDecoration.setDrawable(Objects.requireNonNull(ContextCompat.getDrawable(rvReviews.getContext(), R.drawable.divider_product_cart)));
+
+            reviewAdapter = new ReviewAdapter(this, rates);
+            rvReviews.setLayoutManager(new LinearLayoutManager(this));
+            rvReviews.addItemDecoration(itemDecoration);
+            rvReviews.setAdapter(reviewAdapter);
+        }
+
+        getReviewedProductsByProductId();
+    }
+
+    public void getReviewedProductsByProductId() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID,
+                new Response.Listener<String>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            ArrayList<Rate> _rates = new ArrayList<>(),
+                                    oneStarRates = new ArrayList<>(),
+                                    twoStarsRates = new ArrayList<>(),
+                                    threeStarRates = new ArrayList<>(),
+                                    fourStarsRates = new ArrayList<>(),
+                                    fiveStarRates = new ArrayList<>();
+                            Log.d("thang", "getReviewedProductsByProductId: " + response);
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                try {
+                                    JSONObject jsonRate = jsonArray.getJSONObject(i);
+                                    Rate rate;
+                                    if (jsonRate.getString("modifiedAt").equals("null")) {
+                                        rate = new Rate(
+                                                jsonRate.getInt("id"),
+                                                jsonRate.getInt("ratePoint"),
+                                                jsonRate.getString("comment"),
+                                                Timestamp.valueOf(jsonRate.getString("createdAt")),
+                                                null,
+                                                jsonRate.getInt("idUser"),
+                                                jsonRate.getString("userFullName")
+                                        );
+                                    } else {
+                                        rate = new Rate(
+                                                jsonRate.getInt("id"),
+                                                jsonRate.getInt("ratePoint"),
+                                                jsonRate.getString("comment"),
+                                                Timestamp.valueOf(jsonRate.getString("createdAt")),
+                                                Timestamp.valueOf(jsonRate.getString("modifiedAt")),
+                                                jsonRate.getInt("idUser"),
+                                                jsonRate.getString("userFullName")
+                                        );
+                                    }
+                                    _rates.add(rate);
+                                    switch (rate.getRatePoint()) {
+                                        case 1:
+                                            oneStarRates.add(rate);
+                                            break;
+                                        case 2:
+                                            twoStarsRates.add(rate);
+                                            break;
+                                        case 3:
+                                            threeStarRates.add(rate);
+                                            break;
+                                        case 4:
+                                            fourStarsRates.add(rate);
+                                            break;
+                                        case 5:
+                                            fiveStarRates.add(rate);
+                                            break;
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            rates.clear();
+                            rates.addAll(_rates);
+                            reviewAdapter.notifyDataSetChanged();
+
+                            tvFiveStars.setText(fiveStarRates.size() + "");
+                            tvFourStars.setText(fourStarsRates.size() + "");
+                            tvThreeStars.setText(threeStarRates.size() + "");
+                            tvTwoStars.setText(twoStarsRates.size() + "");
+                            tvOneStar.setText(oneStarRates.size() + "");
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idProduct", String.valueOf(product.getId()));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
 }

@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.activities.ListProductActivity;
 import com.example.tikicloneapp.activities.ProductDetailActivity;
 import com.example.tikicloneapp.models.Product;
 import com.example.tikicloneapp.models.Rate;
@@ -47,7 +46,7 @@ public class ReviewedAdapter extends RecyclerView.Adapter<ReviewedAdapter.ViewHo
 
         ProductListAdapter.loadImageFromUrl(rate.getImageProductUrl(), holder.ivProduct);
         holder.tvTitle.setText(getTitle(rate.getRatePoint()));
-        holder.tvMessage.setText(rate.getComment());
+        holder.tvComment.setText(rate.getComment());
         setStars(rate.getRatePoint(), holder);
         holder.llRow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +105,7 @@ public class ReviewedAdapter extends RecyclerView.Adapter<ReviewedAdapter.ViewHo
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView tvTitle, tvMessage;
+        final TextView tvTitle, tvComment;
         final ImageView ivProduct;
         final ImageView star2, star3, star4, star5;
         final LinearLayout llRow;
@@ -114,7 +113,7 @@ public class ReviewedAdapter extends RecyclerView.Adapter<ReviewedAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = itemView.findViewById(R.id.textView_titleReview);
-            tvMessage = itemView.findViewById(R.id.textView_message);
+            tvComment = itemView.findViewById(R.id.textView_comment);
             ivProduct = itemView.findViewById(R.id.imageView_product);
             star2 = itemView.findViewById(R.id.imageView_star2);
             star3 = itemView.findViewById(R.id.imageView_star3);

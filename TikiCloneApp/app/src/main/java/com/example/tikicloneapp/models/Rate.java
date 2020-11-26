@@ -18,7 +18,7 @@ public class Rate {
     private int discount;
     private String imageProductUrl;
     private int idUser;
-    private int userFullName;
+    private String userFullName;
 
     public Rate(int ratePoint, String comment, int idProduct, int idUser) {
         this.ratePoint = ratePoint;
@@ -39,7 +39,17 @@ public class Rate {
         this.idUser = idUser;
     }
 
-    public Rate(int id, int ratePoint, String comment, Timestamp createdAt, Timestamp modifiedAt, int idProduct, String productName, String imageProductUrl, int idUser, int userFullName) {
+    public Rate(int id, int ratePoint, String comment, Timestamp createdAt, Timestamp modifiedAt, int idUser, String userFullName) {
+        this.id = id;
+        this.ratePoint = ratePoint;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
+        this.idUser = idUser;
+        this.userFullName = userFullName;
+    }
+
+    public Rate(int id, int ratePoint, String comment, Timestamp createdAt, Timestamp modifiedAt, int idProduct, String productName, String imageProductUrl, int idUser, String userFullName) {
         this.id = id;
         this.ratePoint = ratePoint;
         this.comment = comment;
@@ -84,11 +94,11 @@ public class Rate {
         this.discount = discount;
     }
 
-    public int getUserFullName() {
+    public String getUserFullName() {
         return userFullName;
     }
 
-    public void setUserFullName(int userFullName) {
+    public void setUserFullName(String userFullName) {
         this.userFullName = userFullName;
     }
 
@@ -162,5 +172,23 @@ public class Rate {
 
     public void setModifiedAt(Timestamp modifiedAt) {
         this.modifiedAt = modifiedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Rate{" +
+                "id=" + id +
+                ", ratePoint=" + ratePoint +
+                ", comment='" + comment + '\'' +
+                ", createdAt=" + createdAt +
+                ", modifiedAt=" + modifiedAt +
+                ", idProduct=" + idProduct +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", imageProductUrl='" + imageProductUrl + '\'' +
+                ", idUser=" + idUser +
+                ", userFullName='" + userFullName + '\'' +
+                '}';
     }
 }

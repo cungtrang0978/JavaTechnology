@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.adapters.ReviewedAdapter;
-import com.example.tikicloneapp.adapters.WaitingReviewAdapter;
 import com.example.tikicloneapp.models.Rate;
 
 import java.util.ArrayList;
@@ -58,6 +56,6 @@ public class ReviewedFragment extends Fragment {
             recyclerView.addItemDecoration(itemDecoration);
             recyclerView.setAdapter(reviewedAdapter);
         }
-        MainActivity.dbVolley.getReviewedProducts(rateArrayList, reviewedAdapter);
+        MainActivity.dbVolley.getReviewedProductsByIdUser(rateArrayList, reviewedAdapter);
     }
 }

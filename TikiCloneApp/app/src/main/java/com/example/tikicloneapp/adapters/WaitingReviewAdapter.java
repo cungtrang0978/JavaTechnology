@@ -26,8 +26,8 @@ import com.example.tikicloneapp.models.Product;
 import java.util.ArrayList;
 
 public class WaitingReviewAdapter extends RecyclerView.Adapter<WaitingReviewAdapter.ViewHolder> {
-    private Context mContext;
-    private ArrayList<Product> mProducts;
+    final Context mContext;
+    final ArrayList<Product> mProducts;
 
 
     public WaitingReviewAdapter(Context mContext, ArrayList<Product> mProducts) {

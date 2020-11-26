@@ -79,7 +79,7 @@ public class WriteReviewActivity extends AppCompatActivity {
         btnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!edtReview.getText().toString().isEmpty() && ratePoint != 0) {
+                if ( ratePoint != 0) {
                     Rate rate = new Rate(ratePoint, edtReview.getText().toString(), product.getId(), MainActivity.idUser);
                     MainActivity.dbVolley.insertRate(rate);
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -27,6 +27,7 @@ public class Product implements Serializable {
     @SerializedName("qty")
     private int qty;
     private double rate;
+    private int rateQty;
     private int sold;
     private String imageUrl;
 
@@ -123,8 +124,17 @@ public class Product implements Serializable {
         this.views = jsonProduct.getInt("views");
         this.qty = jsonProduct.getInt("qty");
         this.rate = jsonProduct.getDouble("rate");
+        this.rateQty = jsonProduct.getInt("rateQty");
 //        this.sold = jsonProduct.getInt("sold");
 //        this.imageUrl = jsonProduct.getString("imageUrl");
+    }
+
+    public int getRateQty() {
+        return rateQty;
+    }
+
+    public void setRateQty(int rateQty) {
+        this.rateQty = rateQty;
     }
 
     @Override
