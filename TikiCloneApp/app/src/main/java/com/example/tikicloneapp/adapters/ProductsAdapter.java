@@ -1,11 +1,12 @@
 package com.example.tikicloneapp.adapters;
 
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.CartActivity;
 import com.example.tikicloneapp.activities.ListProductActivity;
-import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.activities.ProductDetailActivity;
 import com.example.tikicloneapp.fragments.navigations.HomeFragment;
 import com.example.tikicloneapp.models.Product;
@@ -40,9 +40,10 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
-        public TextView tvPriceDiscount, tvDiscountProduct, tvNameProduct, tvQty;
+        private TextView tvPriceDiscount, tvDiscountProduct, tvNameProduct, tvQty, tvRateQuantity;
+        private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
         private ImageView ivProduct;
-        private LinearLayout parentLayout;
+        private LinearLayout parentLayout, llReview;
         private CardView cvSold;
 
         public MyViewHolder(View itemView) {
@@ -56,6 +57,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
                 ivProduct = itemView.findViewById(R.id.imageView_product);
                 tvQty = itemView.findViewById(R.id.textView_sold);
                 cvSold = itemView.findViewById(R.id.cardView_sold);
+                ivStar1 = itemView.findViewById(R.id.imageView_star1);
+                ivStar2 = itemView.findViewById(R.id.imageView_star2);
+                ivStar3 = itemView.findViewById(R.id.imageView_star3);
+                ivStar4 = itemView.findViewById(R.id.imageView_star4);
+                ivStar5 = itemView.findViewById(R.id.imageView_star5);
+                tvRateQuantity = itemView.findViewById(R.id.textView_rateQuantity);
+                llReview = itemView.findViewById(R.id.linearLayout_review);
+
             } else if (mResource == R.layout.item_viewed_product) {
                 tvPriceDiscount = itemView.findViewById(R.id.textView_priceDiscount);
                 ivProduct = itemView.findViewById(R.id.imageView_product);
@@ -86,9 +95,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
 
     // Replace the contents of a view (invoked by the layout manager)
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Product product = mProducts.get(position);
+        Log.d("thang", "onBindViewHolder: "+ product);
 
         if (mResource == R.layout.item_viewed_product) {
             holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
@@ -98,6 +109,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         } else if (mResource == R.layout.row_product) {
             holder.tvNameProduct.setText(product.getName());
             holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
+            if(product.getRateQty()!=0){
+                holder.llReview.setVisibility(View.VISIBLE);
+                setRate(holder.ivStar1, holder.ivStar2, holder.ivStar3, holder.ivStar4, holder.ivStar5, product.getRate());
+                holder.tvRateQuantity.setText("("+product.getRateQty()+")");
+            }else{
+                holder.llReview.setVisibility(View.GONE);
+            }
             if (product.getSold() != 0) {
                 holder.cvSold.setVisibility(View.VISIBLE);
                 holder.tvQty.setText("Đã bán " + product.getSold());
@@ -105,6 +123,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             if (product.getDiscount() != 0) {
                 holder.tvDiscountProduct.setText(-product.getDiscount() + "%");
             }
+
             ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
 
         }
@@ -127,6 +146,42 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
                     ((FragmentActivity) view.getContext()).startActivityForResult(intent, requestCode);
             }
         });
+    }
+
+    public static void setRate(ImageView iv1, ImageView iv2, ImageView iv3, ImageView iv4, ImageView iv5, double rates) {
+        iv1.setImageResource(R.drawable.star_on);
+        iv2.setImageResource(R.drawable.star_off);
+        iv3.setImageResource(R.drawable.star_off);
+        iv4.setImageResource(R.drawable.star_off);
+        iv5.setImageResource(R.drawable.star_off);
+
+//set star 2
+        if (rates > 1.7) {
+            iv2.setImageResource(R.drawable.star_on);
+        } else if (rates > 1.2) {
+            iv2.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 3
+        if (rates > 2.7) {
+            iv3.setImageResource(R.drawable.star_on);
+        } else if (rates > 2.2) {
+            iv3.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 4
+        if (rates > 3.7) {
+            iv4.setImageResource(R.drawable.star_on);
+        } else if (rates > 3.2) {
+            iv4.setImageResource(R.drawable.star_haft);
+        }
+
+//set star 5
+        if (rates > 4.7) {
+            iv5.setImageResource(R.drawable.star_on);
+        } else if (rates > 4.2) {
+            iv5.setImageResource(R.drawable.star_haft);
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

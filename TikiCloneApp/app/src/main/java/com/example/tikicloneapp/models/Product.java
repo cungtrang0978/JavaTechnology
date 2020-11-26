@@ -70,6 +70,29 @@ public class Product implements Serializable {
         this.qty = qty;
     }
 
+    public Product(int id, int idCatalog, String name, int price, int discount, int qty, double rate, int rateQty, String imageUrl) {
+        this.id = id;
+        this.idCatalog = idCatalog;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.qty = qty;
+        this.rate = rate;
+        this.rateQty = rateQty;
+        this.imageUrl = imageUrl;
+    }
+
+    public Product(int id, int idCatalog, String name, int price, int discount, int qty, double rate, int rateQty) {
+        this.id = id;
+        this.idCatalog = idCatalog;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+        this.qty = qty;
+        this.rate = rate;
+        this.rateQty = rateQty;
+    }
+
     public Product(int id, int idCatalog, String name, String description, int price, int discount, int created, int views, int qty, float rate, int sold, String imageUrl) {
         this.id = id;
         this.idCatalog = idCatalog;
@@ -101,7 +124,7 @@ public class Product implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public Product(int id, int idCatalog, String name, int price, int discount, int qty, int sold, String imageUrl) {
+    public Product(int id, int idCatalog, String name, int price, int discount, int qty, int sold, String imageUrl, double rate, int rateQty) {
         this.id = id;
         this.idCatalog = idCatalog;
         this.name = name;
@@ -110,6 +133,8 @@ public class Product implements Serializable {
         this.qty = qty;
         this.sold = sold;
         this.imageUrl = imageUrl;
+        this.rate = rate;
+        this.rateQty = rateQty;
     }
 
     public Product(JSONObject jsonProduct) throws JSONException {
@@ -128,6 +153,25 @@ public class Product implements Serializable {
 //        this.sold = jsonProduct.getInt("sold");
 //        this.imageUrl = jsonProduct.getString("imageUrl");
     }
+
+
+//    public Product(JSONObject jsonProduct) throws JSONException {
+//        if(jsonProduct.getInt("id")){
+//        this.id = jsonProduct.getInt("id");}
+//        this.idCatalog = jsonProduct.getInt("idCatalog");
+//        this.name =  jsonProduct.getString("name");
+//        this.description = jsonProduct.getString("description");
+//        this.price = jsonProduct.getInt("price");
+//        this.discount = jsonProduct.getInt("discount");
+//        this.created = jsonProduct.getInt("created");
+//        this.views = jsonProduct.getInt("views");
+//        this.qty =jsonProduct.getInt("qty");
+//        this.rate =jsonProduct.getDouble("rate");
+//        this.rateQty = jsonProduct.getInt("rateQty");
+//        this.sold = jsonProduct.getInt("sold");
+//        this.imageUrl  = jsonProduct.getString("imageUrl");
+//    }
+
 
     public int getRateQty() {
         return rateQty;

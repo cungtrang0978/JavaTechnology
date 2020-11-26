@@ -114,14 +114,14 @@ public class ListProductActivity extends AppCompatActivity {
         rvProductList.setAdapter(productAdapter);
 
         if (catalog != null) {
-            dbVolley.getProduct(products, productAdapter, tvNonProduct, catalog.getmId(), null, null, null, null, null);
+            dbVolley.getProducts(products, productAdapter, tvNonProduct, catalog.getmId(), null, null, null, null, null);
             return;
         }
         if (cataParent != null) {
-            dbVolley.getProduct(products, productAdapter, tvNonProduct, null, null, null, cataParent.getmId(), null, null);
+            dbVolley.getProducts(products, productAdapter, tvNonProduct, null, null, null, cataParent.getmId(), null, null);
             return;
         }
-        dbVolley.getProduct(products, productAdapter, tvNonProduct, null, idArray, null, null, null, null);
+        dbVolley.getProducts(products, productAdapter, tvNonProduct, null, idArray, null, null, null, null);
     }
 
     private void setViewedProductsAdapter() {

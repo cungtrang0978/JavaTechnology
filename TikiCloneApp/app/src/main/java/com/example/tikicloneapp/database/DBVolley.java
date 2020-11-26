@@ -342,9 +342,9 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 
-    public void getProduct(final ArrayList<Product> productArrayList, final ProductListAdapter productListAdapter, final TextView tvNonProduct,
-                           @Nullable final Integer idCatalog, @Nullable final ArrayList<Integer> idArray, @Nullable final Integer views, @Nullable final Integer idParents, @Nullable final Integer status,
-                           @Nullable final Integer idUser) {
+    public void getProducts(final ArrayList<Product> productArrayList, final ProductListAdapter productListAdapter, final TextView tvNonProduct,
+                            @Nullable final Integer idCatalog, @Nullable final ArrayList<Integer> idArray, @Nullable final Integer views, @Nullable final Integer idParents, @Nullable final Integer status,
+                            @Nullable final Integer idUser) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_PRODUCT, new Response.Listener<String>() {
             @Override
@@ -361,12 +361,14 @@ public class DBVolley {
                                         object.getInt("id"),
                                         object.getInt("idCatalog"),
                                         object.getString("name"),
-                                        object.getString("description"),
+//                                        object.getString("description"),
                                         object.getInt("price"),
                                         object.getInt("discount"),
-                                        object.getInt("created"),
-                                        object.getInt("views"),
-                                        object.getInt("qty")
+//                                        object.getInt("created"),
+//                                        object.getInt("views"),
+                                        object.getInt("qty"),
+                                        object.getDouble("rate"),
+                                        object.getInt("rateQty")
                                 );
                                 productArrayList.add(product);
                             } catch (JSONException e) {
@@ -1152,15 +1154,17 @@ public class DBVolley {
                             JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 try {
-                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    JSONObject jsonProduct = jsonArray.getJSONObject(i);
                                     Product _product = new Product(
-                                            object.getInt("id"),
-                                            object.getInt("idCatalog"),
-                                            object.getString("name"),
-                                            object.getInt("price"),
-                                            object.getInt("discount"),
-                                            object.getInt("qty"),
-                                            object.getString("imageUrl")
+                                            jsonProduct.getInt("id"),
+                                            jsonProduct.getInt("idCatalog"),
+                                            jsonProduct.getString("name"),
+                                            jsonProduct.getInt("price"),
+                                            jsonProduct.getInt("discount"),
+                                            jsonProduct.getInt("qty"),
+                                            jsonProduct.getDouble("rate"),
+                                            jsonProduct.getInt("rateQty"),
+                                            jsonProduct.getString("imageUrl")
                                     );
                                     viewedProducts.add(_product);
 
@@ -1225,7 +1229,9 @@ public class DBVolley {
                                             product.getInt("discount"),
                                             product.getInt("qty"),
                                             product.getInt("sold"),
-                                            product.getString("imageUrl")
+                                            product.getString("imageUrl"),
+                                            product.getDouble("rate"),
+                                            product.getInt("rateQty")
 
                                     );
                                     _products.add(_product);

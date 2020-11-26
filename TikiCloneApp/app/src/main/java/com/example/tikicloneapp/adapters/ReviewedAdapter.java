@@ -88,7 +88,7 @@ public class ReviewedAdapter extends RecyclerView.Adapter<ReviewedAdapter.ViewHo
         return "";
     }
 
-    private void setStars(int ratePoint, ViewHolder viewHolder) {
+    public static void setStars(int ratePoint, ViewHolder viewHolder) {
         if (ratePoint < 5) {
             viewHolder.star5.setImageResource(R.drawable.star_off);
         }
