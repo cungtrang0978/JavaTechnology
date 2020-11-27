@@ -35,6 +35,7 @@ import com.example.tikicloneapp.adapters.ReviewedAdapter;
 import com.example.tikicloneapp.adapters.TransactAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.adapters.WaitingReviewAdapter;
+import com.example.tikicloneapp.enums.OrderBy;
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
 import com.example.tikicloneapp.models.CatalogParent;
@@ -342,9 +343,13 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 
-    public void getProducts(final ArrayList<Product> productArrayList, final ProductListAdapter productListAdapter, final TextView tvNonProduct,
-                            @Nullable final Integer idCatalog, @Nullable final ArrayList<Integer> idArray, @Nullable final Integer views, @Nullable final Integer idParents, @Nullable final Integer status,
-                            @Nullable final Integer idUser) {
+    public void getProducts(final ArrayList<Product> productArrayList, final ProductListAdapter productListAdapter,
+                            final TextView tvNonProduct, @Nullable final Integer idCatalog, @Nullable final ArrayList<Integer> idArray,
+                            @Nullable final Integer views, @Nullable final Integer idParents, @Nullable final Integer status,
+                            @Nullable final Integer idUser,
+                            @Nullable final Integer priceFrom, @Nullable final Integer priceTo, @Nullable final Integer rate,
+                            @Nullable final OrderBy orderCreated, @Nullable final OrderBy orderPrice,
+                            @Nullable final Integer limit, @Nullable final Integer start) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_PRODUCT, new Response.Listener<String>() {
             @Override
@@ -413,6 +418,41 @@ public class DBVolley {
                 }
                 if (status != null) {
                     params.put("status", String.valueOf(status));
+                }
+                if (priceFrom != null) {
+                    params.put("priceFrom", String.valueOf(priceFrom));
+                }
+                if (priceTo != null) {
+                    params.put("priceTo", String.valueOf(priceTo));
+                }
+
+                if (rate != null) {
+                    params.put("rate", String.valueOf(rate));
+                }
+                if (orderCreated != null) {
+                    switch (orderCreated){
+                        case ASC:
+                            params.put("orderCreated", "ASC");
+                            break;
+                        case DESC:
+                            params.put("orderCreated", "DESC");
+                    }
+                }
+
+                if (orderPrice != null) {
+                    switch (orderPrice){
+                        case ASC:
+                            params.put("orderPrice", "ASC");
+                            break;
+                        case DESC:
+                            params.put("orderPrice", "DESC");
+                    }
+                }
+                if (limit != null) {
+                    params.put("limit", String.valueOf(limit));
+                }
+                if (start != null) {
+                    params.put("start", String.valueOf(start));
                 }
 
                 return params;
@@ -1393,7 +1433,7 @@ public class DBVolley {
     }
 
     public void getReviewedProductsByProductId(final ArrayList<Rate> rates,
-                                            final ReviewAdapter reviewAdapter, final int productId) {
+                                               final ReviewAdapter reviewAdapter, final int productId) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID,
                 new Response.Listener<String>() {
@@ -1588,3 +1628,4 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 }
+

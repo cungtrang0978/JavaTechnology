@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -13,6 +14,7 @@ import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.example.tikicloneapp.adapters.ProductListAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.database.DBVolley;
 
+import com.example.tikicloneapp.enums.OrderBy;
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
 import com.example.tikicloneapp.models.CatalogParent;
@@ -56,7 +59,11 @@ public class ListProductActivity extends AppCompatActivity {
     CatalogGrandParent cataGrand;
     TextView tvNonProduct, tvTitle;
 
+    Button btnPrice, btnCreated;
+
     String keySearch;
+    Integer priceFrom, priceTo, rate, limit, start;
+    OrderBy orderCreated, orderPrice;
 
     public static int REQUEST_CODE = 234;
 
@@ -105,6 +112,17 @@ public class ListProductActivity extends AppCompatActivity {
         setOnClick();
     }
 
+    private void refreshRecyclerView() {
+        MyClass.callPanel(lay_loading_parent, 1000);
+        if (catalog != null || cataParent != null) {
+            setAdapterRecyclerView(null);
+            return;
+        }
+        if (keySearch != null) {
+            getNameProduct();
+        }
+    }
+
     private void setAdapterRecyclerView(@Nullable ArrayList<Integer> idArray) {
         productAdapter = new ProductListAdapter(this, R.layout.row_product, products);
         rvProductList.setLayoutManager(new GridLayoutManager(this, 2));
@@ -114,18 +132,25 @@ public class ListProductActivity extends AppCompatActivity {
         rvProductList.setAdapter(productAdapter);
 
         if (catalog != null) {
-            dbVolley.getProducts(products, productAdapter, tvNonProduct, catalog.getmId(), null, null, null, null, null);
+            dbVolley.getProducts(products, productAdapter, tvNonProduct, catalog.getmId(), null,
+                    null, null, null, null, priceFrom, priceTo,
+                    rate, orderCreated, orderPrice, limit, start);
             return;
         }
         if (cataParent != null) {
-            dbVolley.getProducts(products, productAdapter, tvNonProduct, null, null, null, cataParent.getmId(), null, null);
+            dbVolley.getProducts(products, productAdapter, tvNonProduct, null, null,
+                    null, cataParent.getmId(), null, null, priceFrom, priceTo,
+                    rate, orderCreated, orderPrice, limit, start);
             return;
         }
-        dbVolley.getProducts(products, productAdapter, tvNonProduct, null, idArray, null, null, null, null);
+        dbVolley.getProducts(products, productAdapter, tvNonProduct, null, idArray,
+                null, null, null, null, priceFrom, priceTo,
+                rate, orderCreated, orderPrice, limit, start);
     }
 
     private void setViewedProductsAdapter() {
-        productsAdapter = new ProductsAdapter(this, R.layout.row_product, products, ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
+        productsAdapter = new ProductsAdapter(this, R.layout.row_product, products,
+                ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
         rvProductList.setLayoutManager(new GridLayoutManager(this, 2));
         rvProductList.setAdapter(productsAdapter);
 
@@ -169,7 +194,42 @@ public class ListProductActivity extends AppCompatActivity {
                 } else startActivity(intent);
             }
         });
+        btnCreated.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                if (orderCreated == null) {
+                    orderCreated = OrderBy.DESC;
+                    btnCreated.setText("Mới nhất");
+                } else if (orderCreated == OrderBy.DESC) {
+                    orderCreated = OrderBy.ASC;
+                    btnCreated.setText("Cũ nhất");
+                } else {
+                    orderCreated = OrderBy.DESC;
+                    btnCreated.setText("Mới nhất");
+                }
+                refreshRecyclerView();
+            }
+        });
+        btnPrice.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onClick(View view) {
+                if (orderPrice == null) {
+                    orderPrice = OrderBy.DESC;
+                    btnPrice.setText("Giá giảm");
+                } else if (orderPrice == OrderBy.DESC) {
+                    orderPrice = OrderBy.ASC;
+                    btnPrice.setText("Giá tăng");
+                } else {
+                    orderPrice = OrderBy.DESC;
+                    btnPrice.setText("Giá giảm");
+                }
+                refreshRecyclerView();
+            }
+        });
     }
+
 
     private void initWidget() {
         rvProductList = findViewById(R.id.recyclerView_productList);
@@ -183,6 +243,8 @@ public class ListProductActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.textView_address);
         tvNonProduct = findViewById(R.id.textView_nonProduct);
         tvTitle = findViewById(R.id.textView_titleReview);
+        btnCreated = findViewById(R.id.button_created);
+        btnPrice = findViewById(R.id.button_price);
     }
 
     public static void underlineTextView(TextView tv, String address) {

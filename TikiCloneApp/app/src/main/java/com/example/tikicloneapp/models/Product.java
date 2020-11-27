@@ -31,7 +31,8 @@ public class Product implements Serializable {
     private int sold;
     private String imageUrl;
 
-    public Product(){}
+    public Product() {
+    }
 
     public Product(int id, String name) {
         this.id = id;
@@ -141,7 +142,7 @@ public class Product implements Serializable {
         this.id = jsonProduct.getInt("id");
 
         this.idCatalog = jsonProduct.getInt("idCatalog");
-        this.name =  jsonProduct.getString("name");
+        this.name = jsonProduct.getString("name");
         this.description = jsonProduct.getString("description");
         this.price = jsonProduct.getInt("price");
         this.discount = jsonProduct.getInt("discount");
@@ -153,25 +154,6 @@ public class Product implements Serializable {
 //        this.sold = jsonProduct.getInt("sold");
 //        this.imageUrl = jsonProduct.getString("imageUrl");
     }
-
-
-//    public Product(JSONObject jsonProduct) throws JSONException {
-//        if(jsonProduct.getInt("id")){
-//        this.id = jsonProduct.getInt("id");}
-//        this.idCatalog = jsonProduct.getInt("idCatalog");
-//        this.name =  jsonProduct.getString("name");
-//        this.description = jsonProduct.getString("description");
-//        this.price = jsonProduct.getInt("price");
-//        this.discount = jsonProduct.getInt("discount");
-//        this.created = jsonProduct.getInt("created");
-//        this.views = jsonProduct.getInt("views");
-//        this.qty =jsonProduct.getInt("qty");
-//        this.rate =jsonProduct.getDouble("rate");
-//        this.rateQty = jsonProduct.getInt("rateQty");
-//        this.sold = jsonProduct.getInt("sold");
-//        this.imageUrl  = jsonProduct.getString("imageUrl");
-//    }
-
 
     public int getRateQty() {
         return rateQty;
@@ -279,8 +261,8 @@ public class Product implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public int getPriceDiscount(){
-        return price- price*discount/100;
+    public int getPriceDiscount() {
+        return price - price * discount / 100;
     }
 
     public int getSold() {
