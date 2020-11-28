@@ -2,11 +2,13 @@ package com.example.tikicloneapp.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +17,7 @@ import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -57,20 +60,29 @@ public class ListProductActivity extends AppCompatActivity {
     Catalog catalog;
     CatalogParent cataParent;
     CatalogGrandParent cataGrand;
-    TextView tvNonProduct, tvTitle;
-
-    Button btnPrice, btnCreated;
 
     String keySearch;
     Integer priceFrom, priceTo, rate, limit, start;
     OrderBy orderCreated, orderPrice;
 
+    Boolean isFrom5Stars = false, isFrom4Stars = false, isFrom3Stars = false;
+
     public static int REQUEST_CODE = 234;
 
     private ImageButton ibBack, ibCart, ibMenu;
     private LinearLayout layoutSearchName;
-    public LinearLayout lay_loading_parent;
+    public LinearLayout lay_loading_parent, lay_loading_recyclerView;
     private TextView tvName, tvAddress;
+    ImageButton ibFilter;
+    TextView tvNonProduct, tvTitle;
+    TextView tvPrice, tvCreated;
+
+    //dialog
+    TextView tvExit, tvUnSelect;
+    EditText edtPriceFrom, edtPriceTo;
+    CardView cv5Stars, cv4Stars, cv3Stars;
+    Button btnFilter;
+
 
 
     @Override
@@ -80,6 +92,25 @@ public class ListProductActivity extends AppCompatActivity {
         initWidget();
         setEachView();
 
+    }
+
+
+    private void initWidget() {
+        rvProductList = findViewById(R.id.recyclerView_productList);
+        ibBack = findViewById(R.id.imageButton_back);
+        ibCart = findViewById(R.id.imageButton_cart);
+        ibMenu = findViewById(R.id.imageButton_menu);
+        layoutSearchName = findViewById(R.id.layout_searchName);
+        tvName = findViewById(R.id.textView_searchName);
+        tvAddress = findViewById(R.id.textView_address);
+        lay_loading_parent = findViewById(R.id.loadingPanel_parent);
+        tvAddress = findViewById(R.id.textView_address);
+        tvNonProduct = findViewById(R.id.textView_nonProduct);
+        tvTitle = findViewById(R.id.textView_titleReview);
+        tvCreated = findViewById(R.id.textView_created);
+        tvPrice = findViewById(R.id.textView_price);
+        ibFilter = findViewById(R.id.imageButton_filter);
+        lay_loading_recyclerView = findViewById(R.id.loadingPanel_recyclerView);
     }
 
     private void setEachView() {
@@ -113,7 +144,8 @@ public class ListProductActivity extends AppCompatActivity {
     }
 
     private void refreshRecyclerView() {
-        MyClass.callPanel(lay_loading_parent, 1000);
+//        MyClass.callPanel(lay_loading_parent, 1000);
+        MyClass.callPanel(lay_loading_recyclerView, 4000);
         if (catalog != null || cataParent != null) {
             setAdapterRecyclerView(null);
             return;
@@ -121,6 +153,146 @@ public class ListProductActivity extends AppCompatActivity {
         if (keySearch != null) {
             getNameProduct();
         }
+    }
+
+    private void showFilterDialog() {
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_filter);
+        initWidgetFilterDialog(dialog);
+        setFilterDialogViews();
+
+        int selectedColor = -1, unSelectedColor = -1;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            selectedColor = this.getColor(R.color.colorSelectedStar);
+            unSelectedColor = this.getColor(R.color.colorUnselectedStar);
+        }
+        final int finalSelectedColor = selectedColor;
+        final int finalUnSelectedColor = unSelectedColor;
+        tvExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        tvUnSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edtPriceFrom.setText(null);
+                edtPriceTo.setText(null);
+                isFrom3Stars = isFrom4Stars = isFrom5Stars = false;
+                cv5Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv4Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv3Stars.setCardBackgroundColor(finalUnSelectedColor);
+            }
+        });
+
+
+        cv5Stars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cv5Stars.setCardBackgroundColor(finalSelectedColor);
+                cv4Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv3Stars.setCardBackgroundColor(finalUnSelectedColor);
+
+                isFrom5Stars = true;
+                isFrom4Stars = false;
+                isFrom3Stars = false;
+            }
+        });
+
+        cv4Stars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cv5Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv4Stars.setCardBackgroundColor(finalSelectedColor);
+                cv3Stars.setCardBackgroundColor(finalUnSelectedColor);
+
+                isFrom5Stars = false;
+                isFrom4Stars = true;
+                isFrom3Stars = false;
+            }
+        });
+
+        cv3Stars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cv5Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv4Stars.setCardBackgroundColor(finalUnSelectedColor);
+                cv3Stars.setCardBackgroundColor(finalSelectedColor);
+
+                isFrom5Stars = false;
+                isFrom4Stars = false;
+                isFrom3Stars = true;
+            }
+        });
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+                if (edtPriceFrom.getText().toString().isEmpty()) {
+                    priceFrom = null;
+                } else {
+                    priceFrom = Integer.valueOf(edtPriceFrom.getText().toString());
+                }
+
+                if (edtPriceTo.getText().toString().isEmpty()) {
+                    priceTo = null;
+                } else {
+                    priceTo = Integer.valueOf(edtPriceTo.getText().toString());
+                }
+
+                if (isFrom3Stars) {
+                    rate = 3;
+                } else if (isFrom4Stars) {
+                    rate = 4;
+                } else if (isFrom5Stars) {
+                    rate = 5;
+                } else {
+                    rate = null;
+                }
+                refreshRecyclerView();
+
+            }
+        });
+
+        dialog.show();
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setFilterDialogViews() {
+        int selectedColor = -1;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            selectedColor = this.getColor(R.color.colorSelectedStar);
+        }
+        final int finalSelectedColor = selectedColor;
+
+        if (priceFrom != null) {
+            edtPriceFrom.setText(priceFrom + "");
+        }
+        if (priceTo != null) {
+            edtPriceTo.setText(priceTo + "");
+        }
+
+        if (isFrom3Stars) {
+            cv3Stars.setCardBackgroundColor(finalSelectedColor);
+        } else if (isFrom4Stars) {
+            cv4Stars.setCardBackgroundColor(finalSelectedColor);
+        } else if (isFrom5Stars) {
+            cv5Stars.setCardBackgroundColor(finalSelectedColor);
+
+        }
+    }
+
+    private void initWidgetFilterDialog(Dialog dialog) {
+        tvExit = dialog.findViewById(R.id.tv_exit);
+        tvUnSelect = dialog.findViewById(R.id.tv_unSelect);
+        edtPriceFrom = dialog.findViewById(R.id.editText_priceFrom);
+        edtPriceTo = dialog.findViewById(R.id.editText_priceTo);
+        cv5Stars = dialog.findViewById(R.id.cardView_5stars);
+        cv4Stars = dialog.findViewById(R.id.cardView_4stars);
+        cv3Stars = dialog.findViewById(R.id.cardView_3stars);
+        btnFilter = dialog.findViewById(R.id.button_filter);
     }
 
     private void setAdapterRecyclerView(@Nullable ArrayList<Integer> idArray) {
@@ -194,57 +366,47 @@ public class ListProductActivity extends AppCompatActivity {
                 } else startActivity(intent);
             }
         });
-        btnCreated.setOnClickListener(new View.OnClickListener() {
+        tvCreated.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 if (orderCreated == null) {
                     orderCreated = OrderBy.DESC;
-                    btnCreated.setText("Mới nhất");
+                    tvCreated.setText("Mới nhất");
                 } else if (orderCreated == OrderBy.DESC) {
                     orderCreated = OrderBy.ASC;
-                    btnCreated.setText("Cũ nhất");
+                    tvCreated.setText("Cũ nhất");
                 } else {
                     orderCreated = OrderBy.DESC;
-                    btnCreated.setText("Mới nhất");
+                    tvCreated.setText("Mới nhất");
                 }
                 refreshRecyclerView();
             }
         });
-        btnPrice.setOnClickListener(new View.OnClickListener() {
+        tvPrice.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 if (orderPrice == null) {
                     orderPrice = OrderBy.DESC;
-                    btnPrice.setText("Giá giảm");
+                    tvPrice.setText("Giá giảm dần");
                 } else if (orderPrice == OrderBy.DESC) {
                     orderPrice = OrderBy.ASC;
-                    btnPrice.setText("Giá tăng");
+                    tvPrice.setText("Giá tăng dần");
                 } else {
                     orderPrice = OrderBy.DESC;
-                    btnPrice.setText("Giá giảm");
+                    tvPrice.setText("Giá giảm dần");
                 }
                 refreshRecyclerView();
             }
         });
-    }
-
-
-    private void initWidget() {
-        rvProductList = findViewById(R.id.recyclerView_productList);
-        ibBack = findViewById(R.id.imageButton_back);
-        ibCart = findViewById(R.id.imageButton_cart);
-        ibMenu = findViewById(R.id.imageButton_menu);
-        layoutSearchName = findViewById(R.id.layout_searchName);
-        tvName = findViewById(R.id.textView_searchName);
-        tvAddress = findViewById(R.id.textView_address);
-        lay_loading_parent = findViewById(R.id.loadingPanel_parent);
-        tvAddress = findViewById(R.id.textView_address);
-        tvNonProduct = findViewById(R.id.textView_nonProduct);
-        tvTitle = findViewById(R.id.textView_titleReview);
-        btnCreated = findViewById(R.id.button_created);
-        btnPrice = findViewById(R.id.button_price);
+        ibFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("thang", "onClick: showdialog");
+                showFilterDialog();
+            }
+        });
     }
 
     public static void underlineTextView(TextView tv, String address) {
@@ -294,6 +456,7 @@ public class ListProductActivity extends AppCompatActivity {
                     if (idArray.size() > 0) {
                         Toast.makeText(ListProductActivity.this, "Có " + idArray.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
                         setAdapterRecyclerView(idArray);
+                        tvNonProduct.setVisibility(View.GONE);
                     } else
                         tvNonProduct.setVisibility(View.VISIBLE);
                 } catch (JSONException e) {

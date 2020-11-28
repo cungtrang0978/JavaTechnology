@@ -37,8 +37,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
-import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.fragments.authentications.RegistrationFragment.validateName;
 import static com.example.tikicloneapp.fragments.authentications.RegistrationFragment.validatePhoneNumber;
 
@@ -67,7 +67,7 @@ public class AddressActivity extends AppCompatActivity {
 
         // getTransact if transact has address
         // else get user
-        if (getIntent().getStringExtra("type").equals("transact")) {
+        if (Objects.equals(getIntent().getStringExtra("type"), "transact")) {
             isTransact = true;
             tilName.setVisibility(View.VISIBLE);
             tilPhoneNumber.setVisibility(View.VISIBLE);
@@ -96,7 +96,7 @@ public class AddressActivity extends AppCompatActivity {
         tilProvince.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDialogAddress(PROVINCE_KEY);
+                showDialogAddress(PROVINCE_KEY);
             }
         });
         tilDistrict.getEditText().setOnClickListener(new View.OnClickListener() {
@@ -105,7 +105,7 @@ public class AddressActivity extends AppCompatActivity {
                 if (tilProvince.getEditText().getText().toString().isEmpty()) {
                     Toast.makeText(AddressActivity.this, "Bạn phải điền tỉnh/thành trước!", Toast.LENGTH_SHORT).show();
                 } else
-                    ShowDialogAddress(DISTRICT_KEY);
+                    showDialogAddress(DISTRICT_KEY);
             }
         });
         tilWard.getEditText().setOnClickListener(new View.OnClickListener() {
@@ -114,7 +114,7 @@ public class AddressActivity extends AppCompatActivity {
                 if (tilDistrict.getEditText().getText().toString().isEmpty()) {
                     Toast.makeText(AddressActivity.this, "Bạn phải điền quận/huyện trước!", Toast.LENGTH_SHORT).show();
                 } else
-                    ShowDialogAddress(WARD_KEY);
+                    showDialogAddress(WARD_KEY);
             }
         });
 
@@ -134,7 +134,7 @@ public class AddressActivity extends AppCompatActivity {
         });
     }
 
-    private void ShowDialogAddress(final int key) {
+    private void showDialogAddress(final int key) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_address);
         initWidgetDialogAddress(dialog);
@@ -402,7 +402,7 @@ public class AddressActivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
                 params.put("idUser", String.valueOf(MainActivity.idUser));
                 return params;

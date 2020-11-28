@@ -12,13 +12,12 @@ import androidx.annotation.Nullable;
 
 import com.example.tikicloneapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AddressDialogAdapter extends ArrayAdapter<String> {
-    private Context context;
-    private int resource;
-    private List<String> addressArrayList;
+    final Context context;
+    final int resource;
+    final List<String> addressArrayList;
 
 
     public AddressDialogAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
@@ -48,7 +47,7 @@ public class AddressDialogAdapter extends ArrayAdapter<String> {
         return convertView;
     }
 
-    public class ViewHolder{
+    public static class ViewHolder{
         private TextView tvAddress;
     }
 
