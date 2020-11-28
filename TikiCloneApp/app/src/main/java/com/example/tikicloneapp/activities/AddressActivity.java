@@ -137,6 +137,7 @@ public class AddressActivity extends AppCompatActivity {
     private void showDialogAddress(final int key) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_address);
+
         initWidgetDialogAddress(dialog);
 
         if (key == PROVINCE_KEY) {

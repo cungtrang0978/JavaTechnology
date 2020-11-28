@@ -28,6 +28,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="Lọc sản phẩm"
+            android:textStyle="bold"
             android:textColor="@android:color/white" />
 
         <TextView
@@ -37,6 +38,59 @@
             android:text="Bỏ chọn"
             android:textColor="@android:color/white" />
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sắp xếp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox_ascPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giá tăng dần"
+                android:textSize="15sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox_descPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Giá giảm dần"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox_newest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:text="Mới nhất"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox_descRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đánh giá từ cao đến thấp"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorTikiBackgroundDark" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -137,6 +191,7 @@
                 android:layout_weight="1"
                 android:hint="Từ..."
                 android:maxLength="11"
+                android:inputType="number"
                 android:maxLines="1"
                 android:textSize="15sp" />
 
@@ -152,6 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Đến..."
+                android:inputType="number"
                 android:maxLength="11"
                 android:maxLines="1"
                 android:textSize="15sp" />

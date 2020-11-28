@@ -12,11 +12,15 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -46,7 +50,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.Normalizer;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static com.example.tikicloneapp.database.DBVolley.getAddress;
@@ -63,7 +69,7 @@ public class ListProductActivity extends AppCompatActivity {
 
     String keySearch;
     Integer priceFrom, priceTo, rate, limit, start;
-    OrderBy orderCreated, orderPrice;
+    OrderBy orderCreated, orderPrice, orderRate;
 
     Boolean isFrom5Stars = false, isFrom4Stars = false, isFrom3Stars = false;
 
@@ -82,8 +88,7 @@ public class ListProductActivity extends AppCompatActivity {
     EditText edtPriceFrom, edtPriceTo;
     CardView cv5Stars, cv4Stars, cv3Stars;
     Button btnFilter;
-
-
+    CheckBox cbAcsPrice, cbDescPrice, cbNewest, cbDescRating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,7 +150,7 @@ public class ListProductActivity extends AppCompatActivity {
 
     private void refreshRecyclerView() {
 //        MyClass.callPanel(lay_loading_parent, 1000);
-        MyClass.callPanel(lay_loading_recyclerView, 4000);
+        MyClass.callPanel(lay_loading_recyclerView, 3000);
         if (catalog != null || cataParent != null) {
             setAdapterRecyclerView(null);
             return;
@@ -160,32 +165,125 @@ public class ListProductActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_filter);
         initWidgetFilterDialog(dialog);
         setFilterDialogViews();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+        int selectedIndex = 0;
+        if (isFrom3Stars) {
+            selectedIndex = 3;
+        } else if (isFrom4Stars) {
+            selectedIndex = 4;
+        } else if (isFrom5Stars) {
+            selectedIndex = 5;
+        }
+
+        //init checkbox
+        boolean isAscPrice = false, isDescPrice = false, isNewest = false, isDescRating = false;
+        if (orderPrice == OrderBy.ASC) {
+            isAscPrice = true;
+            cbAcsPrice.setChecked(true);
+        }
+        if (orderPrice == OrderBy.DESC) {
+            isDescPrice = true;
+            cbDescPrice.setChecked(true);
+        }
+        if (orderCreated == OrderBy.DESC) {
+            isNewest = true;
+            cbNewest.setChecked(true);
+        }
+        if (orderRate == OrderBy.DESC) {
+            isDescRating = true;
+            cbDescRating.setChecked(true);
+        }
 
         int selectedColor = -1, unSelectedColor = -1;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             selectedColor = this.getColor(R.color.colorSelectedStar);
             unSelectedColor = this.getColor(R.color.colorUnselectedStar);
         }
+
+
         final int finalSelectedColor = selectedColor;
         final int finalUnSelectedColor = unSelectedColor;
+        final int finalSelectedIndex = selectedIndex;
+        final boolean finalIsAscPrice = isAscPrice;
+        final boolean finalIsDescPrice = isDescPrice;
+        final boolean finalIsNewest = isNewest;
+        final boolean finalIsDescRating = isDescRating;
         tvExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (finalSelectedIndex == 3) {
+                    isFrom5Stars = false;
+                    isFrom4Stars = false;
+                    isFrom3Stars = true;
+                } else if (finalSelectedIndex == 4) {
+                    isFrom5Stars = false;
+                    isFrom4Stars = true;
+                    isFrom3Stars = false;
+                } else if (finalSelectedIndex == 5) {
+                    isFrom5Stars = true;
+                    isFrom4Stars = false;
+                    isFrom3Stars = false;
+                } else {
+                    isFrom5Stars = false;
+                    isFrom4Stars = false;
+                    isFrom3Stars = false;
+                }
+
+
+                if (finalIsAscPrice) {
+                    orderPrice = OrderBy.ASC;
+                } else if (finalIsDescPrice) {
+                    orderPrice = OrderBy.DESC;
+                } else orderPrice = null;
+                if (finalIsNewest) {
+                    orderCreated = OrderBy.DESC;
+                } else orderCreated = null;
+                if (finalIsDescRating) {
+                    orderRate = OrderBy.DESC;
+                } else orderRate = null;
+
                 dialog.cancel();
             }
         });
+
+        cbAcsPrice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b && cbDescPrice.isChecked()) {
+                    cbDescPrice.setChecked(false);
+                }
+            }
+        });
+        cbDescPrice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b && cbAcsPrice.isChecked()) {
+                    cbAcsPrice.setChecked(false);
+                }
+            }
+        });
+
+
         tvUnSelect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 edtPriceFrom.setText(null);
                 edtPriceTo.setText(null);
                 isFrom3Stars = isFrom4Stars = isFrom5Stars = false;
+                orderPrice = orderCreated = orderRate = null;
+
+                cbAcsPrice.setChecked(false);
+                cbDescPrice.setChecked(false);
+                cbNewest.setChecked(false);
+                cbDescRating.setChecked(false);
+
                 cv5Stars.setCardBackgroundColor(finalUnSelectedColor);
                 cv4Stars.setCardBackgroundColor(finalUnSelectedColor);
                 cv3Stars.setCardBackgroundColor(finalUnSelectedColor);
             }
         });
-
 
         cv5Stars.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +324,61 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
 
+        edtPriceFrom.addTextChangedListener(new TextWatcher() {
+            private String text = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                if (!s.toString().equals(text)) {
+                    edtPriceFrom.removeTextChangedListener(this);
+
+                    String text = edtPriceFrom.getText().toString();
+                    String cleanString = text.replaceAll("[$,.]", "");
+                    String format = formatCurrency(Long.parseLong(cleanString));
+                    edtPriceFrom.setText(format);
+                    edtPriceTo.setSelection(format.length());
+                    edtPriceFrom.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        edtPriceTo.addTextChangedListener(new TextWatcher() {
+            private String text = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int i, int i1, int i2) {
+                if (!s.toString().equals(text)) {
+                    edtPriceTo.removeTextChangedListener(this);
+
+                    String text = edtPriceTo.getText().toString();
+                    String cleanString = text.replaceAll("[$,.]", "");
+                    String format = formatCurrency(Long.parseLong(cleanString));
+                    edtPriceTo.setText(format);
+                    edtPriceTo.setSelection(format.length());
+                    edtPriceTo.addTextChangedListener(this);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -251,12 +404,30 @@ public class ListProductActivity extends AppCompatActivity {
                 } else {
                     rate = null;
                 }
-                refreshRecyclerView();
+                if (cbAcsPrice.isChecked()) {
+                    orderPrice = OrderBy.ASC;
+                }
 
+                if (cbDescPrice.isChecked()) {
+                    orderPrice = OrderBy.DESC;
+                }
+                if (cbNewest.isChecked()) {
+                    orderCreated = OrderBy.DESC;
+                }
+                if (cbDescRating.isChecked()) {
+                    orderRate = OrderBy.DESC;
+                }
+                refreshRecyclerView();
             }
         });
 
         dialog.show();
+    }
+
+    private String formatCurrency(Long number) {
+        Locale localeVN = new Locale("vi", "VN");
+        NumberFormat vn = NumberFormat.getInstance(localeVN);
+        return vn.format(number);
     }
 
     @SuppressLint("SetTextI18n")
@@ -293,6 +464,10 @@ public class ListProductActivity extends AppCompatActivity {
         cv4Stars = dialog.findViewById(R.id.cardView_4stars);
         cv3Stars = dialog.findViewById(R.id.cardView_3stars);
         btnFilter = dialog.findViewById(R.id.button_filter);
+        cbAcsPrice = dialog.findViewById(R.id.checkBox_ascPrice);
+        cbDescPrice = dialog.findViewById(R.id.checkBox_descPrice);
+        cbNewest = dialog.findViewById(R.id.checkBox_newest);
+        cbDescRating = dialog.findViewById(R.id.checkBox_descRating);
     }
 
     private void setAdapterRecyclerView(@Nullable ArrayList<Integer> idArray) {

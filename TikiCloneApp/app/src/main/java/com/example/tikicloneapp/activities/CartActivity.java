@@ -199,8 +199,7 @@ public class CartActivity extends AppCompatActivity {
     public static String formatCurrency(long number) {
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat vn = NumberFormat.getInstance(localeVN);
-        String priceProvisional = vn.format(number) + "đ";
-        return priceProvisional;
+        return vn.format(number) + "đ";
     }
 
     public void callLoadingPanel() {
