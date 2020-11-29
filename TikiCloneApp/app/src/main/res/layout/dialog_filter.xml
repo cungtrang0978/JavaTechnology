@@ -189,28 +189,40 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Từ..."
+                android:hint="0"
+                android:gravity="end"
                 android:maxLength="11"
                 android:inputType="number"
                 android:maxLines="1"
                 android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:text="₫"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:text="-" />
+                android:text="-->" />
 
             <EditText
                 android:id="@+id/editText_priceTo"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Đến..."
+                android:hint="0"
+                android:gravity="end"
                 android:inputType="number"
                 android:maxLength="11"
                 android:maxLines="1"
                 android:textSize="15sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:text="₫"/>
         </LinearLayout>
     </LinearLayout>
 

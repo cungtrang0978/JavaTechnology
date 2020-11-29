@@ -105,8 +105,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingVertical="2dp"
-                    >
+                    android:paddingVertical="2dp">
 
                     <ImageView
                         android:layout_width="24dp"
@@ -129,62 +128,118 @@
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:textColor="#000"
-                        android:text="Sắp xếp:" />
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
-                   <LinearLayout
-                       android:layout_width="0dp"
-                       android:layout_height="wrap_content"
-                       android:orientation="horizontal"
-                       android:layout_weight="1">
-                       <androidx.cardview.widget.CardView
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:outlineSpotShadowColor="@color/colorTikiBlueDark"
-                           app:cardCornerRadius="8dp"
-                           app:cardElevation="5dp"
-                           app:cardUseCompatPadding="true"
-                           >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
 
-                           <TextView
-                               android:id="@+id/textView_price"
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Sắp xếp:"
+                                android:textColor="#000" />
 
-                               android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"
-                               android:padding="5dp"
-                               android:text="Giá tăng dần"
-                               android:textColor="@color/colorTikiToolbar"
-                               android:textStyle="bold" />
-                       </androidx.cardview.widget.CardView>
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:outlineSpotShadowColor="@color/colorTikiBlueDark"
+                                app:cardCornerRadius="8dp"
 
-                       <androidx.cardview.widget.CardView
-                           android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:outlineSpotShadowColor="@color/colorTikiBlueDark"
-                           app:cardCornerRadius="8dp"
-                           app:cardElevation="5dp"
-                           app:cardUseCompatPadding="true">
+                                app:cardUseCompatPadding="true">
 
-                           <TextView
-                               android:id="@+id/textView_created"
-                               android:layout_width="wrap_content"
-                               android:layout_height="wrap_content"
-                               android:padding="5dp"
-                               android:text="Mới nhất"
-                               android:textColor="@color/colorTikiToolbar"
-                               android:textStyle="bold" />
-                       </androidx.cardview.widget.CardView>
-                   </LinearLayout>
+                                <TextView
+                                    android:id="@+id/textView_price"
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Giá tăng dần"
+                                    android:textColor="@color/colorTikiToolbar"
+                                    android:textStyle="bold" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:outlineSpotShadowColor="@color/colorTikiBlueDark"
+                                app:cardCornerRadius="8dp"
+
+                                app:cardUseCompatPadding="true">
+
+                                <TextView
+                                    android:id="@+id/textView_created"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Mới nhất"
+                                    android:textColor="@color/colorTikiToolbar"
+                                    android:textStyle="bold" />
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Lọc:"
+                                android:textColor="#000" />
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:outlineSpotShadowColor="@color/colorTikiBlueDark"
+                                app:cardCornerRadius="8dp"
+
+                                app:cardUseCompatPadding="true">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Giá từ 1.000.000đ"
+                                    android:textColor="@color/colorTikiToolbar"
+                                    android:textStyle="bold" />
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:outlineSpotShadowColor="@color/colorTikiBlueDark"
+                                app:cardCornerRadius="8dp"
+
+                                app:cardUseCompatPadding="true">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:text="Từ 4 sao"
+                                    android:textColor="@color/colorTikiToolbar"
+                                    android:textStyle="bold" />
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+
                     <ImageButton
+                        android:id="@+id/imageButton_filter"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
+                        android:background="@android:color/transparent"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/icons8_filter_and_sort_64"
-                        android:id="@+id/imageButton_filter"
-                        android:background="@android:color/transparent"/>
+                        android:src="@drawable/icons8_filter_and_sort_64" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -212,6 +267,7 @@
                     android:textColor="@color/colorTikiRedLight"
                     android:textSize="35sp"
                     android:visibility="gone" />
+
                 <LinearLayout
                     android:id="@+id/loadingPanel_recyclerView"
                     android:layout_width="match_parent"

@@ -337,11 +337,11 @@ public class ListProductActivity extends AppCompatActivity {
                 if (!s.toString().equals(text)) {
                     edtPriceFrom.removeTextChangedListener(this);
 
-                    String text = edtPriceFrom.getText().toString();
+                    String text = s.toString();
                     String cleanString = text.replaceAll("[$,.]", "");
-                    String format = formatCurrency(Long.parseLong(cleanString));
-                    edtPriceFrom.setText(format);
-                    edtPriceTo.setSelection(format.length());
+                    String formatted = formatCurrency(Long.parseLong(cleanString));
+                    edtPriceFrom.setText(formatted);
+                    edtPriceFrom.setSelection(formatted.length());
                     edtPriceFrom.addTextChangedListener(this);
                 }
             }
@@ -364,11 +364,11 @@ public class ListProductActivity extends AppCompatActivity {
                 if (!s.toString().equals(text)) {
                     edtPriceTo.removeTextChangedListener(this);
 
-                    String text = edtPriceTo.getText().toString();
+                    String text = s.toString();
                     String cleanString = text.replaceAll("[$,.]", "");
-                    String format = formatCurrency(Long.parseLong(cleanString));
-                    edtPriceTo.setText(format);
-                    edtPriceTo.setSelection(format.length());
+                    String formatted = formatCurrency(Long.parseLong(cleanString));
+                    edtPriceTo.setText(formatted);
+                    edtPriceTo.setSelection(formatted.length());
                     edtPriceTo.addTextChangedListener(this);
                 }
             }
@@ -386,13 +386,13 @@ public class ListProductActivity extends AppCompatActivity {
                 if (edtPriceFrom.getText().toString().isEmpty()) {
                     priceFrom = null;
                 } else {
-                    priceFrom = Integer.valueOf(edtPriceFrom.getText().toString());
+                    priceFrom = Integer.valueOf(edtPriceFrom.getText().toString().replaceAll("[.,]", ""));
                 }
 
                 if (edtPriceTo.getText().toString().isEmpty()) {
                     priceTo = null;
                 } else {
-                    priceTo = Integer.valueOf(edtPriceTo.getText().toString());
+                    priceTo = Integer.valueOf(edtPriceTo.getText().toString().replaceAll("[.,]", ""));
                 }
 
                 if (isFrom3Stars) {
@@ -406,17 +406,15 @@ public class ListProductActivity extends AppCompatActivity {
                 }
                 if (cbAcsPrice.isChecked()) {
                     orderPrice = OrderBy.ASC;
-                }
-
-                if (cbDescPrice.isChecked()) {
+                } else if (cbDescPrice.isChecked()) {
                     orderPrice = OrderBy.DESC;
-                }
+                } else orderPrice = null;
                 if (cbNewest.isChecked()) {
                     orderCreated = OrderBy.DESC;
-                }
+                } else orderCreated = null;
                 if (cbDescRating.isChecked()) {
                     orderRate = OrderBy.DESC;
-                }
+                } else orderRate = null;
                 refreshRecyclerView();
             }
         });
@@ -439,10 +437,12 @@ public class ListProductActivity extends AppCompatActivity {
         final int finalSelectedColor = selectedColor;
 
         if (priceFrom != null) {
-            edtPriceFrom.setText(priceFrom + "");
+            Long price = Long.parseLong(String.valueOf(priceFrom));
+            edtPriceFrom.setText(formatCurrency(price));
         }
         if (priceTo != null) {
-            edtPriceTo.setText(priceTo + "");
+            Long price = Long.parseLong(String.valueOf(priceTo));
+            edtPriceTo.setText(formatCurrency(price));
         }
 
         if (isFrom3Stars) {
