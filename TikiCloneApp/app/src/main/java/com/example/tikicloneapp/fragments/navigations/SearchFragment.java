@@ -56,7 +56,7 @@ public class SearchFragment extends Fragment {
     private SearchesAdapter searchesAdapter;
     private ArrayList<String> searchKeys = new ArrayList<>();
 
-    private int REQUEST_CODE_REFRESH = 1234;
+    private final int REQUEST_CODE_REFRESH = 1234;
 
     @Nullable
     @Override
