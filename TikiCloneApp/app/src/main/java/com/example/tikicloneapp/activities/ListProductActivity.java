@@ -81,7 +81,7 @@ public class ListProductActivity extends AppCompatActivity {
     private TextView tvName, tvAddress;
     ImageButton ibFilter;
     TextView tvNonProduct, tvTitle;
-    TextView tvPrice, tvCreated;
+    TextView tvOrderPrice, tvOrderCreated, tvOrderRate, tvFilterPrice, tvFilterStars;
 
     //dialog
     TextView tvExit, tvUnSelect;
@@ -112,10 +112,13 @@ public class ListProductActivity extends AppCompatActivity {
         tvAddress = findViewById(R.id.textView_address);
         tvNonProduct = findViewById(R.id.textView_nonProduct);
         tvTitle = findViewById(R.id.textView_titleReview);
-        tvCreated = findViewById(R.id.textView_created);
-        tvPrice = findViewById(R.id.textView_price);
+        tvOrderCreated = findViewById(R.id.textView_orderCreated);
+        tvOrderPrice = findViewById(R.id.textView_orderPrice);
         ibFilter = findViewById(R.id.imageButton_filter);
         lay_loading_recyclerView = findViewById(R.id.loadingPanel_recyclerView);
+        tvOrderRate = findViewById(R.id.textView_orderRate);
+        tvFilterPrice = findViewById(R.id.textView_filterPrice);
+        tvFilterStars = findViewById(R.id.textView_filterStars);
     }
 
     private void setEachView() {
@@ -151,6 +154,7 @@ public class ListProductActivity extends AppCompatActivity {
     private void refreshRecyclerView() {
 //        MyClass.callPanel(lay_loading_parent, 1000);
         MyClass.callPanel(lay_loading_recyclerView, 3000);
+        setFilterLabels();
         if (catalog != null || cataParent != null) {
             setAdapterRecyclerView(null);
             return;
@@ -422,7 +426,70 @@ public class ListProductActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private String formatCurrency(Long number) {
+    @SuppressLint("SetTextI18n")
+    private void setFilterLabels() {
+        //show hide price order
+        if (orderPrice == null) {
+            tvOrderPrice.setVisibility(View.GONE);
+        } else {
+            tvOrderPrice.setVisibility(View.VISIBLE);
+            if (orderPrice == OrderBy.ASC) {
+                tvOrderPrice.setText("Giá tăng dần");
+            } else if (orderPrice == OrderBy.DESC) {
+                tvOrderPrice.setText("Giá giảm dần");
+            }
+        }
+
+        //show hide created order
+        if (orderCreated == null) {
+            tvOrderCreated.setVisibility(View.GONE);
+        } else {
+            tvOrderCreated.setVisibility(View.VISIBLE);
+            tvOrderCreated.setText("Mới nhất");
+        }
+
+        //show hide rating order
+        if (orderRate == null) {
+            tvOrderRate.setVisibility(View.GONE);
+        } else {
+            tvOrderRate.setVisibility(View.VISIBLE);
+            tvOrderRate.setText("Sao cao nhất");
+        }
+
+        //show hide price filter
+        if (priceFrom == null && priceTo == null) {
+            tvFilterPrice.setVisibility(View.GONE);
+        } else {
+            tvFilterPrice.setVisibility(View.VISIBLE);
+
+            String text = "";
+            if (priceFrom != null) {
+                long from = priceFrom.longValue();
+
+                if (priceTo != null) {
+                    long to = priceTo.longValue();
+                    text = "Từ " + formatCurrency(from) + " đến " + formatCurrency(to);
+                } else {
+                    text = "Trên " + formatCurrency(from);
+                }
+            } else {
+                long to = priceTo.longValue();
+                text = "Dưới " + formatCurrency(to);
+            }
+
+            tvFilterPrice.setText(text);
+        }
+
+        //show hide rating filter
+        if (rate == null) {
+            tvFilterStars.setVisibility(View.GONE);
+        } else {
+            tvFilterStars.setVisibility(View.VISIBLE);
+            tvFilterStars.setText("Từ " + rate + " sao");
+        }
+    }
+
+    private String formatCurrency(long number) {
         Locale localeVN = new Locale("vi", "VN");
         NumberFormat vn = NumberFormat.getInstance(localeVN);
         return vn.format(number);
@@ -541,36 +608,36 @@ public class ListProductActivity extends AppCompatActivity {
                 } else startActivity(intent);
             }
         });
-        tvCreated.setOnClickListener(new View.OnClickListener() {
+        tvOrderCreated.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 if (orderCreated == null) {
                     orderCreated = OrderBy.DESC;
-                    tvCreated.setText("Mới nhất");
+                    tvOrderCreated.setText("Mới nhất");
                 } else if (orderCreated == OrderBy.DESC) {
                     orderCreated = OrderBy.ASC;
-                    tvCreated.setText("Cũ nhất");
+                    tvOrderCreated.setText("Cũ nhất");
                 } else {
                     orderCreated = OrderBy.DESC;
-                    tvCreated.setText("Mới nhất");
+                    tvOrderCreated.setText("Mới nhất");
                 }
                 refreshRecyclerView();
             }
         });
-        tvPrice.setOnClickListener(new View.OnClickListener() {
+        tvOrderPrice.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View view) {
                 if (orderPrice == null) {
                     orderPrice = OrderBy.DESC;
-                    tvPrice.setText("Giá giảm dần");
+                    tvOrderPrice.setText("Giá giảm dần");
                 } else if (orderPrice == OrderBy.DESC) {
                     orderPrice = OrderBy.ASC;
-                    tvPrice.setText("Giá tăng dần");
+                    tvOrderPrice.setText("Giá tăng dần");
                 } else {
                     orderPrice = OrderBy.DESC;
-                    tvPrice.setText("Giá giảm dần");
+                    tvOrderPrice.setText("Giá giảm dần");
                 }
                 refreshRecyclerView();
             }
