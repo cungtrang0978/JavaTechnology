@@ -21,7 +21,12 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:text="" />
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="#000"
+            android:text="This is product's name"
+            android:textSize="15.5sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/linearLayout_review"

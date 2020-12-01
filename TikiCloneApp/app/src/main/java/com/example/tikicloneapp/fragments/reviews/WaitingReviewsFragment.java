@@ -51,12 +51,12 @@ public class WaitingReviewsFragment extends Fragment {
     public void setRecyclerView() {
 //        callLoadingPanel_parent();
         if (waitingReviewAdapter == null) {
-            DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
-            itemDecoration.setDrawable(ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider_product_cart));
+//            DividerItemDecoration itemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+//            itemDecoration.setDrawable(ContextCompat.getDrawable(recyclerView.getContext(), R.drawable.divider_product_cart));
 
             waitingReviewAdapter = new WaitingReviewAdapter(getContext(), productArrayList);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.addItemDecoration(itemDecoration);
+//            recyclerView.addItemDecoration(itemDecoration);
             recyclerView.setAdapter(waitingReviewAdapter);
         }
         MainActivity.dbVolley.getWaitingReviewProducts(productArrayList, waitingReviewAdapter);

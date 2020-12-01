@@ -1,5 +1,6 @@
 package com.example.tikicloneapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,9 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.models.Rate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class ReviewAdapter extends  RecyclerView.Adapter<ReviewAdapter.ViewHolder>{
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder> {
     final Context mContext;
     final ArrayList<Rate> rates;
 
@@ -37,14 +43,18 @@ public class ReviewAdapter extends  RecyclerView.Adapter<ReviewAdapter.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Rate rate = rates.get(position);
-        Log.d("thang", "onBindViewHolder: "+ rates);
+        Log.d("thang", "onBindViewHolder: " + rates);
         holder.tvTitle.setText(getTitle(rate.getRatePoint()));
         holder.tvComment.setText(rate.getComment());
         setStars(rate.getRatePoint(), holder);
         holder.tvUserFullName.setText(rate.getUserFullName());
-//        holder.tvDate
+        Date createdAt = new Date(rate.getCreatedAt().getTime());
+        @SuppressLint("SimpleDateFormat")
+        String dateFormat = new SimpleDateFormat("dd/MM/yyyy").format(createdAt);
+        holder.tvDate.setText(dateFormat);
 
     }
+
     private String getTitle(int ratePoint) {
         switch (ratePoint) {
             case 1:

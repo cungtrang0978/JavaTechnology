@@ -64,7 +64,8 @@ public class DBVolley {
 //    public static String IP_ADDRESS = "http://192.168.1.103/"; // wifi ChoAnhLamQUenNha
 //    public static String IP_ADDRESS = "http://192.168.1.105/"; // wifi ChoAnhLamQUenNha
 //    public static String IP_ADDRESS = "http://192.168.0.117/"; //wifi QuocViet
-    public String IP_ADDRESS = "http://" + "tikiclone.maitrongvinh.cf" + '/';
+    public String IP_ADDRESS = "http://tikiclone.maitrongvinh.cf/";
+//    public String IP_ADDRESS = "https://vinhmai.tk/tiki/";
 
     public String URL_GET_CATALOG = IP_ADDRESS + "getCatalog.php";
     public String URL_INSERT_CATALOG = IP_ADDRESS + "insertCatalog.php";
@@ -1517,6 +1518,7 @@ public class DBVolley {
                 params.put("idProduct", String.valueOf(rate.getIdProduct()));
                 params.put("ratePoint", String.valueOf(rate.getRatePoint()));
                 params.put("comment", rate.getComment());
+                params.put("createdAt", rate.getCreatedAt().toString());
                 return params;
             }
         };

@@ -186,7 +186,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 layout_rowCart = itemView.findViewById(R.id.layout_rowCart);
                 ibDelete = itemView.findViewById(R.id.imageButton_delete);
                 setTextView_StrikeThrough(tvPriceOrigin);
-            } else if (mResource == R.layout.row_comfirmation) {
+            } else if (mResource == R.layout.row_confirmation) {
                 tvPrice = itemView.findViewById(R.id.textView_price);
                 row_confirmation = itemView.findViewById(R.id.row_confirmation);
                 layout_confirmation = itemView.findViewById(R.id.layout_child_confirmation);

@@ -27,6 +27,14 @@ public class Rate {
         this.idUser = idUser;
     }
 
+    public Rate(int ratePoint, String comment, Timestamp createdAt, int idProduct, int idUser) {
+        this.ratePoint = ratePoint;
+        this.comment = comment;
+        this.createdAt = createdAt;
+        this.idProduct = idProduct;
+        this.idUser = idUser;
+    }
+
     public Rate(int id, int ratePoint, String comment, int idProduct, String productName, int price, int discount, String imageProductUrl, int idUser) {
         this.id = id;
         this.ratePoint = ratePoint;

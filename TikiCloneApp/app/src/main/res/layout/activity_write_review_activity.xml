@@ -50,6 +50,11 @@
         <TextView
             android:id="@+id/textView_nameProduct"
             android:layout_width="wrap_content"
+            android:textColor="#000"
+            android:textStyle="bold"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textSize="15sp"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -68,6 +73,7 @@
         <TextView
             android:id="@+id/textView_titleReview"
             android:layout_width="wrap_content"
+            android:textSize="20sp"
             android:layout_height="wrap_content" />
 
         <LinearLayout
@@ -111,6 +117,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:gravity="top"
+            android:inputType="textCapSentences"
+            android:textSize="14dp"
             android:id="@+id/editText_review"
             android:hint="Viết đánh giá..." />
         <Button
