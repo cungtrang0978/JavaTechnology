@@ -100,6 +100,7 @@ public class DBVolley {
     public String URL_INSERT_SEARCH_KEY = IP_ADDRESS + "insertSearchKey.php";
     public String URL_GET_SEARCHES = IP_ADDRESS + "getSearches.php";
     public String URL_GET_RECOMMENDED_PRODUCTS = IP_ADDRESS + "getRecommendedProducts.php";
+    public String URL_GET_RECOMMENDED_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getRecommendedProductsByProductId.php";
     public String URL_GET_REVIEW_PRODUCTS_BY_USER_ID = IP_ADDRESS + "getReviewProductsByIdUser.php";
     public String URL_INSERT_RATE = IP_ADDRESS + "insertRate.php";
     public String URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getReviewProductsByIdProduct.php";
@@ -1332,6 +1333,70 @@ public class DBVolley {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("idUser", String.valueOf(MainActivity.idUser));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void getRecommendedProductsByProductId(final int idProduct, final ArrayList<Product> products,
+                                       final ProductsAdapter recommendedAdapter) {
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_RECOMMENDED_PRODUCTS_BY_PRODUCT_ID,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            Log.d("thang", "getRecommendedProductsByProductId: " + response);
+                            ArrayList<Product> _products = new ArrayList<>();
+
+                            JSONArray jsonArray = new JSONArray(response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                try {
+                                    JSONObject product = jsonArray.getJSONObject(i);
+                                    Product _product = new Product(
+                                            product.getInt("id"),
+                                            product.getInt("idCatalog"),
+                                            product.getString("name"),
+                                            product.getInt("price"),
+                                            product.getInt("discount"),
+                                            product.getInt("qty"),
+                                            product.getString("imageUrl"),
+                                            product.getDouble("rate"),
+                                            product.getInt("rateQty")
+                                    );
+                                    _products.add(_product);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (_products.isEmpty() ) {
+
+                            } else {
+                                products.clear();
+                                products.addAll(_products);
+                                recommendedAdapter.notifyDataSetChanged();
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                ,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idProduct", String.valueOf(idProduct));
                 return params;
             }
         };

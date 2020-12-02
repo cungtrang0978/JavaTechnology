@@ -34,6 +34,7 @@ import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
 import com.example.tikicloneapp.adapters.ImageViewPagerAdapter;
+import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.adapters.ReviewAdapter;
 import com.example.tikicloneapp.fragments.SuccessAdded_BottomSheetDialog;
 import com.example.tikicloneapp.models.Order;
@@ -65,13 +66,17 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     private LinearLayout layoutRate, layoutReview;
     private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     private ImageView ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5;
-    private RecyclerView rvReviews;
+    private RecyclerView rvReviews, rvRecommendedProducts;
 
     public LinearLayout lay_loading;
 
     final ArrayList<String> imageUrls = new ArrayList<>();
     final ArrayList<Rate> rates = new ArrayList<>();
     private ReviewAdapter reviewAdapter;
+
+
+    private ArrayList<Product> recommendedProducts = new ArrayList<>();
+    private ProductsAdapter recommendedProductsAdapter;
 
     private int CODE_ID_PRODUCT = 3;
     private Product product;
@@ -126,6 +131,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         ivStarDetail_4 = findViewById(R.id.imageView_starDetail_4);
         ivStarDetail_5 = findViewById(R.id.imageView_starDetail_5);
         layoutReview = findViewById(R.id.linearLayout_review);
+        rvRecommendedProducts = findViewById(R.id.recyclerView_recommendedProducts);
     }
 
     private void setViews() {
@@ -150,7 +156,11 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         setTextView_StrikeThrough(tvPriceOrigin);
 
         insertViewedProduct(MainActivity.idUser, product.getId());
+
+        setRecommendedProductsAdapter();
+
         setRvReviews();
+
     }
 
     private void setViewPager() {
@@ -565,6 +575,17 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         }
 
         getReviewedProductsByProductId();
+    }
+
+    public void setRecommendedProductsAdapter() {
+//        callLoadingPanel_parent();
+        if (recommendedProductsAdapter == null) {
+            recommendedProductsAdapter = new ProductsAdapter(this, R.layout.row_product, recommendedProducts, ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
+            rvRecommendedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+            rvRecommendedProducts.setAdapter(recommendedProductsAdapter);
+        }
+
+        MainActivity.dbVolley.getRecommendedProductsByProductId(product.getId(), recommendedProducts, recommendedProductsAdapter);
     }
 
     public void getReviewedProductsByProductId() {

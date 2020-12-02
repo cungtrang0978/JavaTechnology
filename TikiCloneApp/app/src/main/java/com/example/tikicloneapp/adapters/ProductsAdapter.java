@@ -101,14 +101,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         final Product product = mProducts.get(position);
         Log.d("thang", "onBindViewHolder: "+ product);
 
-        if (mResource == R.layout.item_viewed_product) {
-            holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
-
-            ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
-
-        } else if (mResource == R.layout.row_product) {
+        ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
+        holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
+        if (mResource == R.layout.row_product) {
             holder.tvNameProduct.setText(product.getName());
-            holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
+
             if(product.getRateQty()!=0){
                 holder.llReview.setVisibility(View.VISIBLE);
                 setRate(holder.ivStar1, holder.ivStar2, holder.ivStar3, holder.ivStar4, holder.ivStar5, product.getRate());
@@ -123,9 +120,6 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             if (product.getDiscount() != 0) {
                 holder.tvDiscountProduct.setText(-product.getDiscount() + "%");
             }
-
-            ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
-
         }
         holder.parentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
