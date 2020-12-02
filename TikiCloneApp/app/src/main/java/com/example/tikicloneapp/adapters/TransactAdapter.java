@@ -1,5 +1,6 @@
 package com.example.tikicloneapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -28,7 +29,9 @@ import com.example.tikicloneapp.activities.TransactActivity;
 import com.example.tikicloneapp.fragments.transacts.ListTransactFragment;
 import com.example.tikicloneapp.models.Transact;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +65,12 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
         final Transact transact = mTransactArrayList.get(position);
 
         holder.tvIdTransact.setText(String.valueOf(transact.getmId()));
-        holder.tvTimeCreated.setText(convertTime(transact.getmCreated()));
+
+        Date createdAt = new Date(transact.getmCreated().getTime());
+        @SuppressLint("SimpleDateFormat")
+        String dateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy").format(createdAt);
+        holder.tvTimeCreated.setText(dateFormat);
+
         setTvStatus(holder.tvStatus, transact.getmStatus());
 
         getNameTransact(holder, transact.getmId());
@@ -101,9 +109,9 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvNameTransact, tvIdTransact, tvTimeCreated, tvStatus;
-        private ImageView ivIconStatus;
-        private LinearLayout layItem;
+        final TextView tvNameTransact, tvIdTransact, tvTimeCreated, tvStatus;
+        final ImageView ivIconStatus;
+        final LinearLayout layItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

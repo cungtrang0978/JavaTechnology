@@ -36,6 +36,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -119,10 +120,10 @@ public class ConfirmationActivity extends AppCompatActivity {
                     return;
                 }
 
-                long timeCreated = new Date().getTime(); //get current time
                 Transact transact = new Transact();
                 transact.setmStatus(Transact.STATUS_TIKI_RECEIVED);
 
+                Timestamp timeCreated = new Timestamp(System.currentTimeMillis());//get current time
                 transact.setmCreated(timeCreated);
 //                Log.d("thang", transact.getmCreated()+"");
 

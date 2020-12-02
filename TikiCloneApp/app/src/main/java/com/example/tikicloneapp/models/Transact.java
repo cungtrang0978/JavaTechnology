@@ -2,9 +2,14 @@ package com.example.tikicloneapp.models;
 
 import android.widget.TextView;
 
+import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 public class Transact implements Serializable {
     @SerializedName("id")
@@ -44,7 +49,10 @@ public class Transact implements Serializable {
     private String mMessage;
 
     @SerializedName("created")
-    private Long mCreated;
+    private Timestamp mCreated;
+
+    private Timestamp mModified;
+
 
     public static int STATUS_CANCEL = -1;
     public static int STATUS_NOT_ORDER = 0;
@@ -63,7 +71,7 @@ public class Transact implements Serializable {
         this.mAmount = mAmount;
     }
 
-    public Transact(Integer mStatus, Integer mId_User, String mUser_name, String mUser_phone, String mProvince, String mDistrict, String mWard, String mAddress, Integer mQty, Integer mAmount, String mMessage, Long mCreated) {
+    public Transact(Integer mStatus, Integer mId_User, String mUser_name, String mUser_phone, String mProvince, String mDistrict, String mWard, String mAddress, Integer mQty, Integer mAmount, String mMessage, Timestamp mCreated) {
         this.mStatus = mStatus;
         this.mId_User = mId_User;
         this.mUser_name = mUser_name;
@@ -77,6 +85,52 @@ public class Transact implements Serializable {
         this.mMessage = mMessage;
         this.mCreated = mCreated;
     }
+
+    public Transact(JSONObject jsonTransact) throws JSONException {
+
+        this.mId = jsonTransact.getInt("id");
+        this.mStatus = jsonTransact.getInt("status");
+        this.mId_User = jsonTransact.getInt("id_user");
+
+        if (!jsonTransact.getString("user_name").equals("null")) {
+            this.mUser_name = jsonTransact.getString("user_name");
+        }
+        if (!jsonTransact.getString("user_phone").equals("null")) {
+            this.mUser_phone = jsonTransact.getString("user_phone");
+        }
+
+        if (!jsonTransact.getString("province").equals("null")) {
+            this.mProvince = jsonTransact.getString("province");
+        }
+
+        if (!jsonTransact.getString("district").equals("null")) {
+            this.mDistrict = jsonTransact.getString("district");
+        }
+
+        if (!jsonTransact.getString("ward").equals("null")) {
+            this.mWard = jsonTransact.getString("ward");
+        }
+
+        if (!jsonTransact.getString("address").equals("null")) {
+            this.mAddress = jsonTransact.getString("address");
+        }
+
+        this.mQty = jsonTransact.getInt("qty");
+
+        this.mAmount = jsonTransact.getInt("amount");
+
+        if (!jsonTransact.getString("message").equals("null")) {
+            this.mMessage = jsonTransact.getString("message");
+        }
+
+        if (!jsonTransact.getString("created").equals("null")) {
+            this.mCreated = Timestamp.valueOf(jsonTransact.getString("created"));
+        }
+        if (!jsonTransact.getString("modified").equals("null")) {
+            this.mModified = Timestamp.valueOf(jsonTransact.getString("modified"));
+        }
+    }
+
 
     public Transact(Integer mStatus, Integer mId_User, String mUser_name, String mUser_phone, String mProvince, String mDistrict, String mWard, String mAddress, Integer mQty, Integer mAmount, String mMessage) {
         this.mStatus = mStatus;
@@ -92,7 +146,7 @@ public class Transact implements Serializable {
         this.mMessage = mMessage;
     }
 
-    public Transact(Integer mId, Integer mStatus, Long mCreated) {
+    public Transact(Integer mId, Integer mStatus, Timestamp mCreated) {
         this.mId = mId;
         this.mStatus = mStatus;
         this.mCreated = mCreated;
@@ -215,29 +269,58 @@ public class Transact implements Serializable {
         this.mMessage = mMessage;
     }
 
-    public Long getmCreated() {
+    public Timestamp getmCreated() {
         return mCreated;
     }
 
-    public void setmCreated(Long mCreated) {
+    public void setmCreated(Timestamp mCreated) {
         this.mCreated = mCreated;
     }
 
-    public static void setTvStatus(TextView tvStatus, int status){
+
+    public Timestamp getmModified() {
+        return mModified;
+    }
+
+    public void setmModified(Timestamp mModified) {
+        this.mModified = mModified;
+    }
+
+    @Override
+    public String toString() {
+        return "Transact{" +
+                "mId=" + mId +
+                ", mStatus=" + mStatus +
+                ", mId_User=" + mId_User +
+                ", mUser_name='" + mUser_name + '\'' +
+                ", mUser_phone='" + mUser_phone + '\'' +
+                ", mProvince='" + mProvince + '\'' +
+                ", mDistrict='" + mDistrict + '\'' +
+                ", mWard='" + mWard + '\'' +
+                ", mAddress='" + mAddress + '\'' +
+                ", mQty=" + mQty +
+                ", mAmount=" + mAmount +
+                ", mMessage='" + mMessage + '\'' +
+                ", mCreated=" + mCreated +
+                ", mModified=" + mModified +
+                '}';
+    }
+
+    public static void setTvStatus(TextView tvStatus, int status) {
         String staString = "";
-        if(status==STATUS_TIKI_RECEIVED){
+        if (status == STATUS_TIKI_RECEIVED) {
             staString = "Tiki đã tiếp nhận";
         }
-        if(status==STATUS_CANCEL){
+        if (status == STATUS_CANCEL) {
             staString = "Đã hủy";
         }
-        if(status==STATUS_SUCCESS){
+        if (status == STATUS_SUCCESS) {
             staString = "Giao hàng thành công";
         }
-        if(status==STATUS_DELIVERING){
+        if (status == STATUS_DELIVERING) {
             staString = "Đang giao";
         }
-        if(status==STATUS_SELLER_RECEIVED){
+        if (status == STATUS_SELLER_RECEIVED) {
             staString = "Đang lấy hàng";
         }
         tvStatus.setText(staString);

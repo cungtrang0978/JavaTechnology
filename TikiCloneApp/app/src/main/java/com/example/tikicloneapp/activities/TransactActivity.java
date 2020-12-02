@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,18 +157,7 @@ public class TransactActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(response);
                     JSONObject object = jsonArray.getJSONObject(0);
                     Transact transact = new Transact(
-                            object.getInt("status"),
-                            object.getInt("id_user"),
-                            object.getString("user_name"),
-                            object.getString("user_phone"),
-                            object.getString("province"),
-                            object.getString("district"),
-                            object.getString("ward"),
-                            object.getString("address"),
-                            object.getInt("qty"),
-                            object.getInt("amount"),
-                            object.getString("message"),
-                            object.getLong("created")
+                            object
                             );
 
                     setTvStatus(tvStatus, transact.getmStatus());
@@ -178,7 +170,17 @@ public class TransactActivity extends AppCompatActivity {
                     tvUserName.setText(transact.getmUser_name());
                     tvPhoneNumber.setText(transact.getmUser_phone());
                     tvAddress.setText(address);
-                    tvTimeCreated.setText(convertTime(transact.getmCreated()));
+                    Log.d("thang", "transact: " + transact.toString());
+
+
+                    if(transact.getmCreated()!=null){
+                       Date createdAt = new Date(transact.getmCreated().getTime());
+                       @SuppressLint("SimpleDateFormat")
+                       String dateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy").format(createdAt);
+                       tvTimeCreated.setText(dateFormat);
+                   }
+
+
 
                     String price = formatCurrency(transact.getmAmount());
 

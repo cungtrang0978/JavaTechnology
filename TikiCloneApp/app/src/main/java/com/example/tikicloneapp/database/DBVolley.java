@@ -827,9 +827,7 @@ public class DBVolley {
                         try {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Transact transact = new Transact(
-                                    object.getInt("id"),
-                                    object.getInt("status"),
-                                    object.getLong("created")
+                                    object
                             );
 //                            Log.d("thang", _grParent.toString());
                             if (transact.getmStatus() != 0) {
@@ -1064,12 +1062,15 @@ public class DBVolley {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
                 params.put("idTransact", String.valueOf(idTransact));
                 if (status != null) {
                     params.put("status", status.toString());
                 }
+                Timestamp modified = new Timestamp(System.currentTimeMillis());
+                params.put("modified", modified.toString());
+
                 params.put("code", "CODE_UPDATE_TRANSACT");
                 return params;
             }
@@ -1087,7 +1088,7 @@ public class DBVolley {
         final StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_TRANSACT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-//                Log.d("thang", "updateTransact: " + response);
+                Log.d("thang", "updateTransact: " + response);
 //                Log.d("thang", transact.getmCreated()+"");
 
                 if (response.equals(update_success)) {
@@ -1114,8 +1115,9 @@ public class DBVolley {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
+                Log.d("thang", "updateTransactBefore: "+ transact.toString());
                 params.put("idTransact", String.valueOf(MainActivity.idTransact));
                 if (transact.getmStatus() != null) {
                     params.put("status", String.valueOf(transact.getmStatus()));
@@ -1148,7 +1150,7 @@ public class DBVolley {
                     params.put("message", transact.getmMessage());
                 }
                 if (transact.getmCreated() != null) {
-                    params.put("created", String.valueOf(transact.getmCreated()));
+                    params.put("created", transact.getmCreated().toString());
                     Log.d("created", transact.getmCreated() + "");
                 }
                 params.put("code", "CODE_UPDATE_TRANSACT");
