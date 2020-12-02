@@ -80,7 +80,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
         }
 
         if (discount == 0) {
-            holder.tvDiscount.setVisibility(View.GONE);
+//            holder.tvDiscount.setVisibility(View.GONE);
         } else
             holder.tvDiscount.setText(formatPercent(discount));
 

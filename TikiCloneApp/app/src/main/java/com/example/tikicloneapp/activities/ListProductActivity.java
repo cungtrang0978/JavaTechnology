@@ -69,7 +69,7 @@ public class ListProductActivity extends AppCompatActivity {
 
     String keySearch;
     Integer priceFrom, priceTo, rate, limit, start;
-    OrderBy orderCreated, orderPrice, orderRate;
+    OrderBy orderCreated, orderPrice, orderRate, orderDiscount;
 
     Boolean isFrom5Stars = false, isFrom4Stars = false, isFrom3Stars = false;
 
@@ -81,14 +81,14 @@ public class ListProductActivity extends AppCompatActivity {
     private TextView tvName, tvAddress;
     ImageButton ibFilter;
     TextView tvNonProduct, tvTitle;
-    TextView tvOrderPrice, tvOrderCreated, tvOrderRate, tvFilterPrice, tvFilterStars;
+    TextView tvOrderPrice, tvOrderCreated, tvOrderRate, tvFilterPrice, tvFilterStars, tvOrderDiscount;
 
     //dialog
     TextView tvExit, tvUnSelect;
     EditText edtPriceFrom, edtPriceTo;
     CardView cv5Stars, cv4Stars, cv3Stars;
     Button btnFilter;
-    CheckBox cbAcsPrice, cbDescPrice, cbNewest, cbDescRating;
+    CheckBox cbAcsPrice, cbDescPrice, cbNewest, cbDescRating, cbDescDiscount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +119,7 @@ public class ListProductActivity extends AppCompatActivity {
         tvOrderRate = findViewById(R.id.textView_orderRate);
         tvFilterPrice = findViewById(R.id.textView_filterPrice);
         tvFilterStars = findViewById(R.id.textView_filterStars);
+        tvOrderDiscount = findViewById(R.id.textView_orderDiscount);
     }
 
     private void setEachView() {
@@ -182,7 +183,8 @@ public class ListProductActivity extends AppCompatActivity {
         }
 
         //init checkbox
-        boolean isAscPrice = false, isDescPrice = false, isNewest = false, isDescRating = false;
+        boolean isAscPrice = false, isDescPrice = false, isNewest = false, isDescRating = false,
+                isDescDiscount = false;
         if (orderPrice == OrderBy.ASC) {
             isAscPrice = true;
             cbAcsPrice.setChecked(true);
@@ -199,6 +201,10 @@ public class ListProductActivity extends AppCompatActivity {
             isDescRating = true;
             cbDescRating.setChecked(true);
         }
+        if (orderDiscount == OrderBy.DESC) {
+            isDescDiscount = true;
+            cbDescDiscount.setChecked(true);
+        }
 
         int selectedColor = -1, unSelectedColor = -1;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -214,6 +220,7 @@ public class ListProductActivity extends AppCompatActivity {
         final boolean finalIsDescPrice = isDescPrice;
         final boolean finalIsNewest = isNewest;
         final boolean finalIsDescRating = isDescRating;
+        final boolean finalIsDescDiscount = isDescDiscount;
         tvExit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -247,27 +254,35 @@ public class ListProductActivity extends AppCompatActivity {
                 if (finalIsDescRating) {
                     orderRate = OrderBy.DESC;
                 } else orderRate = null;
+                if (finalIsDescDiscount) {
+                    orderDiscount = OrderBy.DESC;
+                } else orderRate = null;
 
                 dialog.cancel();
             }
         });
 
-        cbAcsPrice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b && cbDescPrice.isChecked()) {
+                if (b) {
                     cbDescPrice.setChecked(false);
-                }
-            }
-        });
-        cbDescPrice.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b && cbAcsPrice.isChecked()) {
                     cbAcsPrice.setChecked(false);
+                    cbDescDiscount.setChecked(false);
+                    cbDescRating.setChecked(false);
+                    cbNewest.setChecked(false);
+
+                    compoundButton.setChecked(true);
                 }
             }
-        });
+        };
+
+
+        cbAcsPrice.setOnCheckedChangeListener(onCheckedChangeListener);
+        cbDescPrice.setOnCheckedChangeListener(onCheckedChangeListener);
+        cbDescDiscount.setOnCheckedChangeListener(onCheckedChangeListener);
+        cbDescRating.setOnCheckedChangeListener(onCheckedChangeListener);
+        cbNewest.setOnCheckedChangeListener(onCheckedChangeListener);
 
 
         tvUnSelect.setOnClickListener(new View.OnClickListener() {
@@ -419,6 +434,11 @@ public class ListProductActivity extends AppCompatActivity {
                 if (cbDescRating.isChecked()) {
                     orderRate = OrderBy.DESC;
                 } else orderRate = null;
+                if (cbDescDiscount.isChecked()) {
+                    orderDiscount = OrderBy.DESC;
+                } else orderDiscount = null;
+
+
                 refreshRecyclerView();
             }
         });
@@ -454,6 +474,14 @@ public class ListProductActivity extends AppCompatActivity {
         } else {
             tvOrderRate.setVisibility(View.VISIBLE);
             tvOrderRate.setText("Sao cao nhất");
+        }
+
+        //show hide discount order
+        if (orderDiscount == null) {
+            tvOrderDiscount.setVisibility(View.GONE);
+        } else {
+            tvOrderDiscount.setVisibility(View.VISIBLE);
+            tvOrderDiscount.setText("Giảm giá nhiều nhất");
         }
 
         //show hide price filter
@@ -508,7 +536,7 @@ public class ListProductActivity extends AppCompatActivity {
             edtPriceFrom.setText(formatCurrency(price));
         }
         if (priceTo != null) {
-            Long price = Long.parseLong(String.valueOf(priceTo));
+            long price = Long.parseLong(String.valueOf(priceTo));
             edtPriceTo.setText(formatCurrency(price));
         }
 
@@ -518,7 +546,6 @@ public class ListProductActivity extends AppCompatActivity {
             cv4Stars.setCardBackgroundColor(finalSelectedColor);
         } else if (isFrom5Stars) {
             cv5Stars.setCardBackgroundColor(finalSelectedColor);
-
         }
     }
 
@@ -535,6 +562,7 @@ public class ListProductActivity extends AppCompatActivity {
         cbDescPrice = dialog.findViewById(R.id.checkBox_descPrice);
         cbNewest = dialog.findViewById(R.id.checkBox_newest);
         cbDescRating = dialog.findViewById(R.id.checkBox_descRating);
+        cbDescDiscount = dialog.findViewById(R.id.checkBox_descDiscount);
     }
 
     private void setAdapterRecyclerView(@Nullable ArrayList<Integer> idArray) {
@@ -548,18 +576,18 @@ public class ListProductActivity extends AppCompatActivity {
         if (catalog != null) {
             dbVolley.getProducts(products, productAdapter, tvNonProduct, catalog.getmId(), null,
                     null, null, null, null, priceFrom, priceTo,
-                    rate, orderCreated, orderPrice, limit, start);
+                    rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
             return;
         }
         if (cataParent != null) {
             dbVolley.getProducts(products, productAdapter, tvNonProduct, null, null,
                     null, cataParent.getmId(), null, null, priceFrom, priceTo,
-                    rate, orderCreated, orderPrice, limit, start);
+                    rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
             return;
         }
         dbVolley.getProducts(products, productAdapter, tvNonProduct, null, idArray,
                 null, null, null, null, priceFrom, priceTo,
-                rate, orderCreated, orderPrice, limit, start);
+                rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
     }
 
     private void setViewedProductsAdapter() {
@@ -606,40 +634,6 @@ public class ListProductActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ListProductActivity.this).toBundle());
                 } else startActivity(intent);
-            }
-        });
-        tvOrderCreated.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View view) {
-                if (orderCreated == null) {
-                    orderCreated = OrderBy.DESC;
-                    tvOrderCreated.setText("Mới nhất");
-                } else if (orderCreated == OrderBy.DESC) {
-                    orderCreated = OrderBy.ASC;
-                    tvOrderCreated.setText("Cũ nhất");
-                } else {
-                    orderCreated = OrderBy.DESC;
-                    tvOrderCreated.setText("Mới nhất");
-                }
-                refreshRecyclerView();
-            }
-        });
-        tvOrderPrice.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View view) {
-                if (orderPrice == null) {
-                    orderPrice = OrderBy.DESC;
-                    tvOrderPrice.setText("Giá giảm dần");
-                } else if (orderPrice == OrderBy.DESC) {
-                    orderPrice = OrderBy.ASC;
-                    tvOrderPrice.setText("Giá tăng dần");
-                } else {
-                    orderPrice = OrderBy.DESC;
-                    tvOrderPrice.setText("Giá giảm dần");
-                }
-                refreshRecyclerView();
             }
         });
         ibFilter.setOnClickListener(new View.OnClickListener() {

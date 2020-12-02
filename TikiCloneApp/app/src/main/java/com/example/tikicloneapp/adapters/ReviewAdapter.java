@@ -43,7 +43,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Rate rate = rates.get(position);
-        Log.d("thang", "onBindViewHolder: " + rates);
+//        Log.d("thang", "onBindViewHolder: " + rates);
         holder.tvTitle.setText(getTitle(rate.getRatePoint()));
         holder.tvComment.setText(rate.getComment());
         setStars(rate.getRatePoint(), holder);

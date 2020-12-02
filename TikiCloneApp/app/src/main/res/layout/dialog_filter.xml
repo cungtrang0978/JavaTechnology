@@ -28,8 +28,8 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="Lọc sản phẩm"
-            android:textStyle="bold"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_unSelect"
@@ -84,6 +84,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đánh giá từ cao đến thấp"
+            android:textSize="15sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox_descDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="5dp"
+            android:text="Giảm giá nhiều"
             android:textSize="15sp" />
     </LinearLayout>
 
@@ -189,17 +197,18 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="0"
                 android:gravity="end"
-                android:maxLength="11"
+                android:hint="0"
                 android:inputType="number"
+                android:maxLength="11"
                 android:maxLines="1"
                 android:textSize="15sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:text="₫"/>
+                android:text="₫"
+                android:textColor="#000" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -212,17 +221,18 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="0"
                 android:gravity="end"
+                android:hint="0"
                 android:inputType="number"
                 android:maxLength="11"
                 android:maxLines="1"
                 android:textSize="15sp" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
-                android:text="₫"/>
+                android:text="₫"
+                android:textColor="#000" />
         </LinearLayout>
     </LinearLayout>
 

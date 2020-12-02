@@ -350,6 +350,7 @@ public class DBVolley {
                             @Nullable final Integer idUser,
                             @Nullable final Integer priceFrom, @Nullable final Integer priceTo, @Nullable final Integer rate,
                             @Nullable final OrderBy orderCreated, @Nullable final OrderBy orderPrice,
+                            @Nullable final OrderBy orderRate, @Nullable final OrderBy orderDiscount,
                             @Nullable final Integer limit, @Nullable final Integer start) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_PRODUCT, new Response.Listener<String>() {
@@ -426,12 +427,11 @@ public class DBVolley {
                 if (priceTo != null) {
                     params.put("priceTo", String.valueOf(priceTo));
                 }
-
                 if (rate != null) {
                     params.put("rate", String.valueOf(rate));
                 }
                 if (orderCreated != null) {
-                    switch (orderCreated){
+                    switch (orderCreated) {
                         case ASC:
                             params.put("orderCreated", "ASC");
                             break;
@@ -441,7 +441,7 @@ public class DBVolley {
                 }
 
                 if (orderPrice != null) {
-                    switch (orderPrice){
+                    switch (orderPrice) {
                         case ASC:
                             params.put("orderPrice", "ASC");
                             break;
@@ -449,6 +449,27 @@ public class DBVolley {
                             params.put("orderPrice", "DESC");
                     }
                 }
+
+                if (orderRate != null) {
+                    switch (orderRate) {
+                        case ASC:
+                            params.put("orderRate", "ASC");
+                            break;
+                        case DESC:
+                            params.put("orderRate", "DESC");
+                    }
+                }
+
+                if (orderDiscount != null) {
+                    switch (orderDiscount) {
+                        case ASC:
+                            params.put("orderDiscount", "ASC");
+                            break;
+                        case DESC:
+                            params.put("orderDiscount", "DESC");
+                    }
+                }
+
                 if (limit != null) {
                     params.put("limit", String.valueOf(limit));
                 }
