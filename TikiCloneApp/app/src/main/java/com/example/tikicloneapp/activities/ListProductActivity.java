@@ -82,6 +82,7 @@ public class ListProductActivity extends AppCompatActivity {
     ImageButton ibFilter;
     TextView tvNonProduct, tvTitle;
     TextView tvOrderPrice, tvOrderCreated, tvOrderRate, tvFilterPrice, tvFilterStars, tvOrderDiscount;
+    LinearLayout llCollapsing;
 
     //dialog
     TextView tvExit, tvUnSelect;
@@ -94,9 +95,10 @@ public class ListProductActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_product);
-        initWidget();
-        setEachView();
 
+        initWidget();
+
+        setEachView();
     }
 
 
@@ -120,6 +122,7 @@ public class ListProductActivity extends AppCompatActivity {
         tvFilterPrice = findViewById(R.id.textView_filterPrice);
         tvFilterStars = findViewById(R.id.textView_filterStars);
         tvOrderDiscount = findViewById(R.id.textView_orderDiscount);
+        llCollapsing = findViewById(R.id.layout_collapsing);
     }
 
     private void setEachView() {
@@ -145,6 +148,7 @@ public class ListProductActivity extends AppCompatActivity {
         if (getIntent().getStringExtra("viewed") != null) {
             setViewedProductsAdapter();
             layoutSearchName.setVisibility(View.GONE);
+            llCollapsing.setVisibility(View.GONE);
             tvTitle.setVisibility(View.VISIBLE);
         }
 
@@ -344,7 +348,7 @@ public class ListProductActivity extends AppCompatActivity {
         });
 
         edtPriceFrom.addTextChangedListener(new TextWatcher() {
-            private String text = "";
+            private final String text = "";
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -371,7 +375,7 @@ public class ListProductActivity extends AppCompatActivity {
             }
         });
         edtPriceTo.addTextChangedListener(new TextWatcher() {
-            private String text = "";
+            private final String text = "";
 
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -490,7 +494,7 @@ public class ListProductActivity extends AppCompatActivity {
         } else {
             tvFilterPrice.setVisibility(View.VISIBLE);
 
-            String text = "";
+            String text;
             if (priceFrom != null) {
                 long from = priceFrom.longValue();
 
@@ -532,7 +536,7 @@ public class ListProductActivity extends AppCompatActivity {
         final int finalSelectedColor = selectedColor;
 
         if (priceFrom != null) {
-            Long price = Long.parseLong(String.valueOf(priceFrom));
+            long price = Long.parseLong(String.valueOf(priceFrom));
             edtPriceFrom.setText(formatCurrency(price));
         }
         if (priceTo != null) {

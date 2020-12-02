@@ -103,8 +103,6 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 ((MainActivity) getActivity()).previous_Of_SearchFragment = R.id.menu_BottomHome;
                 ((MainActivity) getActivity()).LoadFragment(R.id.menu_BottomSearch);
-
-
             }
         });
 
@@ -132,6 +130,14 @@ public class HomeFragment extends Fragment {
                                     .toBundle());
                 } else
                     startActivityForResult(intent, REFRESH_CODE);
+            }
+        });
+
+        btnViewHotCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                ((MainActivity) getActivity()).previous_Of_SearchFragment = R.id.menu_BottomHome;
+                ((MainActivity) getActivity()).LoadFragment(R.id.menu_BottomCategory);
             }
         });
 

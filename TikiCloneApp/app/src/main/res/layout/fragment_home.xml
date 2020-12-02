@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTikiBackgroundWhite"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -56,10 +57,12 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <androidx.viewpager.widget.ViewPager
                 android:id="@+id/viewPager_advertImages"
                 android:layout_width="wrap_content"
@@ -68,6 +71,11 @@
                 android:layout_margin="10dp">
 
             </androidx.viewpager.widget.ViewPager>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorTikiUnselectedLighter" />
 
             <LinearLayout
                 android:id="@+id/layout_hotCategories"
@@ -87,8 +95,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Danh mục nổi bật"
-                        android:textStyle="bold"
-                        android:textColor="#E2000000"/>
+                        android:textColor="#E2000000"
+                        android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -118,6 +126,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorTikiUnselectedLighter" />
+
+            <LinearLayout
                 android:id="@+id/layout_viewedProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -135,8 +148,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Sẩn phẩm đã xem"
-                        android:textStyle="bold"
-                        android:textColor="#E2000000"/>
+                        android:textColor="#E2000000"
+                        android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -166,6 +179,11 @@
             </LinearLayout>
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorTikiUnselectedLighter" />
+
+            <LinearLayout
                 android:id="@+id/layout_recommendedProducts"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -184,8 +202,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Gợi ý sản phẩm"
-                        android:textStyle="bold"
-                        android:textColor="#E2000000"/>
+                        android:textColor="#E2000000"
+                        android:textStyle="bold" />
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -211,7 +229,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_recommendedProducts"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorTikiBackground" />
             </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

@@ -52,6 +52,7 @@ import org.json.JSONObject;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.tikicloneapp.MyClass.getTextAddress;
@@ -357,8 +358,7 @@ public class DBVolley {
             @Override
             public void onResponse(String response) {
                 try {
-
-                    productArrayList.clear();
+                    ArrayList<Product> productList = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(response);
                     if (jsonArray.length() != 0) {
                         for (int i = 0; i < jsonArray.length(); i++) {
@@ -377,13 +377,17 @@ public class DBVolley {
                                         object.getDouble("rate"),
                                         object.getInt("rateQty")
                                 );
-                                productArrayList.add(product);
+                                productList.add(product);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
-                        Toast.makeText(context, "Có " + productArrayList.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
-                        productListAdapter.notifyDataSetChanged();
+                        if(!productList.isEmpty()){
+                            productArrayList.clear();
+                            Toast.makeText(context, "Có " + productList.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
+                            productArrayList.addAll(productList);
+                            productListAdapter.notifyDataSetChanged();
+                        }
                     } else {
                         tvNonProduct.setVisibility(View.VISIBLE);
                     }
