@@ -103,7 +103,7 @@ public class DBVolley {
     public String URL_GET_RECOMMENDED_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getRecommendedProductsByProductId.php";
     public String URL_GET_REVIEW_PRODUCTS_BY_USER_ID = IP_ADDRESS + "getReviewProductsByIdUser.php";
     public String URL_INSERT_RATE = IP_ADDRESS + "insertRate.php";
-    public String URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getReviewProductsByIdProduct.php";
+    public String URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getReviewProductsByProductId.php";
 
 
     private final Context context;

@@ -215,7 +215,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="@color/colorTikiBackgroundDark" />
+                    android:background="@color/colorTikiUnselectedLighter" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,7 +270,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="@color/colorTikiBackgroundDark" />
+                    android:background="@color/colorTikiUnselectedLighter" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -386,7 +386,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="@color/colorTikiBackgroundDark" />
+                    android:background="@color/colorTikiUnselectedLighter" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -414,7 +414,21 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:id="@+id/linearLayout_recommended"
                     android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="10dp"
+                        android:background="@color/colorTikiUnselectedLighter" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sản Phẩm Tương Tự"
+                        android:textSize="16sp"
+                        android:textColor="#000"
+                        android:paddingHorizontal="10dp"
+                        android:textStyle="bold"
+                        />
                     <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -431,7 +445,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="10dp"
-                        android:background="@color/colorTikiBackgroundDark" />
+                        android:background="@color/colorTikiUnselectedLighter" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -458,9 +472,10 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Xem tất cả"
+                                android:id="@+id/textView_viewAllReviews"
                                 android:textAllCaps="true"
-                                android:textColor="@android:color/black"
-                                android:textSize="16sp"
+                                android:textColor="@color/colorTikiBlueDark"
+                                android:textSize="13sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
 

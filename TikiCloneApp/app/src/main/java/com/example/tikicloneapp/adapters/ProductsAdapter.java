@@ -49,7 +49,8 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            if (mResource == R.layout.row_product) {
+            // R.layout.row_recommended_product is copy of  R.layout.row_product
+            if (mResource == R.layout.row_product || mResource == R.layout.row_recommended_product) {
                 parentLayout = itemView.findViewById(R.id.linearLayout_itemProduct);
                 tvNameProduct = itemView.findViewById(R.id.textView_nameProduct);
                 tvPriceDiscount = itemView.findViewById(R.id.textView_priceProduct);
@@ -103,7 +104,9 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
         ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
         holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));
-        if (mResource == R.layout.row_product) {
+
+        // R.layout.row_recommended_product is copy of  R.layout.row_product
+        if (mResource == R.layout.row_product || mResource ==R.layout.row_recommended_product) {
             holder.tvNameProduct.setText(product.getName());
 
             if(product.getRateQty()!=0){

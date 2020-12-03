@@ -63,6 +63,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     private TextView tvRatePoint, tvReviewQuantity, tvFiveStars, tvFourStars, tvThreeStars, tvTwoStars, tvOneStar;
     private ImageButton ibBack, ibCart, ibSearch, ibHome;
     private Button btnAddProduct;
+    private TextView tvViewAllReviews;
     private LinearLayout layoutRate, layoutReview;
     private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     private ImageView ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5;
@@ -132,6 +133,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         ivStarDetail_5 = findViewById(R.id.imageView_starDetail_5);
         layoutReview = findViewById(R.id.linearLayout_review);
         rvRecommendedProducts = findViewById(R.id.recyclerView_recommendedProducts);
+        tvViewAllReviews = findViewById(R.id.textView_viewAllReviews);
     }
 
     private void setViews() {
@@ -580,7 +582,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     public void setRecommendedProductsAdapter() {
 //        callLoadingPanel_parent();
         if (recommendedProductsAdapter == null) {
-            recommendedProductsAdapter = new ProductsAdapter(this, R.layout.row_product, recommendedProducts, ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
+            recommendedProductsAdapter = new ProductsAdapter(this, R.layout.row_recommended_product, recommendedProducts, ProductsAdapter.ProductType.CODE_PRODUCT_LIST);
             rvRecommendedProducts.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
             rvRecommendedProducts.setAdapter(recommendedProductsAdapter);
         }
@@ -661,6 +663,17 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                             tvThreeStars.setText(threeStarRates.size() + "");
                             tvTwoStars.setText(twoStarsRates.size() + "");
                             tvOneStar.setText(oneStarRates.size() + "");
+
+                            tvViewAllReviews.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(ProductDetailActivity.this, ProductReviewsActivity.class);
+                                    Bundle extra = new Bundle();
+                                    extra.putSerializable("rates", rates);
+                                    intent.putExtra("extra", extra);
+                                    startActivity(intent);
+                                }
+                            });
 
                         } catch (JSONException e) {
                             e.printStackTrace();

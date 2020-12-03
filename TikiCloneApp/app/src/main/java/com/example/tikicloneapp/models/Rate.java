@@ -1,12 +1,14 @@
 package com.example.tikicloneapp.models;
 
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-public class Rate {
+public class Rate  implements Serializable {
     private int id;
     private int ratePoint;
     private String comment;
