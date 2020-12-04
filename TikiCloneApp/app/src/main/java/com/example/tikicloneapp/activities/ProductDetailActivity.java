@@ -13,7 +13,9 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
@@ -85,17 +87,23 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     public static int REQUEST_CODE_UPDATE_ADDRESS = 1234;
     public static int REQUEST_CODE_LOGIN = 1234;
 
+    final Handler handler = new Handler();
+    RequestQueue requestQueue;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         initWidget();
+        requestQueue =  Volley.newRequestQueue(this);
 
         product = (Product) getIntent().getSerializableExtra("product");
 
         setViews();
         setOnClick();
     }
+
 
     private void initWidget() {
         viewPagerImageProduct = findViewById(R.id.viewPager_imageProduct);
@@ -136,6 +144,44 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         tvViewAllReviews = findViewById(R.id.textView_viewAllReviews);
     }
 
+    Runnable runnableInsertViewed = new Runnable() {
+        @Override
+        public void run() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_INSERT_VIEWED_PRODUCT, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+//                switch (response) {
+//                    case "insert_success":
+//                        Log.d("insertViewedProduct", "insert viewed Product success" + idProduct);
+//                        break;
+//                    case "insert_fail":
+//                        Log.d("insertViewedProduct", "insert viewed Product fail");
+//                        break;
+//                    case "seen":
+//                        Log.d("insertViewedProduct", "insert viewed Product seen");
+//                        break;
+//                }
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("thang", error.toString());
+                        }
+                    }) {
+                @Override
+                protected Map<String, String> getParams() {
+                    Map<String, String> params = new HashMap<>();
+                    params.put("idProduct", String.valueOf(product.getId()));
+
+                    params.put("idUser", String.valueOf(MainActivity.idUser));
+                    return params;
+                }
+            };
+            requestQueue.add(stringRequest);
+        }
+    };
+
     private void setViews() {
         //Update views of product
 
@@ -157,13 +203,14 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 
         setTextView_StrikeThrough(tvPriceOrigin);
 
-        insertViewedProduct(MainActivity.idUser, product.getId());
+        insertViewedProduct();
 
         setRecommendedProductsAdapter();
 
         setRvReviews();
 
     }
+
 
     private void setViewPager() {
         //set Images for ViewPager
@@ -245,6 +292,8 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                 panel.setVisibility(View.GONE);
             }
         }, millisecondsDelay);
+
+
     }
 
     private void getProduct(final int idProduct) {
@@ -473,45 +522,18 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     }
 
 
-    public void insertViewedProduct(final Integer idUser, final Integer idProduct) {
-        if (MainActivity.idUser == 0) return;
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_INSERT_VIEWED_PRODUCT, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-//                switch (response) {
-//                    case "insert_success":
-//                        Log.d("insertViewedProduct", "insert viewed Product success" + idProduct);
-//                        break;
-//                    case "insert_fail":
-//                        Log.d("insertViewedProduct", "insert viewed Product fail");
-//                        break;
-//                    case "seen":
-//                        Log.d("insertViewedProduct", "insert viewed Product seen");
-//                        break;
-//                }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("thang", error.toString());
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                if (idProduct != null) {
-                    params.put("idProduct", String.valueOf(idProduct));
-                }
+    public void insertViewedProduct() {
 
-                if (idUser != null) {
-                    params.put("idUser", String.valueOf(idUser));
-                }
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
+        if (MainActivity.idUser == 0) return;
+
+        handler.postDelayed(runnableInsertViewed, 19000);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(runnableInsertViewed);
     }
 
     public void addProductToCart(final int idProduct) {
@@ -696,5 +718,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         };
         requestQueue.add(stringRequest);
     }
+
+
 
 }
