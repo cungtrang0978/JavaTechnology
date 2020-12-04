@@ -100,7 +100,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final Product product = mProducts.get(position);
-        Log.d("thang", "onBindViewHolder: "+ product);
+//        Log.d("thang", "onBindViewHolder: "+ product);
 
         ProductListAdapter.loadImageFromUrl(product.getImageUrl(), holder.ivProduct);
         holder.tvPriceDiscount.setText(CartActivity.formatCurrency(product.getPriceDiscount()));

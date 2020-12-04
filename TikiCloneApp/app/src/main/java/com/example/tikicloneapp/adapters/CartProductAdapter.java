@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 
 public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.ViewHolder> {
@@ -477,6 +478,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     qty += Integer.parseInt(viewHolder.tvCount.getText().toString());
 
                     deleteOrder(idOrder, product.getString("name"));
+
 //                    updateQtyProduct(idProduct, qty);
 
                     if (mContext instanceof CartActivity) {

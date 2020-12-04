@@ -18,73 +18,6 @@ public class DBManager extends SQLiteOpenHelper {
 // Database Name
     private static final String DB_NAME=  "databaseTiki";
 
-// TABLE_ADMIN
-    private static final String TABLE_ADMIN =  "'admin'";
-    private static final String ADMIN_ID =  "'id'";
-    private static final String ADMIN_NAME =  "'name'";
-    private static final String ADMIN_USERNAME =  "'username'";
-    private static final String ADMIN_PASSWORD =  "'password'";
-    private String query_create_table_admin = "CREATE TABLE " + TABLE_ADMIN + " (\n" +
-            ADMIN_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-            ADMIN_NAME +" TEXT NOT NULL,\n" +
-            ADMIN_USERNAME +" TEXT NOT NULL,\n" +
-            ADMIN_PASSWORD +" TEXT NOT NULL\n" +
-            ")";
-
-
-
-// TABLE_IMAGE_PRODUCT
-    private static final String TABLE_IMAGE_PRODUCT =  "image_product";
-    private static final String IMAGE_PRODUCT_ID =  "id";
-    private static final String IMAGE_PRODUCT_IDPRODUCT =  "idProduct";
-    private static final String IMAGE_PRODUCT_IMAGEURL =  "imageUrl";
-    private String query_create_table_image_product = "CREATE TABLE "+ TABLE_IMAGE_PRODUCT +" (\n" +
-            IMAGE_PRODUCT_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-            IMAGE_PRODUCT_IDPRODUCT +" INTEGER NOT NULL,\n" +
-            IMAGE_PRODUCT_IMAGEURL +" TEXT NOT NULL,\n" +
-            "FOREIGN KEY ('idProduct') REFERENCES 'product' ('id')" +
-            ")";
-
-// TABLE_ORDER
-    private static final String TABLE_ORDER =  "orders";
-    private static final String ORDER_ID =  "id";
-    private static final String ORDER_IDTRANSACTION =  "idTransact";
-    private static final String ORDER_IDPRODUCT =  "idProduct";
-    private static final String ORDER_QTY =  "qty";
-    private static final String ORDER_AMOUNT =  "amount";
-    private String query_create_table_order = "CREATE TABLE "+ TABLE_ORDER +" (\n" +
-            ORDER_ID +" INTEGER,\n" +
-            ORDER_IDTRANSACTION +" INTEGER DEFAULT 0,\n" +
-            ORDER_IDPRODUCT +" INTEGER NOT NULL,\n" +
-            ORDER_QTY +"  INTEGER NOT NULL DEFAULT 0,\n" +
-            ORDER_AMOUNT +"  REAL NOT NULL DEFAULT 0\n" +
-            ")";
-
-
-// TABLE_TRANSACTION
-    private static final String TABLE_TRANSACTION =  "transact";
-    private static final String TRANSACTION_ID =  "id";
-    private static final String TRANSACTION_STATUS =  "status";
-    private static final String TRANSACTION_IDUSER =  "idUser";
-    private static final String TRANSACTION_USER_NAME =  "user_name";
-    private static final String TRANSACTION_USER_EMAIL =  "user_email";
-    private static final String TRANSACTION_USER_PHONE =  "user_phone";
-    private static final String TRANSACTION_AMOUNT =  "amount";
-    private static final String TRANSACTION_MESSAGE =  "message";
-    private static final String TRANSACTION_CREATED =  "created";
-    private String query_create_table_transaction = "CREATE TABLE "+ TABLE_TRANSACTION +" (\n" +
-            TRANSACTION_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-            TRANSACTION_STATUS +"  INTEGER NOT NULL DEFAULT 0,\n" +
-            TRANSACTION_IDUSER +"  INTEGER NOT NULL DEFAULT 0,\n" +
-            TRANSACTION_USER_NAME +"  TEXT NOT NULL,\n" +
-            TRANSACTION_USER_EMAIL +" TEXT NOT NULL,\n" +
-            TRANSACTION_USER_PHONE +"  TEXT NOT NULL,\n" +
-            TRANSACTION_AMOUNT +" FLOAT NOT NULL DEFAULT 0,\n" +
-            TRANSACTION_MESSAGE +" TEXT NOT NULL,\n" +
-            TRANSACTION_CREATED +" INTEGER NOT NULL,\n" +
-            "FOREIGN KEY ("+ TRANSACTION_IDUSER +") REFERENCES "+ TABLE_USER +"("+ USER_ID +")" +
-            ")";
-
 // TABLE_USER"
     private static final String TABLE_USER =  "user";
     private static final String USER_ID =  "id";
@@ -109,28 +42,6 @@ public class DBManager extends SQLiteOpenHelper {
             USER_CREATED +"  INTEGER ,\n" +
             USER_BIRTHDATE +"  TEXT \n" +
             ")";
-
-//    TABLE_ADVERTISEMENT
-    private static final String TABLE_ADVERTISEMENT = "advertisement";
-    private static final String ADVERTISEMENT_ID = "id";
-    private static final String ADVERTISEMENT_NAME = "name";
-    private static final String ADVERTISEMENT_IMAGEURL = "imageUrl";
-    private String query_create_table_advertisement = "CREATE TABLE " + TABLE_ADVERTISEMENT + " (\n" +
-            ADVERTISEMENT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-            ADVERTISEMENT_NAME +"  TEXT NOT NULL,\n" +
-            ADVERTISEMENT_IMAGEURL +"  TEXT NOT NULL\n" +
-            ")";
-
-    //TABLE_IP_ADDRESS
-    private static final String TABLE_IP_ADDRESS = "ip_address";
-    private static final String IP = "ip";
-    private static final String ID = "id";
-    private String query_create_table_ipAddress =  "CREATE TABLE " + TABLE_IP_ADDRESS + "(\n" +
-            ID + " INTEGER PRIMARY KEY AUTOINCREMENT, \n" +
-            IP + " TEXT NOT NULL" +
-            ")";
-
-    private String query_insertData_ipAddress = "INSERT INTO 'ip_address' VALUES (1,'192.168.1.105')";
 
 
     //TABLE_DISTRICT
@@ -176,104 +87,8 @@ public class DBManager extends SQLiteOpenHelper {
     public String query_insertData_ward_17 = "INSERT INTO 'ward' VALUES ('30840','Xã Lình Huỳnh','Xã','903'),('30841','Xã Thổ Sơn','Xã','903'),('30844','Xã Mỹ Lâm','Xã','903'),('30847','Xã Mỹ Phước','Xã','903'),('30850','Thị trấn Tân Hiệp','Thị xã','904'),('30853','Xã Tân Hội','Xã','904'),('30856','Xã Tân Thành','Xã','904'),('30859','Xã Tân Hiệp B','Xã','904'),('30860','Xã Tân Hoà','Xã','904'),('30862','Xã Thạnh Đông B','Xã','904'),('30865','Xã Thạnh Đông','Xã','904'),('30868','Xã Tân Hiệp A','Xã','904'),('30871','Xã Tân An','Xã','904'),('30874','Xã Thạnh Đông A','Xã','904'),('30877','Xã Thạnh Trị','Xã','904'),('30880','Thị trấn Minh Lương','Thị xã','905'),('30883','Xã Mong Thọ A','Xã','905'),('30886','Xã Mong Thọ B','Xã','905'),('30887','Xã Mong Thọ','Xã','905'),('30889','Xã Giục Tượng','Xã','905'),('30892','Xã Vĩnh Hòa Hiệp','Xã','905'),('30893','Xã Vĩnh Hoà Phú','Xã','905'),('30895','Xã Minh Hòa','Xã','905'),('30898','Xã Bình An','Xã','905'),('30901','Xã Thạnh Lộc','Xã','905'),('30904','Thị Trấn Giồng Riềng','Thị xã','906'),('30907','Xã Thạnh Hưng','Xã','906'),('30910','Xã Thạnh Phước','Xã','906'),('30913','Xã Thạnh Lộc','Xã','906'),('30916','Xã Thạnh Hòa','Xã','906'),('30917','Xã Thạnh Bình','Xã','906'),('30919','Xã Bàn Thạch','Xã','906'),('30922','Xã Bàn Tân Định','Xã','906'),('30925','Xã Ngọc Thành','Xã','906'),('30928','Xã Ngọc Chúc','Xã','906'),('30931','Xã Ngọc Thuận','Xã','906'),('30934','Xã Hòa Hưng','Xã','906'),('30937','Xã Hoà Lợi','Xã','906'),('30940','Xã Hoà An','Xã','906'),('30943','Xã Long Thạnh','Xã','906'),('30946','Xã Vĩnh Thạnh','Xã','906'),('30947','Xã Vĩnh Phú','Xã','906'),('30949','Xã  Hòa Thuận','Xã','906'),('30950','Xã Ngọc Hoà','Xã','906'),('30952','Thị trấn Gò Quao','Thị xã','907'),('30955','Xã Vĩnh Hòa Hưng Bắc','Xã','907'),('30958','Xã Định Hòa','Xã','907'),('30961','Xã Thới Quản','Xã','907'),('30964','Xã Định An','Xã','907'),('30967','Xã Thủy Liễu','Xã','907'),('30970','Xã Vĩnh Hòa Hưng Nam','Xã','907'),('30973','Xã Vĩnh Phước A','Xã','907'),('30976','Xã Vĩnh Phước B','Xã','907'),('30979','Xã Vĩnh Tuy','Xã','907'),('30982','Xã Vĩnh Thắng','Xã','907'),('30985','Thị trấn Thứ Ba','Thị xã','908'),('30988','Xã Tây Yên','Xã','908'),('30991','Xã Tây Yên A','Xã','908'),('30994','Xã Nam Yên','Xã','908'),('30997','Xã Hưng Yên','Xã','908'),('31000','Xã Nam Thái','Xã','908'),('31003','Xã Nam Thái A','Xã','908'),('31006','Xã Đông Thái','Xã','908'),('31009','Xã Đông Yên','Xã','908'),('31012','Xã Thạnh Yên','Xã','913'),('31015','Xã Thạnh Yên A','Xã','913'),('31018','Thị trấn Thứ Mười Một','Thị xã','909'),('31021','Xã Thuận Hoà','Xã','909'),('31024','Xã Đông Hòa','Xã','909'),('31027','Xã An Minh Bắc','Xã','913'),('31030','Xã Đông Thạnh','Xã','909'),('31031','Xã Tân Thạnh','Xã','909'),('31033','Xã Đông Hưng','Xã','909'),('31036','Xã Đông Hưng A','Xã','909'),('31039','Xã Đông Hưng B','Xã','909'),('31042','Xã Vân Khánh','Xã','909'),('31045','Xã Vân Khánh Đông','Xã','909'),('31048','Xã Vân Khánh Tây','Xã','909'),('31051','Thị trấn Vĩnh Thuận','Thị xã','910'),('31054','Xã Vĩnh Hòa','Xã','913'),('31057','Xã Hoà Chánh','Xã','913'),('31060','Xã Vĩnh Bình Bắc','Xã','910'),('31063','Xã Vĩnh Bình Nam','Xã','910'),('31064','Xã Bình Minh','Xã','910'),('31066','Xã Minh Thuận','Xã','913'),('31069','Xã Vĩnh Thuận','Xã','910'),('31072','Xã Tân Thuận','Xã','910'),('31074','Xã Phong Đông','Xã','910'),('31075','Xã Vĩnh Phong','Xã','910'),('31078','Thị trấn Dương Đông','Thị xã','911'),('31081','Thị trấn An Thới','Thị xã','911'),('31084','Xã Cửa Cạn','Xã','911'),('31087','Xã Gành Dầu','Xã','911'),('31090','Xã Cửa Dương','Xã','911'),('31093','Xã Hàm Ninh','Xã','911'),('31096','Xã Dương Tơ','Xã','911'),('31099','Xã Hòn Thơm','Xã','911'),('31102','Xã Bãi Thơm','Xã','911'),('31105','Xã Thổ Châu','Xã','911'),('31108','Xã Hòn Tre','Xã','912'),('31111','Xã Lại Sơn','Xã','912'),('31114','Xã An Sơn','Xã','912'),('31115','Xã Nam Du','Xã','912'),('31117','Phường Cái Khế','Phường','916'),('31120','Phường An Hòa','Phường','916'),('31123','Phường Thới Bình','Phường','916'),('31126','Phường An Nghiệp','Phường','916'),('31129','Phường An Cư','Phường','916'),('31132','Phường An Hội','Phường','916'),('31135','Phường Tân An','Phường','916'),('31138','Phường An Lạc','Phường','916'),('31141','Phường An Phú','Phường','916'),('31144','Phường Xuân Khánh','Phường','916'),('31147','Phường Hưng Lợi','Phường','916'),('31149','Phường An Khánh','Phường','916'),('31150','Phường An Bình','Phường','916'),('31153','Phường Châu Văn Liêm','Phường','917'),('31154','Phường Thới Hòa','Phường','917'),('31156','Phường Thới Long','Phường','917'),('31157','Phường Long Hưng','Phường','917'),('31159','Phường Thới An','Phường','917'),('31162','Phường Phước Thới','Phường','917'),('31165','Phường Trường Lạc','Phường','917'),('31168','Phường Bình Thủy','Phường','918'),('31169','Phường Trà An','Phường','918'),('31171','Phường Trà Nóc','Phường','918'),('31174','Phường Thới An Đông','Phường','918'),('31177','Phường An Thới','Phường','918'),('31178','Phường Bùi Hữu Nghĩa','Phường','918'),('31180','Phường Long Hòa','Phường','918'),('31183','Phường Long Tuyền','Phường','918'),('31186','Phường Lê Bình','Phường','919'),('31189','Phường Hưng Phú','Phường','919'),('31192','Phường Hưng Thạnh','Phường','919'),('31195','Phường Ba Láng','Phường','919'),('31198','Phường Thường Thạnh','Phường','919'),('31201','Phường Phú Thứ','Phường','919'),('31204','Phường Tân Phú','Phường','919'),('31207','Phường Thốt Nốt','Phường','923'),('31210','Phường Thới Thuận','Phường','923'),('31211','Xã Vĩnh Bình','Xã','924'),('31212','Phường Thuận An','Phường','923'),('31213','Phường Tân Lộc','Phường','923'),('31216','Phường Trung Nhứt','Phường','923'),('31217','Phường Thạnh Hoà','Phường','923'),('31219','Phường Trung Kiên','Phường','923'),('31222','Xã Trung An','Xã','925'),('31225','Xã Trung Thạnh','Xã','925'),('31227','Phường Tân Hưng','Phường','923'),('31228','Phường Thuận Hưng','Phường','923'),('31231','Thị trấn Thanh An','Thị xã','924'),('31232','Thị trấn Vĩnh Thạnh','Thị xã','924'),('31234','Xã Thạnh Mỹ','Xã','924'),('31237','Xã Vĩnh Trinh','Xã','924'),('31240','Xã Thạnh An','Xã','924'),('31241','Xã Thạnh Tiến','Xã','924'),('31243','Xã Thạnh Thắng','Xã','924'),('31244','Xã Thạnh Lợi','Xã','924'),('31246','Xã Thạnh Qưới','Xã','924'),('31249','Xã Thạnh Phú','Xã','925'),('31252','Xã Thạnh Lộc','Xã','924'),('31255','Xã Trung Hưng','Xã','925'),('31258','Thị trấn Thới Lai','Thị xã','927'),('31261','Thị trấn Cờ Đỏ','Thị xã','925'),('31264','Xã Thới Hưng','Xã','925'),('31267','Xã Thới Thạnh','Xã','927'),('31268','Xã Tân Thạnh','Xã','927'),('31270','Xã Xuân Thắng','Xã','927'),('31273','Xã Đông Hiệp','Xã','925'),('31274','Xã Đông Thắng','Xã','925'),('31276','Xã Thới Đông','Xã','925'),('31277','Xã Thới Xuân','Xã','925'),('31279','Xã Đông Bình','Xã','927'),('31282','Xã Đông Thuận','Xã','927'),('31285','Xã Thới Tân','Xã','927'),('31286','Xã Trường Thắng','Xã','927'),('31288','Xã Định Môn','Xã','927'),('31291','Xã Trường Thành','Xã','927'),('31294','Xã Trường Xuân','Xã','927'),('31297','Xã Trường Xuân A','Xã','927'),('31298','Xã Trường Xuân B','Xã','927'),('31299','Thị trấn Phong Điền','Thị xã','926'),('31300','Xã Nhơn Ái','Xã','926'),('31303','Xã Giai Xuân','Xã','926'),('31306','Xã Tân Thới','Xã','926'),('31309','Xã Trường Long','Xã','926'),('31312','Xã Mỹ Khánh','Xã','926'),('31315','Xã Nhơn Nghĩa','Xã','926'),('31318','Phường I','Phường','930'),('31321','Phường III','Phường','930'),('31324','Phường IV','Phường','930'),('31327','Phường V','Phường','930'),('31330','Phường VII','Phường','930'),('31333','Xã Vị Tân','Xã','930'),('31336','Xã Hoả Lựu','Xã','930'),('31338','Xã Tân Tiến','Xã','930'),('31339','Xã Hoả Tiến','Xã','930'),('31340','Phường Ngã Bảy','Phường','931'),('31341','Phường Lái Hiếu','Phường','931'),('31342','Thị trấn Một Ngàn','Thị xã','932'),('31343','Phường Hiệp Thành','Phường','931'),('31344','Xã Hiệp Lợi','Xã','931'),('31345','Xã Tân Hoà','Xã','932'),('31346','Thị trấn Bảy Ngàn','Thị xã','932'),('31348','Xã Trường Long Tây','Xã','932'),('31351','Xã Trường Long A','Xã','932'),('31357','Xã Nhơn Nghĩa A','Xã','932'),('31359','Thị trấn Rạch Gòi','Thị xã','932'),('31360','Xã Thạnh Xuân','Xã','932'),('31362','Thị trấn Cái Tắc','Thị xã','932'),('31363','Xã Tân Phú Thạnh','Xã','932'),('31366','Thị Trấn Ngã Sáu','Thị xã','933'),('31369','Xã Đông Thạnh','Xã','933'),('31372','Xã Phú An','Xã','933'),('31375','Xã Đông Phú','Xã','933'),('31378','Xã Phú Hữu','Xã','933'),('31379','Xã Phú Tân','Xã','933'),('31381','Thị trấn Mái Dầm','Thị xã','933'),('31384','Xã Đông Phước','Xã','933'),('31387','Xã Đông Phước A','Xã','933'),('31393','Thị trấn Kinh Cùng','Thị xã','934'),('31396','Thị trấn Cây Dương','Thị xã','934'),('31399','Xã Tân Bình','Xã','934'),('31402','Xã Bình Thành','Xã','934'),('31405','Xã Thạnh Hòa','Xã','934'),('31408','Xã Long Thạnh','Xã','934'),('31411','Xã Đại Thành','Xã','931'),('31414','Xã Tân Thành','Xã','931'),('31417','Xã Phụng Hiệp','Xã','934'),('31420','Xã Hòa Mỹ','Xã','934'),('31423','Xã Hòa An','Xã','934'),('31426','Xã Phương Bình','Xã','934'),('31429','Xã Hiệp Hưng','Xã','934'),('31432','Xã Tân Phước Hưng','Xã','934'),('31433','Thị trấn Búng Tàu','Thị xã','934'),('31435','Xã Phương Phú','Xã','934'),('31438','Xã Tân Long','Xã','934'),('31441','Thị trấn Nàng Mau','Thị xã','935'),('31444','Xã Vị Trung','Xã','935'),('31447','Xã Vị Thuỷ','Xã','935'),('31450','Xã Vị Thắng','Xã','935'),('31453','Xã Vĩnh Thuận Tây','Xã','935'),('31456','Xã Vĩnh Trung','Xã','935'),('31459','Xã Vĩnh Tường','Xã','935'),('31462','Xã Vị Đông','Xã','935'),('31465','Xã Vị Thanh','Xã','935'),('31468','Xã Vị Bình','Xã','935'),('31471','Phường Thuận An','Phường','937'),('31472','Phường Trà Lồng','Phường','937'),('31473','Phường Bình Thạnh','Phường','937'),('31474','Xã Long Bình','Xã','937'),('31475','Phường Vĩnh Tường','Phường','937'),('31477','Xã Long Trị','Xã','937'),('31478','Xã Long Trị A','Xã','937'),('31480','Xã Long Phú','Xã','937'),('31481','Xã Tân Phú','Xã','937'),('31483','Xã Thuận Hưng','Xã','936'),('31484','Xã Thuận Hòa','Xã','936'),('31486','Xã Vĩnh Thuận Đông','Xã','936'),('31489','Xã Vĩnh Viễn','Xã','936'),('31490','Xã Vĩnh Viễn A','Xã','936'),('31492','Xã Lương Tâm','Xã','936'),('31493','Xã Lương Nghĩa','Xã','936'),('31495','Xã Xà Phiên','Xã','936'),('31498','Phường 5','Phường','941'),('31501','Phường 7','Phường','941'),('31504','Phường 8','Phường','941'),('31507','Phường 6','Phường','941'),('31510','Phường 2','Phường','941'),('31513','Phường 1','Phường','941'),('31516','Phường 4','Phường','941'),('31519','Phường 3','Phường','941'),('31522','Phường 9','Phường','941'),('31525','Phường 10','Phường','941'),('31528','Thị trấn Kế Sách','Thị xã','943'),('31531','Thị trấn An Lạc Thôn','Thị xã','943'),('31534','Xã Xuân Hòa','Xã','943'),('31537','Xã Phong Nẫm','Xã','943'),('31540','Xã An Lạc Tây','Xã','943'),('31543','Xã Trinh Phú','Xã','943'),('31546','Xã Ba Trinh','Xã','943'),('31549','Xã Thới An Hội','Xã','943'),('31552','Xã Nhơn Mỹ','Xã','943'),('31555','Xã Kế Thành','Xã','943'),('31558','Xã Kế An','Xã','943'),('31561','Xã Đại Hải','Xã','943'),('31564','Xã An Mỹ','Xã','943'),('31567','Thị trấn Huỳnh Hữu Nghĩa','Thị xã','944'),('31569','Thị trấn Châu Thành','Thị xã','942'),('31570','Xã Hồ Đắc Kiện','Xã','942'),('31573','Xã Phú Tâm','Xã','942'),('31576','Xã Thuận Hòa','Xã','942'),('31579','Xã Long Hưng','Xã','944'),('31582','Xã Phú Tân','Xã','942'),('31585','Xã Thiện Mỹ','Xã','942'),('31588','Xã Hưng Phú','Xã','944'),('31591','Xã Mỹ Hương','Xã','944'),('31594','Xã An Hiệp','Xã','942'),('31597','Xã Mỹ Tú','Xã','944'),('31600','Xã An Ninh','Xã','942'),('31603','Xã Mỹ Phước','Xã','944'),('31606','Xã Thuận Hưng','Xã','944'),('31609','Xã Mỹ Thuận','Xã','944'),('31612','Xã Phú Mỹ','Xã','944'),('31615','Thị trấn Cù Lao Dung','Thị xã','945'),('31618','Xã An Thạnh 1','Xã','945'),('31621','Xã An Thạnh Tây','Xã','945'),('31624','Xã An Thạnh Đông','Xã','945'),('31627','Xã Đại Ân 1','Xã','945'),('31630','Xã An Thạnh 2','Xã','945'),('31633','Xã An Thạnh 3','Xã','945'),('31636','Xã An Thạnh Nam','Xã','945'),('31639','Thị trấn Long Phú','Thị xã','946'),('31642','Xã Song Phụng','Xã','946'),('31645','Thị trấn Đại Ngãi','Thị xã','946'),('31648','Xã Hậu Thạnh','Xã','946'),('31651','Xã Long Đức','Xã','946'),('31654','Xã Trường Khánh','Xã','946'),('31657','Xã Phú Hữu','Xã','946'),('31660','Xã Tân Hưng','Xã','946'),('31663','Xã Châu Khánh','Xã','946'),('31666','Xã Tân Thạnh','Xã','946'),('31669','Xã Long Phú','Xã','946'),('31672','Xã Đại Ân  2','Xã','951'),('31673','Thị trấn Trần Đề','Thị xã','951'),('31675','Xã Liêu Tú','Xã','951'),('31678','Xã Lịch Hội Thượng','Xã','951'),('31679','Thị trấn Lịch Hội Thượng','Thị xã','951'),('31681','Xã Trung Bình','Xã','951'),('31684','Thị trấn Mỹ Xuyên','Thị xã','947'),('31687','Xã Tài Văn','Xã','951'),('31690','Xã Đại Tâm','Xã','947'),('31693','Xã Tham Đôn','Xã','947'),('31696','Xã Viên An','Xã','951'),('31699','Xã Thạnh Thới An','Xã','951'),('31702','Xã Thạnh Thới Thuận','Xã','951'),('31705','Xã Viên Bình','Xã','951'),('31708','Xã Thạnh Phú','Xã','947'),('31711','Xã Ngọc Đông','Xã','947'),('31714','Xã Thạnh Quới','Xã','947'),('31717','Xã Hòa Tú 1','Xã','947'),('31720','Xã Gia Hòa 1','Xã','947'),('31723','Xã Ngọc Tố','Xã','947'),('31726','Xã Gia Hòa 2','Xã','947'),('31729','Xã Hòa Tú II','Xã','947'),('31732','Phường 1','Phường','948'),('31735','Phường 2','Phường','948'),('31738','Xã Vĩnh Quới','Xã','948'),('31741','Xã Tân Long','Xã','948'),('31744','Xã Long Bình','Xã','948'),('31747','Phường 3','Phường','948'),('31750','Xã Mỹ Bình','Xã','948'),('31753','Xã Mỹ Quới','Xã','948'),('31756','Thị trấn Phú Lộc','Thị xã','949'),('31757','Thị trấn Hưng Lợi','Thị xã','949'),('31759','Xã Lâm Tân','Xã','949'),('31762','Xã Thạnh Tân','Xã','949'),('31765','Xã Lâm Kiết','Xã','949'),('31768','Xã Tuân Tức','Xã','949'),('31771','Xã Vĩnh Thành','Xã','949'),('31774','Xã Thạnh Trị','Xã','949'),('31777','Xã Vĩnh Lợi','Xã','949'),('31780','Xã Châu Hưng','Xã','949'),('31783','Phường 1','Phường','950'),('31786','Xã Hòa Đông','Xã','950'),('31789','Phường Khánh Hòa','Phường','950'),('31792','Xã Vĩnh Hiệp','Xã','950'),('31795','Xã Vĩnh Hải','Xã','950'),('31798','Xã Lạc Hòa','Xã','950'),('31801','Phường 2','Phường','950'),('31804','Phường Vĩnh Phước','Phường','950'),('31807','Xã Vĩnh Tân','Xã','950'),('31810','Xã Lai Hòa','Xã','950'),('31813','Phường 2','Phường','954'),('31816','Phường 3','Phường','954'),('31819','Phường 5','Phường','954'),('31822','Phường 7','Phường','954'),('31825','Phường 1','Phường','954'),('31828','Phường 8','Phường','954'),('31831','Phường Nhà Mát','Phường','954'),('31834','Xã Vĩnh Trạch','Xã','954'),('31837','Xã Vĩnh Trạch Đông','Xã','954'),('31840','Xã Hiệp Thành','Xã','954'),('31843','Thị trấn Ngan Dừa','Thị xã','956'),('31846','Xã Ninh Quới','Xã','956'),('31849','Xã Ninh Quới A','Xã','956'),('31852','Xã Ninh Hòa','Xã','956'),('31855','Xã Lộc Ninh','Xã','956'),('31858','Xã Vĩnh Lộc','Xã','956'),('31861','Xã Vĩnh Lộc A','Xã','956'),('31863','Xã Ninh Thạnh Lợi A','Xã','956'),('31864','Xã Ninh Thạnh Lợi','Xã','956'),('31867','Thị trấn Phước Long','Thị xã','957'),('31870','Xã Vĩnh Phú Đông','Xã','957'),('31873','Xã Vĩnh Phú Tây','Xã','957'),('31876','Xã Phước Long','Xã','957'),('31879','Xã Hưng Phú','Xã','957'),('31882','Xã Vĩnh Thanh','Xã','957'),('31885','Xã Phong Thạnh Tây A','Xã','957'),('31888','Xã Phong Thạnh Tây B','Xã','957'),('31891','Thị trấn Hòa Bình','Thị xã','961'),('31894','Xã Vĩnh Hưng','Xã','958'),('31897','Xã Vĩnh Hưng A','Xã','958'),('31900','Thị trấn Châu Hưng','Thị xã','958'),('31903','Xã Châu Hưng A','Xã','958'),('31906','Xã Hưng Thành','Xã','958'),('31909','Xã Hưng Hội','Xã','958'),('31912','Xã Châu Thới','Xã','958'),('31915','Xã Minh Diệu','Xã','961'),('31918','Xã Vĩnh Bình','Xã','961'),('31921','Xã Long Thạnh','Xã','958'),('31924','Xã Vĩnh Mỹ B','Xã','961'),('31927','Xã Vĩnh Hậu','Xã','961'),('31930','Xã Vĩnh Hậu A','Xã','961'),('31933','Xã Vĩnh Mỹ A','Xã','961'),('31936','Xã Vĩnh Thịnh','Xã','961'),('31942','Phường 1','Phường','959'),('31945','Phường Hộ Phòng','Phường','959'),('31948','Xã Phong Thạnh Đông','Xã','959'),('31951','Phường Láng Tròn','Phường','959'),('31954','Xã Phong Tân','Xã','959'),('31957','Xã Tân Phong','Xã','959'),('31960','Xã Phong Thạnh','Xã','959'),('31963','Xã Phong Thạnh A','Xã','959'),('31966','Xã Phong Thạnh Tây','Xã','959'),('31969','Xã Tân Thạnh','Xã','959'),('31972','Thị trấn Gành Hào','Thị xã','960'),('31975','Xã Long Điền Đông','Xã','960'),('31978','Xã Long Điền Đông A','Xã','960'),('31981','Xã Long Điền','Xã','960'),('31984','Xã Long Điền Tây','Xã','960'),('31985','Xã Điền Hải','Xã','960'),('31987','Xã An Trạch','Xã','960'),('31988','Xã An Trạch A','Xã','960'),('31990','Xã An Phúc','Xã','960'),('31993','Xã Định Thành','Xã','960'),('31996','Xã Định Thành A','Xã','960'),('31999','Phường 9','Phường','964'),('32002','Phường 4','Phường','964'),('32005','Phường 1','Phường','964'),('32008','Phường 5','Phường','964'),('32011','Phường 2','Phường','964'),('32014','Phường 8','Phường','964'),('32017','Phường 6','Phường','964'),('32020','Phường 7','Phường','964'),('32022','Phường Tân Xuyên','Phường','964'),('32023','Xã An Xuyên','Xã','964'),('32025','Phường Tân Thành','Phường','964'),('32026','Xã Tân Thành','Xã','964'),('32029','Xã Tắc Vân','Xã','964'),('32032','Xã Lý Văn Lâm','Xã','964'),('32035','Xã Định Bình','Xã','964'),('32038','Xã Hòa Thành','Xã','964'),('32041','Xã Hòa Tân','Xã','964'),('32044','Thị trấn U Minh','Thị xã','966'),('32047','Xã Khánh Hòa','Xã','966'),('32048','Xã Khánh Thuận','Xã','966'),('32050','Xã Khánh Tiến','Xã','966'),('32053','Xã Nguyễn Phích','Xã','966'),('32056','Xã Khánh Lâm','Xã','966'),('32059','Xã Khánh An','Xã','966'),('32062','Xã Khánh Hội','Xã','966'),('32065','Thị trấn Thới Bình','Thị xã','967'),('32068','Xã Biển Bạch','Xã','967'),('32069','Xã Tân Bằng','Xã','967'),('32071','Xã Trí Phải','Xã','967'),('32072','Xã Trí Lực','Xã','967'),('32074','Xã Biển Bạch Đông','Xã','967'),('32077','Xã Thới Bình','Xã','967'),('32080','Xã Tân Phú','Xã','967'),('32083','Xã Tân Lộc Bắc','Xã','967'),('32086','Xã Tân Lộc','Xã','967'),('32089','Xã Tân Lộc Đông','Xã','967'),('32092','Xã Hồ Thị Kỷ','Xã','967'),('32095','Thị trấn Trần Văn Thời','Thị xã','968'),('32098','Thị trấn Sông Đốc','Thị xã','968'),('32101','Xã Khánh Bình Tây Bắc','Xã','968'),('32104','Xã Khánh Bình Tây','Xã','968'),('32107','Xã Trần Hợi','Xã','968'),('32108','Xã Khánh Lộc','Xã','968'),('32110','Xã Khánh Bình','Xã','968'),('32113','Xã Khánh Hưng','Xã','968'),('32116','Xã Khánh Bình Đông','Xã','968'),('32119','Xã Khánh Hải','Xã','968'),('32122','Xã Lợi An','Xã','968'),('32124','Xã Phong Điền','Xã','968'),('32125','Xã Phong Lạc','Xã','968'),('32128','Thị trấn Cái Nước','Thị xã','969'),('32130','Xã Thạnh Phú','Xã','969'),('32131','Xã Lương Thế Trân','Xã','969'),('32134','Xã Phú Hưng','Xã','969'),('32137','Xã Tân Hưng','Xã','969'),('32140','Xã Hưng Mỹ','Xã','969'),('32141','Xã Hoà Mỹ','Xã','969'),('32142','Xã Đông Hưng','Xã','969'),('32143','Xã Đông Thới','Xã','969'),('32146','Xã Tân Hưng Đông','Xã','969'),('32149','Xã Trần Thới','Xã','969'),('32152','Thị trấn Đầm Dơi','Thị xã','970'),('32155','Xã Tạ An Khương','Xã','970'),('32158','Xã Tạ An Khương  Đông','Xã','970'),('32161','Xã Trần Phán','Xã','970'),('32162','Xã Tân Trung','Xã','970'),('32164','Xã Tân Đức','Xã','970'),('32167','Xã Tân Thuận','Xã','970'),('32170','Xã Tạ An Khương  Nam','Xã','970'),('32173','Xã Tân Duyệt','Xã','970'),('32174','Xã Tân Dân','Xã','970'),('32176','Xã Tân Tiến','Xã','970'),('32179','Xã Quách Phẩm Bắc','Xã','970'),('32182','Xã Quách Phẩm','Xã','970'),('32185','Xã Thanh Tùng','Xã','970'),('32186','Xã Ngọc Chánh','Xã','970'),('32188','Xã Nguyễn Huân','Xã','970'),('32191','Thị Trấn Năm Căn','Thị xã','971'),('32194','Xã Hàm Rồng','Xã','971'),('32197','Xã Hiệp Tùng','Xã','971'),('32200','Xã Đất Mới','Xã','971'),('32201','Xã Lâm Hải','Xã','971'),('32203','Xã Hàng Vịnh','Xã','971'),('32206','Xã Tam Giang','Xã','971'),('32209','Xã Tam Giang Đông','Xã','971'),('32212','Thị trấn Cái Đôi Vàm','Thị xã','972'),('32214','Xã Phú Thuận','Xã','972'),('32215','Xã Phú Mỹ','Xã','972'),('32218','Xã Phú Tân','Xã','972'),('32221','Xã Tân Hải','Xã','972'),('32224','Xã Việt Thắng','Xã','972'),('32227','Xã Tân Hưng Tây','Xã','972'),('32228','Xã Rạch Chèo','Xã','972'),('32230','Xã Việt Khái','Xã','972'),('32233','Xã Tam Giang Tây','Xã','973'),('32236','Xã Tân Ân Tây','Xã','973'),('32239','Xã Viên An Đông','Xã','973'),('32242','Xã Viên An','Xã','973'),('32244','Thị trấn Rạch Gốc','Thị xã','973'),('32245','Xã Tân Ân','Xã','973'),('32248','Xã Đất Mũi','Xã','973')";
 
 
-
-//    private String query_add_foreignKey_Catalog_CatalogParents = "ALTER TABLE "+ TABLE_CATALOG +" \n" +
-//            "  ADD FOREIGN KEY ('idParents') REFERENCES 'catalog_parents' ('id');";
-//    private String query_add_foreignKey_CatalogParents_CatalogGrParents = "ALTER TABLE 'catalog_parents'\n" +
-//            "  ADD FOREIGN KEY ('idCatalog_gr_parents') REFERENCES 'catalog_gr_parents' ('id');";
-//    private String query_add_foreignKey_imageProduct_Product = "ALTER TABLE 'image_product'\n" +
-//            "  ADD FOREIGN KEY ('idProduct') REFERENCES 'product' ('id');\n";
-//    private String query_add_foreignKey_product_catalog = "ALTER TABLE 'product'\n" +
-//            "  ADD FOREIGN KEY ('idCatalog') REFERENCES 'catalog' ('id');";
-//    private String query_add_foreignKey_Transaction_user = "ALTER TABLE transaction " +
-//            " ADD FOREIGN KEY ('user_id') REFERENCES 'user'('id');";
-//    private String query_add_foreignKey_order_transaction = "ALTER TABLE order " +
-//            " ADD FOREIGN KEY ('idTransaction') REFERENCES 'transaction'('id');";
-//    private String query_add_foreignKey_order_product = "ALTER TABLE order " +
-//            " ADD FOREIGN KEY ('idProduct') REFERENCES 'product'('id');";
-
     private String query_insertData_User = "INSERT INTO 'user' ('id', 'name', 'phoneNumber', 'password') VALUES " +
-            "(0, 'noname', '012345', '123')";
-    private String query_insertData_Catalog = "INSERT INTO 'catalog' ('id', 'name', 'idParents', 'imageUrl') VALUES\n" +
-            "(NULL, 'Samsung', 1, 'https://cdn.tgdd.vn/Brand/1/Samsung42-b_25.jpg'),\n" +
-            "(NULL, 'Iphone', 1, 'https://cdn.tgdd.vn/Brand/1/iPhone-(Apple)42-b_16.jpg'),\n" +
-            "(NULL, 'Nokia', 1, 'https://cdn.tgdd.vn/Brand/1/Nokia42-b_21.jpg'),\n" +
-            "(NULL, 'Xiaomi', 1, 'https://cdn.tgdd.vn/Brand/1/Xiaomi42-b_45.jpg'),\n" +
-            "(NULL, 'LG', 1, 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/LG_logo_%282015%29.svg/800px-LG_logo_%282015%29.svg.png'),\n" +
-            "(NULL, 'Oppo', 1, 'https://cdn.tgdd.vn/Brand/1/OPPO42-b_9.png'),\n" +
-            "(NULL, 'Vivo', 1, 'https://cdn.tgdd.vn/Brand/1/Vivo42-b_50.jpg'),\n" +
-            "(NULL, 'Realme', 1, 'https://cdn.tgdd.vn/Brand/1/Realme42-b_37.png'),\n" +
-            "(NULL, 'Huawei', 1, 'https://cdn.tgdd.vn/Brand/1/Huawei42-b_30.jpg'),\n" +
-            "(NULL, 'Vsmart', 1, 'https://cdn.tgdd.vn/Brand/1/Vsmart42-b_40.png'),\n" +
-            "(NULL, 'Bphone', 1, 'https://m.bkav.com.vn/documents/10180/0/B3%20118.jpg')";
-    private String query_insertData_Catalog_2 = "INSERT INTO 'catalog' ('id', 'name', 'idParents', 'imageUrl') VALUES " +
-            "(NULL, 'Laptop Truyền Thống', '6', 'https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c06244517.png'), " +
-            "(NULL, 'Macbook', '6', 'https://phucanhcdn.com/media/product/33871_lap_app_mrea2.png'), " +
-            "(NULL, 'Laptop Gaming', '6', 'https://laptop88.vn/media/product/pro_poster_4618.jpg'), " +
-            "(NULL, 'Laptop 2 trong 1', '6', 'https://laptop88.vn/media/product/pro_poster_4618.jpg')";
-    private String query_insertData_Catalog_3 = "INSERT INTO 'catalog' ('id', 'name', 'idParents', 'imageUrl') VALUES\n" +
-            "(NULL, 'Màn Hình Máy Tính', 7, 'https://bizweb.dktcdn.net/thumb/grande/100/305/872/products/m-n-h-nh-vi-t-nh-hp-24es-t3m79aa.png?v=1525949768840'),\n" +
-            "(NULL, 'Máy In - Photocopy', 7, 'https://anhsaoviet.net/thumbs_size/product/2018_04/mp-201_jpg/1000x800_fmax_mp-201.jpg'),\n" +
-            "(NULL, 'Phần Mềm Máy Tính', 7, 'https://www.kaspersky.com.vn/Images/KISA_188x266_FL2020.png'),\n" +
-            "(NULL, 'Mực In và Toner', 7, 'https://vitinhnguyenkim.vn/uploads/product/muc-in-giay-in/muc-in-laser-oki-c911-black-toner.png'),\n" +
-            "(NULL, 'Máy Scan Tài Liệu', 7, 'https://vn.canon/media/migration/shared/live/products/VN/lide-220-b1.png'),\n" +
-            "(NULL, 'Giấy In', 7, 'https://nhasachhuonghuyen.com/wp-content/uploads/2018/08/giay-doublea-a4-70gsm.jpg'),\n" +
-            "(NULL, 'Máy Chiếu và Phụ Kiện Máy Chiếu', 7, 'https://product.hstatic.net/1000340975/product/upload_bf0809fc57714b1abf10767a1d0bf2fc_grande.jpg'),\n" +
-            "(NULL, 'Máy Scan Mã Vạch', 7, 'https://maybanhang.net/wp-content/uploads/2015/12/may-quet-ma-vach-1.png'),\n" +
-            "(NULL, 'Máy Hủy Tài Liệu', 7, 'https://sangha.vn/image/may-huy-tai-lieu-deli-9952--48.png'),\n" +
-            "(NULL, 'Máy Chấm Công', 7, 'https://www.anphatpc.com.vn/media/product/24296_m__y_ch___m_c__ng_v__n_tay_v___th____zkteco_g2___50_000_th____1.png'),\n" +
-            "(NULL, 'Máy Đếm Tiền', 7, 'https://cdn.nguyenkimmall.com/images/detailed/170/10025997-M%C3%81Y-%C4%90%E1%BA%BEM-TI%E1%BB%80N-SILICON-MC-2700-01.png'),\n" +
-            "(NULL, 'Thiết Bị Truyền Thông Hội Nghị', 7, 'https://baoantelecom.com/upload/images/aver-svc500-01.png');";
-    
-    private String query_insertData_catalogGrParents = "INSERT INTO 'catalog_gr_parents' ('id', 'name', 'imageUrl') VALUES\n" +
-            "(NULL, 'Điện Thoại - Máy Tính Bảng', 'https://cdn.tgdd.vn/Products/Images/42/204088/asus-rog-phone-2-400x460.png'),\n" +
-            "(NULL, 'Laptop - Máy Vi Tính - Linh Kiện', 'https://genk.mediacdn.vn/139269124445442048/2020/4/1/gaming-laptop-vs-desktop-rig-hero1557864085439-15857154549401928686836.png'),\n" +
-            "(NULL, 'Đồ Thể Thao', 'https://images.allvolleyball.com/images/uploads/category_7_6775.png'),\n" +
-            "(NULL, 'Ô Tô - Xe Máy - Xe đạp', 'https://miro.medium.com/max/550/0*KfPYItKa06WnD_f9.png')";
-
-    private String query_insertData_catalogParents = "INSERT INTO 'catalog_parents' ('id', 'name', 'idCatalog_gr_parents') VALUES\n" +
-            "(NULL, 'Điện Thoại Smartphone', 1),\n" +
-            "(NULL, 'Máy tính bảng', 1),\n" +
-            "(NULL, 'Máy đọc sách', 1),\n" +
-            "(NULL, 'Điện thoại phổ thông', 1),\n" +
-            "(NULL, 'Điện thoại bàn', 1),\n" +
-            "(NULL, 'Laptop', 2),\n" +
-            "(NULL, 'Thiết bị văn phòng - Thiết bị ngoại vi', 2),\n" +
-            "(NULL, 'Thiết bị lưu trữ', 2),\n" +
-            "(NULL, 'Thiết bị mạng', 2),\n" +
-            "(NULL, 'PC - Máy tính bộ', 2),\n" +
-            "(NULL, 'Linh kiện máy tính - Phụ kiện máy tính', 2);\n";
-    private String query_insertData_Product = "INSERT INTO 'product' ('id', 'idCatalog', 'name', 'description', 'price', 'discount', 'created', 'view') VALUES\n" +
-            "(NULL, 1, 'Samsung Galaxy A01', 'Samsung Galaxy A01 là một smartphone nhà Samsung mới được ra mắt vào đầu năm 2020. Chiếc điện thoại nổi bật với camera kép, màn hình Infinity-V tràn cạnh, chạy hệ điều hành Android 10 mới nhất đi kèm mức giá bán cực kỳ hấp dẫn.', '2790000.0000', 0, 0, 0),\n" +
-            "(NULL, 1, 'Samsung Galaxy A10s', 'Samsung Galaxy A10s là bản nâng cấp của chiếc Galaxy A10 đã ra mắt trước đó với camera kép, dung lượng pin lớn hơn và đã được trang bị thêm cảm biến vân tay.', '3690000.0000', 0, 0, 0),\n" +
-            "(NULL, 1, 'Samsung Galaxy A11', 'Samsung Galaxy A11 với thiết kế màn hình Infinity-O siêu tràn viền, bộ ba camera ấn tượng, đi kèm với mức giá phải chăng hứa hẹn sẽ tạo nên cơn sốt trên thị trường điện thoại giá rẻ.', '3690000.0000', 0, 0, 0),\n" +
-            "(NULL, 2, 'iPhone 7 32GB', 'iPhone 7 32GB vẫn mang trên mình thiết kế quen thuộc của từ thời iPhone 6 nhưng có nhiều thay đổi lớn về phần cứng, dàn loa stereo và cấu hình cực mạnh', '9990000.0000', 0, 0, 0),\n" +
-            "(NULL, 2, 'iPhone 7 Plus 32GB', 'Mặc dù giữ nguyên vẻ bề ngoài so với dòng điện thoại iPhone đời trước, bù lại iPhone 7 Plus 32GB lại được trang bị nhiều nâng cấp đáng giá như camera kép đầu tiên cũng như cấu hình mạnh mẽ.', '8990000.0000', 0, 0, 0),\n" +
-            "(NULL, 2, 'iPhone 8 Plus 64GB', 'Thừa hưởng những thiết kế đã đạt đến độ chuẩn mực, thế hệ iPhone 8 Plus thay đổi phong cách bóng bẩy hơn và bổ sung hàng loạt tính năng cao cấp cho trải nghiệm sử dụng vô cùng tuyệt vời.\\r\\n', '14490000.0000', 0, 0, 0),\n" +
-            "(NULL, 3, 'Nokia C1', 'Nokia C1 là dòng điện thoại giá rẻ hướng tới đối tượng là những người dùng phổ thông, sử dụng smartphone với nhu cầu cơ bản. Chiếc điện thoại cung cấp đầy đủ các tính năng thiết yếu: Không gian hiển thị lớn, bộ đôi camera trước và sau với đèn flash, 2 SIM...', '1390000.0000', 0, 0, 0),\n" +
-            "(NULL, 3, 'Nokia C2', 'Nokia C2 là một smartphone giá rẻ chạy Android Go, máy có màn hình rộng, hiệu năng ổn định cùng với mức giá hấp dẫn dễ tiếp cận đến người dùng có nhu cầu cơ bản, phổ thông.', '1490000.0000', 0, 0, 0),\n" +
-            "(NULL, 3, 'Nokia 3.2 16GB', 'Nokia quay trở lại thị trường mạnh mẽ với những chiếc smartphone giá cả phải chăng nhưng vẫn đáp ứng tốt nhu cầu sử dụng hằng ngày của người dùng và Nokia 3.2 16GB là một chiếc máy như vậy.\\r\\n', '1990000.0000', 0, 0, 0),\n" +
-            "(NULL, 4, 'Xiaomi Redmi Go 16GB', 'Xiaomi Redmi Go 16GB là một trong những chiếc smartphone giá rẻ nhất tới từ Xiaomi nhưng vẫn mang lại cho bạn một trải nghiệm mượt mà đến \\\"khó tin\\\".', '1790000.0000', 0, 0, 0),\n" +
-            "(NULL, 4, 'Xiaomi Redmi 8A', 'Xiaomi Redmi 8A là một chiếc smartphone nổi bật trong phân khúc giá rẻ với nhiều ưu điểm như pin khủng, chip Snapdragon mới, camera AI và màn hình giọt nước thời thượng.', '2290000.0000', 0, 0, 0),\n" +
-            "(NULL, 4, 'Xiaomi Redmi 8 (3GB/32GB)', 'Những sản phẩm của Xiaomi thường trang bị cấu hình mạnh mẽ trong tầm giá, camera nhiều tính năng và viên pin \\\"trâu\\\". Xiaomi Redmi 8 3GB/32GB cũng không phải là ngoại lệ và với chiếc smartphone này Xiaomi một lần nữa khẳng định vị thế của mình trong phân khúc smartphone giá rẻ.', '2690000.0000', 0, 0, 0);";
-
-
-    public String QueryInsertIntoTable(String tableName, String columns, String values ){
-        String query = "INSERT INTO " + tableName + ' ' + columns + " VALUES \n" + values;
-        return query;
-    }
-
-    private  String query_insertData_Advertisement = "INSERT INTO 'advertisement' ('name', 'imageUrl') VALUES" +
-            "( 'REALME', 'https://salt.tikicdn.com/cache/w885/ts/banner/af/3c/ae/fa7f2edb309e44da80cb83e7ded10d92.jpg')," +
-            "( 'Đại tiệc sale điện tử   ', 'https://salt.tikicdn.com/cache/w885/ts/banner/92/2a/65/bc6c7f873376c8e054c501f0a431c649.jpg')," +
-            "( 'Ngập tràn công nghệ', 'https://salt.tikicdn.com/cache/w885/ts/banner/06/21/ac/b7872b67a058e3143d849233f75798c1.jpg')," +
-            "( 'SMARTPHONE', 'https://salt.tikicdn.com/cache/w885/ts/banner/5e/cf/57/c15399a93c571e6ffd2dd49b57ea933c.png')," +
-            "( 'SAMSUNG', 'https://salt.tikicdn.com/cache/w885/ts/banner/8a/9b/14/3e89bc68c4411e44c129cd4c367fd77f.jpg')," +
-            "( 'SALE 6.5', 'https://salt.tikicdn.com/cache/w885/ts/banner/8a/fa/64/d6b044897f416a23a1bb744aaf883ea2.jpg')," +
-            "( 'SALE  8.5', 'https://salt.tikicdn.com/cache/w885/ts/banner/ff/75/88/f7c7221cb8280e169bea31b6c9213b61.jpg')," +
-            "( 'SALE 27.4', 'https://salt.tikicdn.com/cache/w885/ts/banner/47/3e/65/4678cbc0ec7f7b4e710a7849f3480691.jpg')," +
-            "( 'phụ kiện', 'https://salt.tikicdn.com/cache/w885/ts/banner/1a/9c/ac/d3bd90154a15b9740c18cdce8e0dfbc8.jpg')," +
-            "( 'xe máy', 'https://salt.tikicdn.com/cache/w885/ts/banner/1a/9c/ac/d3bd90154a15b9740c18cdce8e0dfbc8.jpg')";
+            "(0, 'thang', '012345', '123')";
 
 
     private static int VERSION = 1;
@@ -288,19 +103,15 @@ public class DBManager extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // Create Table
-        db.execSQL(query_create_table_admin);
         db.execSQL(query_create_table_user);
-        db.execSQL(query_create_table_order);
-        db.execSQL(query_create_table_advertisement);
         db.execSQL(query_create_table_province);
         db.execSQL(query_create_table_district);
         db.execSQL(query_create_table_ward);
-        db.execSQL(query_create_table_ipAddress);
 
         //Insert Data
-//        db.execSQL(query_insertData_Advertisement);
+
         db.execSQL(query_insertData_User);
-        Log.d("thang", "onCreate: insert user");
+
         db.execSQL(query_insertData_district);
         db.execSQL(query_insertData_province);
 
@@ -322,26 +133,12 @@ public class DBManager extends SQLiteOpenHelper {
         db.execSQL(query_insertData_ward_16);
         db.execSQL(query_insertData_ward_17);
 
-        db.execSQL(query_insertData_ipAddress);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-    }
-
-    public void insertData_Admin(Integer id, String name, String userName, String password){
-        SQLiteDatabase db =this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(ADMIN_ID, id);
-        values.put(ADMIN_NAME, name);
-        values.put(ADMIN_USERNAME, userName);
-        values.put(ADMIN_PASSWORD, password);
-
-        db.insert(TABLE_ADMIN, null, values);
-        db.close();
     }
 
     public void insertData_User(int id){
@@ -355,21 +152,6 @@ public class DBManager extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertData_Order(Order order){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put(ORDER_IDPRODUCT, order.getmIdProduct());
-        values.put(ORDER_QTY, order.getmQty());
-        values.put(ORDER_AMOUNT, order.getmAmount());
-
-        db.insert(TABLE_ORDER, null, values);
-    }
-
-    public void clearAllData_Order(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ORDER, null, null);
-    }
 
     public int getIdUser(){
 
@@ -383,24 +165,8 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        Log.d("thang", "getIdUser: " +idUser);
 
         return idUser;
-    }
-
-    public String getIPAddress(){
-        String ip="192.168.1.105";
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT ip FROM "+ TABLE_IP_ADDRESS + " WHERE id =1";
-        Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()){
-            ip = cursor.getString(0);
-        }
-
-        cursor.close();
-
-        return ip;
     }
 
     public void updateData_User(int idUser , int idUserOld){
@@ -409,30 +175,6 @@ public class DBManager extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.update(TABLE_USER, cv, "id =" + idUserOld, null);
         Log.d("thang", "updateData_User: " + idUser);
-    }
-
-    public void updateIPAddress(String ip){
-        ContentValues cv = new ContentValues();
-        cv.put(IP, ip);
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.update(TABLE_IP_ADDRESS, cv, "id =" + 1, null);
-    }
-
-
-    public ArrayList<String> getAdvertisementsUrl(){
-        ArrayList<String> urls  = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT * FROM Advertisement";
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            do{
-                urls.add(cursor.getString(2));
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-
-        return urls;
     }
 
     public ArrayList<String> getProvince(){
@@ -524,25 +266,5 @@ public class DBManager extends SQLiteOpenHelper {
         cursor.close();
 
         return wards;
-    }
-
-    public ArrayList<Order> getAllData_Order(){
-        ArrayList<Order> orders = new ArrayList<>();
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT idProduct, qty, amount  FROM "+ TABLE_ORDER;
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor.moveToFirst()){
-            do {
-                Order order = new Order(
-                        cursor.getInt(0),
-                        cursor.getInt(1),
-                        cursor.getInt(2)
-                );
-                orders.add(order);
-            }while (cursor.moveToNext());
-        }
-        cursor.close();
-        return orders;
     }
 }

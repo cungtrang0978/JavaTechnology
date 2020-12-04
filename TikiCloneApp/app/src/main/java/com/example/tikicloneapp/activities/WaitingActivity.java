@@ -12,12 +12,14 @@ import com.example.tikicloneapp.R;
 
 
 public class WaitingActivity extends AppCompatActivity {
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_waiting);
-        final Handler handler = new Handler();
+
+
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {

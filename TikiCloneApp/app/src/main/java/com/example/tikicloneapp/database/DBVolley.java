@@ -55,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.content.ContentValues.TAG;
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.activities.ListProductActivity.underlineTextView;
 
@@ -65,8 +66,9 @@ public class DBVolley {
 //    public static String IP_ADDRESS = "http://192.168.1.103/"; // wifi ChoAnhLamQUenNha
 //    public static String IP_ADDRESS = "http://192.168.1.105/"; // wifi ChoAnhLamQUenNha
 //    public static String IP_ADDRESS = "http://192.168.0.117/"; //wifi QuocViet
-    public String IP_ADDRESS = "http://tikiclone.maitrongvinh.cf/";
+//    public String IP_ADDRESS = "http://tikiclone.maitrongvinh.cf/";
 //    public String IP_ADDRESS = "https://vinhmai.tk/tiki/";
+    public String IP_ADDRESS = "https://hdh.webtaunhanh.com/";
 
     public String URL_GET_CATALOG = IP_ADDRESS + "getCatalog.php";
     public String URL_INSERT_CATALOG = IP_ADDRESS + "insertCatalog.php";
@@ -991,7 +993,9 @@ public class DBVolley {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_UPDATE_TRANSACT, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-//                Log.d("thang", "updateTransact: "+ response);
+//                Log.d(TAG, "updateTransact: "+ response);
+                Log.d("thang", "DBVolley - updateTransact: "+ response+ "; idTransact: "+ idTransact +
+                        "");
 
                 if (response.equals(update_success)) {
                     return;
@@ -1349,7 +1353,8 @@ public class DBVolley {
                     public void onResponse(String response) {
 
                         try {
-                            Log.d("thang", "getRecommendedProductsByProductId: " + response);
+                            Log.d(TAG, "getRecommendedProductsByProductId: " + response);
+
                             ArrayList<Product> _products = new ArrayList<>();
 
                             JSONArray jsonArray = new JSONArray(response);
@@ -1476,7 +1481,7 @@ public class DBVolley {
 //                        Log.d(TAG, "onResponse: " + response);
                         try {
                             ArrayList<Rate> _rates = new ArrayList<>();
-                            Log.d("thang", "getReviewedProducts: " + response);
+//                            Log.d("thang", "getReviewedProducts: " + response);
                             JSONArray jsonArray = new JSONArray(response);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 try {

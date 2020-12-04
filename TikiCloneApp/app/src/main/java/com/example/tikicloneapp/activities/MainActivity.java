@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     void checkIdUser(){
         int idUserOld = dbManager.getIdUser();
         idUser = getIntent().getIntExtra("idUser", idUserOld);
+        Log.d("thang", "checkIdUser: " + idUser + "; idUserOld: " + idUserOld);
 //        if(idUserOld == 0){
 //            dbManager.clearAllData_Order();
 //        }
