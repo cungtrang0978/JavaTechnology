@@ -551,7 +551,7 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 
-    public void checkUserAccount(final String username, final String password) {
+    public void getUserAccount(final String username, final String password) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_CHECK_LOGIN, new Response.Listener<String>() {
             @Override

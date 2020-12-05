@@ -27,9 +27,14 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
+import com.example.tikicloneapp.activities.AdminManagementActivity;
 import com.example.tikicloneapp.activities.MainActivity;
 import com.example.tikicloneapp.database.DBVolley;
+import com.example.tikicloneapp.models.User;
 import com.google.android.material.textfield.TextInputLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +74,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (validateUsername() && validatePassword()) {
-                    MyClass.callPanel(lay_loading,1000);
+                    MyClass.callPanel(lay_loading, 1000);
                     checkUserAccount();
                 }
             }
@@ -130,30 +135,44 @@ public class LoginFragment extends Fragment {
                     edtPassword.setError(null);
                     return;
                 }
-                if(response.equals("fail connection")){
+                if (response.equals("fail connection")) {
                     Toast.makeText(getContext(), "Kiểm tra lại đường truyền!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                int code = getActivity().getIntent().getIntExtra("CODE",0);
-                int idUser = Integer.parseInt(response);
-                if(code==0){
-                    //finish and exit activity
-                    getActivity().finishAffinity();
-                    Intent intent = new Intent(getContext(), MainActivity.class);
-                    intent.putExtra("idUser", idUser);
-                    startActivity(intent);
+                int code = getActivity().getIntent().getIntExtra("CODE", 0);
+                try {
+                    JSONObject jsonUser = new JSONObject(response);
+                    User user = new User(jsonUser.getInt("id"), jsonUser.getInt("roleId"));
+                    int idUser = user.getmId();
+
+                    if (user.getmRoleId() == User.ROLE_ADMIN) {
+                        getActivity().finishAffinity();
+                        Intent intent = new Intent(getContext(), AdminManagementActivity.class);
+                        intent.putExtra("idUser", idUser);
+                        startActivity(intent);
+                    } else if (user.getmRoleId() == User.ROLE_USER) {
+                        if (code == 0) {
+                            //finish and exit activity
+                            getActivity().finishAffinity();
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            intent.putExtra("idUser", idUser);
+                            startActivity(intent);
+                        } else {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                getActivity().finishAfterTransition();
+                            } else getActivity().finish();
+                            Intent intent = new Intent();
+                            intent.putExtra("idUser", idUser);
+                            getActivity().setResult(Activity.RESULT_OK, intent);
+                            MainActivity.idUser = idUser;
+                            int idUserOld = MainActivity.dbManager.getIdUser();
+                            MainActivity.dbManager.updateData_User(idUser, idUserOld);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                else {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getActivity().finishAfterTransition();
-                    }else getActivity().finish();
-                    Intent intent = new Intent();
-                    intent.putExtra("idUser", idUser);
-                    getActivity().setResult(Activity.RESULT_OK, intent);
-                    MainActivity.idUser = idUser;
-                    int idUserOld = MainActivity.dbManager.getIdUser();
-                    MainActivity.dbManager.updateData_User(idUser, idUserOld);
-                }
+
             }
         }
                 ,

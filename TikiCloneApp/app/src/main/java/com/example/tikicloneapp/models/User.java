@@ -1,7 +1,5 @@
 package com.example.tikicloneapp.models;
 
-import androidx.annotation.Nullable;
-
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -46,8 +44,17 @@ public class User implements Serializable {
     @SerializedName("birthdate")
     private String mBirthDate;
 
-    public User(Integer mId) {
+    private Integer mRoleId;
+
+    private Integer mAmount;
+
+    public static int ROLE_ADMIN = 0;
+    public static int ROLE_USER = 1;
+    public static int ROLE_SHIPPER = 2;
+
+    public User(Integer mId, Integer mRoleId) {
         this.mId = mId;
+        this.mRoleId = mRoleId;
     }
 
     public User(String mName, String mPhoneNumber, String mProvince, String mDistrict, String mWard, String mAddress) {
@@ -72,6 +79,22 @@ public class User implements Serializable {
         this.mWard = mWard;
     }
 
+
+    public Integer getmRoleId() {
+        return mRoleId;
+    }
+
+    public void setmRoleId(Integer mRoleId) {
+        this.mRoleId = mRoleId;
+    }
+
+    public Integer getmAmount() {
+        return mAmount;
+    }
+
+    public void setmAmount(Integer mAmount) {
+        this.mAmount = mAmount;
+    }
 
     public String getmProvince() {
         return mProvince;
@@ -176,4 +199,6 @@ public class User implements Serializable {
     public void setmBirthDate(String mBirthDate) {
         this.mBirthDate = mBirthDate;
     }
+
+    enum Role {Admin, User, Shipper}
 }

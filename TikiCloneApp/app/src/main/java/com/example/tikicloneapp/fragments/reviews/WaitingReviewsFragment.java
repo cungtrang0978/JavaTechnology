@@ -30,8 +30,6 @@ public class WaitingReviewsFragment extends Fragment {
     private WaitingReviewAdapter waitingReviewAdapter;
     private ArrayList<Product> productArrayList = new ArrayList<>();
 
-
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

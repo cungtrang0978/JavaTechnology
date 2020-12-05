@@ -33,7 +33,7 @@ public class WriteReviewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_review_activity);
+        setContentView(R.layout.activity_write_review);
 
         initWidget();
 

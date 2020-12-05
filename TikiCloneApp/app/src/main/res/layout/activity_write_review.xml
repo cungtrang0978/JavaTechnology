@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorTikiBackgroundWhite"
+    android:orientation="vertical"
     tools:context=".activities.WriteReviewActivity">
 
     <LinearLayout
@@ -39,8 +39,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/imageView_product"
@@ -50,12 +50,12 @@
         <TextView
             android:id="@+id/textView_nameProduct"
             android:layout_width="wrap_content"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:maxLines="3"
+            android:layout_height="wrap_content"
             android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="#000"
             android:textSize="15sp"
-            android:layout_height="wrap_content" />
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -73,8 +73,8 @@
         <TextView
             android:id="@+id/textView_titleReview"
             android:layout_width="wrap_content"
-            android:textSize="20sp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -114,13 +114,18 @@
         </LinearLayout>
 
         <EditText
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:gravity="top"
-            android:inputType="textCapSentences"
-            android:textSize="14dp"
             android:id="@+id/editText_review"
-            android:hint="Viết đánh giá..." />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Viết đánh giá..."
+            android:inputType="textCapSentences|textMultiLine"
+            android:lines="8"
+            android:gravity="top|left"
+            android:maxLines="10"
+            android:minLines="6"
+            android:scrollbars="vertical"
+            android:textSize="14sp" />
+
         <Button
             android:id="@+id/button_send"
             android:layout_width="match_parent"

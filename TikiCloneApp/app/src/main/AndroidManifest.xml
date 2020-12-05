@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.ProductReviewsActivity"></activity>
+        <activity android:name=".activities.AdminManagementActivity"></activity>
+        <activity android:name=".activities.ProductReviewsActivity" />
         <activity android:name=".activities.WriteReviewActivity" />
         <activity android:name=".activities.ReviewsActivity" />
         <activity android:name=".activities.ChangePasswordActivity" />
