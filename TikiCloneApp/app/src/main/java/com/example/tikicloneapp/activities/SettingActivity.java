@@ -35,7 +35,7 @@ public class SettingActivity extends AppCompatActivity {
         ibBack = findViewById(R.id.imageButton_back);
     }
 
-//    private void setEvent() {
+    private void setEvent() {
 //        edtIp.setText(MainActivity.dbManager.getIPAddress());
 //        btnSave.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -50,14 +50,14 @@ public class SettingActivity extends AppCompatActivity {
 //                } else startActivity(intent);
 //            }
 //        });
-//        ibBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    finishAfterTransition();
-//                } else finish();
-//            }
-//        });
-//    }
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else finish();
+            }
+        });
+    }
 
 }

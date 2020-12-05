@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.tikicloneapp.MyClass.callPanel;
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 
 public class ConfirmationActivity extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class ConfirmationActivity extends AppCompatActivity {
             tvPriceLast, tvNonAddress, tvChangeInfoOrder;
     private Button btnOrder;
     private RecyclerView rvCart;
+    private LinearLayout layout_loading;
 
     private CartProductAdapter cartProductAdapter;
     private ArrayList<Order> orderArrayList = new ArrayList<>();
@@ -61,6 +64,8 @@ public class ConfirmationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
         initWidget();
+        callPanel(layout_loading, 700);
+
         setEachView();
 
     }
@@ -76,10 +81,10 @@ public class ConfirmationActivity extends AppCompatActivity {
         btnOrder = findViewById(R.id.button_order);
         tvNonAddress = findViewById(R.id.textView_nonAddress);
         tvChangeInfoOrder = findViewById(R.id.textView_changeInfoOrder);
+        layout_loading = findViewById(R.id.loadingPanel_parent);
     }
 
     private void setEachView() {
-        setCartProductAdapter();
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +103,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                 } else finish();
             }
         });
+        setCartProductAdapter();
 
         getTransact();
 

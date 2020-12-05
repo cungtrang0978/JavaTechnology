@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
 import com.example.tikicloneapp.models.Order;
@@ -36,8 +38,12 @@ public class OrderSuccessActivity extends AppCompatActivity {
     private TextView tvUserName, tvAmount, tvIdTransact, tvGoToTransact;
     private RecyclerView rvCart;
     private Button btnHome;
+    private LinearLayout layout_loading;
+
     private ArrayList<Order> orderArrayList = new ArrayList<>();
     private CartProductAdapter cartProductAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +60,11 @@ public class OrderSuccessActivity extends AppCompatActivity {
         btnHome = findViewById(R.id.button_home);
         tvIdTransact = findViewById(R.id.textView_idTransact);
         tvGoToTransact = findViewById(R.id.textView_goToTransact);
+        layout_loading = findViewById(R.id.loadingPanel_parent);
     }
 
     private void setEachView(){
+        MyClass.callPanel(layout_loading, 700);
         setCartProductAdapter();
         rvCart.setNestedScrollingEnabled(false);
 

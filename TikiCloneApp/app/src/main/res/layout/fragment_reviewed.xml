@@ -2,7 +2,6 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@color/colorTikiBackgroundWhite">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -10,58 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/layout_panel_nonOrder"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:background="@color/colorTikiBackgroundWhite"-->
-    <!--        android:gravity="center_horizontal"-->
-    <!--        android:orientation="vertical"-->
-    <!--        android:visibility="gone">-->
+    <LinearLayout
+        android:id="@+id/layout_panel_nonReview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTikiBackgroundWhite"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
 
-    <!--        <ImageView-->
-    <!--            android:layout_width="200dp"-->
-    <!--            android:layout_height="200dp"-->
-    <!--            android:layout_marginTop="40dp"-->
-    <!--            android:scaleType="fitCenter"-->
-    <!--            android:src="@drawable/non_cart2" />-->
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/non_reviews" />
 
-    <!--        <TextView-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:text="Bạn chưa có sản phẩm nào trong giỏ hàng" />-->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có sản phẩm nào cần đánh giá" />
+    </LinearLayout>
 
-    <!--        <Button-->
-    <!--            android:id="@+id/button_shopping"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="60dp"-->
-    <!--            android:layout_margin="10dp"-->
-    <!--            android:text="Tiếp tục mua sắm"-->
-    <!--            android:textColor="#fff"-->
-    <!--            android:textSize="18sp"-->
-    <!--            app:backgroundTint="@color/colorTikiRedLight" />-->
-
-    <!--        <LinearLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="0dp"-->
-    <!--            android:layout_weight="1"-->
-    <!--            android:background="@color/colorTikiBackground" />-->
-
-    <!--    </LinearLayout>-->
-
-    <!--    <LinearLayout-->
-    <!--        android:id="@+id/loadingPanel"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:gravity="center"-->
-    <!--        android:background="@color/colorTikiBackgroundWhite"-->
-    <!--        android:visibility="gone">-->
-
-    <!--        <ProgressBar-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:indeterminate="true" />-->
-    <!--    </LinearLayout>-->
-
-
+    <include layout="@layout/panel_loading" />
 </FrameLayout>

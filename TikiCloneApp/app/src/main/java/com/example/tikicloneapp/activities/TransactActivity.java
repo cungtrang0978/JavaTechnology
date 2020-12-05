@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -20,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
 import com.example.tikicloneapp.models.Order;
@@ -44,17 +46,18 @@ import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class TransactActivity extends AppCompatActivity {
 
-    private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress
-            , tvPriceProvisional, tvPriceLast;
+    private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress, tvPriceProvisional, tvPriceLast;
     private Button btnCancelTransact;
     private ImageButton ibBack;
     private RecyclerView rvCart;
+    private LinearLayout layout_loading;
 
     private ArrayList<Order> orderArrayList = new ArrayList<>();
     private CartProductAdapter cartProductAdapter;
 
     private int idTransact;
     private int idActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +71,7 @@ public class TransactActivity extends AppCompatActivity {
     }
 
 
-    private void initWidget(){
+    private void initWidget() {
         tvIdTransact = findViewById(R.id.textView_idTransact);
         tvTimeCreated = findViewById(R.id.textView_timeCreated);
         tvStatus = findViewById(R.id.textView_status);
@@ -80,9 +83,11 @@ public class TransactActivity extends AppCompatActivity {
         btnCancelTransact = findViewById(R.id.button_cancelTransact);
         rvCart = findViewById(R.id.recyclerView_cart);
         ibBack = findViewById(R.id.imageButton_back);
+        layout_loading = findViewById(R.id.loadingPanel_parent);
     }
 
-    private void setEachView(){
+    private void setEachView() {
+        MyClass.callPanel(layout_loading, 700);
         tvIdTransact.setText(String.valueOf(idTransact));
 
         setTransact();
@@ -94,15 +99,14 @@ public class TransactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 dbVolley.updateStatusTransact(idTransact, Transact.STATUS_CANCEL);
                 MainActivity.dbVolley.getOrder_updateProduct(Transact.STATUS_CANCEL);
-                if(idActivity==R.layout.activity_order_success){
+                if (idActivity == R.layout.activity_order_success) {
                     Intent intent = new Intent(TransactActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
-                }
-                else if(idActivity==R.layout.activity_list_transact){
+                } else if (idActivity == R.layout.activity_list_transact) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         finishAfterTransition();
-                    }else finish();
+                    } else finish();
                     setResult(RESULT_OK);
                 }
             }
@@ -113,12 +117,12 @@ public class TransactActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
-                }else finish();
+                } else finish();
             }
         });
     }
 
-    private void setCartProductAdapter(){
+    private void setCartProductAdapter() {
 //        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //        itemDecoration.setDrawable(ContextCompat.getDrawable(rvCart.getContext(), R.drawable.divider_product_cart));
 
@@ -129,7 +133,7 @@ public class TransactActivity extends AppCompatActivity {
         resetRvCart();
     }
 
-    public void resetRvCart(){
+    public void resetRvCart() {
         dbVolley.getOrder(idTransact, orderArrayList, cartProductAdapter);
     }
 
@@ -143,13 +147,13 @@ public class TransactActivity extends AppCompatActivity {
             public void onResponse(String response) {
 //                Log.d("thang", "setTransact: "+response);
 
-                if(response.equals(non_post)){
+                if (response.equals(non_post)) {
                     return;
                 }
-                if (response.equals(wrong_query)){
+                if (response.equals(wrong_query)) {
                     return;
                 }
-                if(response.equals(non_value)){
+                if (response.equals(non_value)) {
                     return;
                 }
 
@@ -158,11 +162,11 @@ public class TransactActivity extends AppCompatActivity {
                     JSONObject object = jsonArray.getJSONObject(0);
                     Transact transact = new Transact(
                             object
-                            );
+                    );
 
                     setTvStatus(tvStatus, transact.getmStatus());
 
-                    if(transact.getmStatus()!=Transact.STATUS_TIKI_RECEIVED){
+                    if (transact.getmStatus() != Transact.STATUS_TIKI_RECEIVED) {
                         btnCancelTransact.setVisibility(View.GONE);
                     }
 
@@ -173,13 +177,12 @@ public class TransactActivity extends AppCompatActivity {
                     Log.d("thang", "transact: " + transact.toString());
 
 
-                    if(transact.getmCreated()!=null){
-                       Date createdAt = new Date(transact.getmCreated().getTime());
-                       @SuppressLint("SimpleDateFormat")
-                       String dateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy").format(createdAt);
-                       tvTimeCreated.setText(dateFormat);
-                   }
-
+                    if (transact.getmCreated() != null) {
+                        Date createdAt = new Date(transact.getmCreated().getTime());
+                        @SuppressLint("SimpleDateFormat")
+                        String dateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy").format(createdAt);
+                        tvTimeCreated.setText(dateFormat);
+                    }
 
 
                     String price = formatCurrency(transact.getmAmount());
@@ -195,11 +198,11 @@ public class TransactActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("thang", "setTransact: "+ error.toString());
+                        Log.d("thang", "setTransact: " + error.toString());
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams()  {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("idTransact", String.valueOf(idTransact));
                 return params;
@@ -207,10 +210,6 @@ public class TransactActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
-
-
-
 
 
 }

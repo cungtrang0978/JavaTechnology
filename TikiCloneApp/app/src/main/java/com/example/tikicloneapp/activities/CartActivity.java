@@ -210,7 +210,7 @@ public class CartActivity extends AppCompatActivity {
             public void run() {
                 layLoadingPanel.setVisibility(View.GONE);
             }
-        }, 500);
+        }, 700);
     }
 
     public void callLoadingPanel_parent() {
@@ -221,7 +221,7 @@ public class CartActivity extends AppCompatActivity {
             public void run() {
                 layLoadingPanel_parent.setVisibility(View.GONE);
             }
-        }, 500);
+        }, 1200);
     }
 
     public void resetRvCart() {

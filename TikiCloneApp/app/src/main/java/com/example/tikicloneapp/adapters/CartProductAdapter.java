@@ -1,5 +1,6 @@
 package com.example.tikicloneapp.adapters;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
@@ -46,9 +47,9 @@ import static android.content.ContentValues.TAG;
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 
 public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.ViewHolder> {
-    private Context mContext;
-    private ArrayList<Order> mOrderArrayList;
-    private int mResource;
+    private final Context mContext;
+    private final ArrayList<Order> mOrderArrayList;
+    private final int mResource;
     private int mActivity = -1;
 
     private int CODE_BUTTON_MINUS = 0;
@@ -75,10 +76,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View cartProductView = layoutInflater.inflate(mResource, parent, false);
-        ViewHolder viewHolder = new ViewHolder(cartProductView);
-        return viewHolder;
+        return new ViewHolder(cartProductView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final Order order = mOrderArrayList.get(position);
@@ -139,7 +140,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             tvCount = itemView.findViewById(R.id.textView_count);
 
 
-            if(mResource == R.layout.row_cart){
+            if (mResource == R.layout.row_cart) {
                 tvName = itemView.findViewById(R.id.textView_nameProduct);
                 ivProduct = itemView.findViewById(R.id.imageView_product);
                 tvCount = itemView.findViewById(R.id.textView_count);
@@ -153,17 +154,17 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                 return;
             }
 
-            if(mResource==R.layout.row_item_cart_transact){
+            if (mResource == R.layout.row_item_cart_transact) {
                 tvName = itemView.findViewById(R.id.textView_nameProduct);
                 ivProduct = itemView.findViewById(R.id.imageView_product);
                 tvCount = itemView.findViewById(R.id.textView_count);
                 tvPriceDiscount = itemView.findViewById(R.id.textView_priceDiscount);
                 tvIdOrder = itemView.findViewById(R.id.textView_idOrder);
-                layout_row_item_cart_transact= itemView.findViewById(R.id.layout_row_item_cart_transact);
+                layout_row_item_cart_transact = itemView.findViewById(R.id.layout_row_item_cart_transact);
                 return;
             }
 
-            if(mResource==R.layout.row_comfirmation){
+            if (mResource == R.layout.row_comfirmation) {
                 tvName = itemView.findViewById(R.id.textView_nameProduct);
                 ivProduct = itemView.findViewById(R.id.imageView_product);
                 tvCount = itemView.findViewById(R.id.textView_count);
@@ -201,7 +202,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         }
     }
 
-    private void gotoProductDetailActi(Product product){
+    private void gotoProductDetailActi(Product product) {
         Intent intent = new Intent(mContext, ProductDetailActivity.class);
         intent.putExtra("product", product);
         Activity activity = (Activity) mContext;
@@ -241,10 +242,15 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                     int priceDiscount = priceOrigin - priceOrigin * discount / 100;
 
                     if (mResource == R.layout.row_cart) {
-                        String priceOriginString = CartActivity.formatCurrency(priceOrigin);
                         String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
-                        holder.tvPriceOrigin.setText(priceOriginString);
                         holder.tvPriceDiscount.setText(priceDiscountString);
+                        if (discount != 0) {
+
+                            String priceOriginString = CartActivity.formatCurrency(priceOrigin);
+
+                            holder.tvPriceOrigin.setText(priceOriginString);
+                        }
+
                         holder.layout_row_cart.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -261,7 +267,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                                 gotoProductDetailActi(product);
                             }
                         });
-                    }else if(mResource==R.layout.row_item_cart_transact){
+                    } else if (mResource == R.layout.row_item_cart_transact) {
                         String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
                         holder.tvPriceDiscount.setText(priceDiscountString);
                         holder.layout_row_item_cart_transact.setOnClickListener(new View.OnClickListener() {
@@ -400,7 +406,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         };
         requestQueue.add(stringRequest);
     }
-
 
 
     public void updateOrder(final String CODE_UPDATE, final int idOrder, final int qty, final int amount) {

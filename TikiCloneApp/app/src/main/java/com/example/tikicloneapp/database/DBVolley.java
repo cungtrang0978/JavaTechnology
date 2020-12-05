@@ -385,7 +385,7 @@ public class DBVolley {
                                 e.printStackTrace();
                             }
                         }
-                        if(!productList.isEmpty()){
+                        if (!productList.isEmpty()) {
                             productArrayList.clear();
                             Toast.makeText(context, "Có " + productList.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
                             productArrayList.addAll(productList);
@@ -848,6 +848,8 @@ public class DBVolley {
                     if (transactArrayList.isEmpty()) {
                         assert layPanel_nonOrder != null;
                         layPanel_nonOrder.setVisibility(View.VISIBLE);
+                    }else {
+                        layPanel_nonOrder.setVisibility(View.GONE);
                     }
                     adapter.notifyDataSetChanged();
 
@@ -994,7 +996,7 @@ public class DBVolley {
             @Override
             public void onResponse(String response) {
 //                Log.d(TAG, "updateTransact: "+ response);
-                Log.d("thang", "DBVolley - updateTransact: "+ response+ "; idTransact: "+ idTransact +
+                Log.d("thang", "DBVolley - updateTransact: " + response + "; idTransact: " + idTransact +
                         "");
 
                 if (response.equals(update_success)) {
@@ -1071,7 +1073,7 @@ public class DBVolley {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams()  {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
                 params.put("idTransact", String.valueOf(idTransact));
                 if (status != null) {
@@ -1124,9 +1126,9 @@ public class DBVolley {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams()  {
+            protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
-                Log.d("thang", "updateTransactBefore: "+ transact.toString());
+                Log.d("thang", "updateTransactBefore: " + transact.toString());
                 params.put("idTransact", String.valueOf(MainActivity.idTransact));
                 if (transact.getmStatus() != null) {
                     params.put("status", String.valueOf(transact.getmStatus()));
@@ -1344,7 +1346,7 @@ public class DBVolley {
     }
 
     public void getRecommendedProductsByProductId(final int idProduct, final ArrayList<Product> products,
-                                       final ProductsAdapter recommendedAdapter) {
+                                                  final ProductsAdapter recommendedAdapter) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_RECOMMENDED_PRODUCTS_BY_PRODUCT_ID,
@@ -1378,7 +1380,7 @@ public class DBVolley {
                                     e.printStackTrace();
                                 }
                             }
-                            if (_products.isEmpty() ) {
+                            if (_products.isEmpty()) {
 
                             } else {
                                 products.clear();
@@ -1409,9 +1411,8 @@ public class DBVolley {
     }
 
     public void getWaitingReviewProducts(final ArrayList<Product> products,
-                                         final WaitingReviewAdapter waitingReviewAdapter) {
-        //status =1: waitingReviews ; 2: reviewed
-
+                                         final WaitingReviewAdapter waitingReviewAdapter,
+                                         final LinearLayout layout_none) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_REVIEW_PRODUCTS_BY_USER_ID,
@@ -1442,7 +1443,12 @@ public class DBVolley {
                                 }
                             }
                             products.clear();
-                            products.addAll(_products);
+                            if (_products.isEmpty()) {
+                                layout_none.setVisibility(View.VISIBLE);
+                            } else {
+                                layout_none.setVisibility(View.GONE);
+                                products.addAll(_products);
+                            }
                             waitingReviewAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
@@ -1469,7 +1475,8 @@ public class DBVolley {
     }
 
     public void getReviewedProductsByIdUser(final ArrayList<Rate> rates,
-                                            final ReviewedAdapter reviewedAdapter) {
+                                            final ReviewedAdapter reviewedAdapter,
+                                            final LinearLayout layout_none) {
         //status =1: waitingReviews ; 2: reviewed
 
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -1504,7 +1511,12 @@ public class DBVolley {
                                 }
                             }
                             rates.clear();
-                            rates.addAll(_rates);
+                            if(_rates.isEmpty()){
+                                layout_none.setVisibility(View.VISIBLE);
+                            }else{
+                                layout_none.setVisibility(View.GONE);
+                                rates.addAll(_rates);
+                            }
                             reviewedAdapter.notifyDataSetChanged();
 
                         } catch (JSONException e) {
