@@ -75,6 +75,7 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/nestedScrollView"
             android:background="@color/colorTikiBackgroundWhite">
 
             <LinearLayout
@@ -824,7 +825,7 @@
         </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
-            android:id="@+id/loadingPanel_parent"
+            android:id="@+id/loadingPanel_transparent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -835,5 +836,7 @@
                 android:layout_height="wrap_content"
                 android:indeterminate="true" />
         </LinearLayout>
+        <include
+            layout="@layout/panel_loading"/>
     </FrameLayout>
 </LinearLayout>

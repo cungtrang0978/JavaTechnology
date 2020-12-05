@@ -98,7 +98,7 @@
                         android:layout_gravity="center_vertical"
                         android:scaleType="fitCenter"
                         android:src="@drawable/icons8_more_than_64"
-                        android:tint="@android:color/black" />
+                        app:tint="@android:color/black" />
 
                 </LinearLayout>
 
@@ -170,7 +170,7 @@
                             android:layout_gravity="center_vertical"
                             android:scaleType="fitCenter"
                             android:src="@drawable/icons8_more_than_64"
-                            android:tint="@android:color/black" />
+                            app:tint="@android:color/black" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -223,7 +223,7 @@
                             android:layout_gravity="center_vertical"
                             android:scaleType="fitCenter"
                             android:src="@drawable/icons8_more_than_64"
-                            android:tint="@android:color/black" />
+                            app:tint="@android:color/black" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -287,7 +287,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:scaleType="fitCenter"
                                     android:src="@drawable/icons8_more_than_64"
-                                    android:tint="@android:color/black" />
+                                    app:tint="@android:color/black" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -317,7 +317,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -340,7 +340,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -363,7 +363,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -386,7 +386,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -409,7 +409,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -432,7 +432,7 @@
                                         android:layout_width="24dp"
                                         android:layout_height="24dp"
                                         android:src="@drawable/icons8_more_than_64"
-                                        android:tint="@android:color/black" />
+                                        app:tint="@android:color/black" />
                                 </LinearLayout>
                             </LinearLayout>
                         </LinearLayout>
@@ -495,7 +495,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -533,7 +533,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -591,7 +591,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -630,7 +630,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -669,7 +669,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -708,7 +708,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -747,7 +747,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -792,7 +792,7 @@
                             android:layout_gravity="center_vertical"
                             android:scaleType="fitCenter"
                             android:src="@drawable/icons8_more_than_64"
-                            android:tint="@android:color/black" />
+                            app:tint="@android:color/black" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -832,7 +832,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -854,7 +854,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/icons8_more_than_64"
-                                android:tint="@android:color/black" />
+                                app:tint="@android:color/black" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -907,7 +907,7 @@
                             android:layout_gravity="center_vertical"
                             android:scaleType="fitCenter"
                             android:src="@drawable/icons8_more_than_64"
-                            android:tint="@android:color/black" />
+                            app:tint="@android:color/black" />
                     </LinearLayout>
                 </LinearLayout>
 

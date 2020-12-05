@@ -31,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.ListProductActivity;
 import com.example.tikicloneapp.activities.MainActivity;
@@ -59,6 +60,7 @@ public class HomeFragment extends Fragment {
     private ImageButton ibCart;
     private RecyclerView rvViewedProducts, rvRecommendedProducts, rvHotCategories;
     private ViewPager vpAdverts;
+    private LinearLayout layout_loading;
 
     private ArrayList<String> advertImages = new ArrayList<>();
     private ArrayList<Product> viewedProducts = new ArrayList<>(), recommendedProducts = new ArrayList<>();
@@ -95,9 +97,11 @@ public class HomeFragment extends Fragment {
         rvHotCategories = view.findViewById(R.id.recyclerView_hotCategories);
         layHotCategories = view.findViewById(R.id.layout_hotCategories);
         btnViewHotCategories = view.findViewById(R.id.button_viewHotCategories);
+        layout_loading = view.findViewById(R.id.loadingPanel);
     }
 
     private void setEachView() {
+        MyClass.callPanel(layout_loading, 2000);
         laySearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

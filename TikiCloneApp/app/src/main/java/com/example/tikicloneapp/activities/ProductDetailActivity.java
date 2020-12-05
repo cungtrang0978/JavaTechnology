@@ -3,6 +3,7 @@ package com.example.tikicloneapp.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,8 +71,10 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     private ImageView ivStar1, ivStar2, ivStar3, ivStar4, ivStar5;
     private ImageView ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5;
     private RecyclerView rvReviews, rvRecommendedProducts;
+    private NestedScrollView nestedScrollView;
+    private LinearLayout lay_loading;
 
-    public LinearLayout lay_loading;
+    public LinearLayout lay_loading_transparent;
 
     final ArrayList<String> imageUrls = new ArrayList<>();
     final ArrayList<Rate> rates = new ArrayList<>();
@@ -96,7 +99,7 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         initWidget();
-        requestQueue =  Volley.newRequestQueue(this);
+        requestQueue = Volley.newRequestQueue(this);
 
         product = (Product) getIntent().getSerializableExtra("product");
 
@@ -142,6 +145,8 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         layoutReview = findViewById(R.id.linearLayout_review);
         rvRecommendedProducts = findViewById(R.id.recyclerView_recommendedProducts);
         tvViewAllReviews = findViewById(R.id.textView_viewAllReviews);
+        nestedScrollView = findViewById(R.id.nestedScrollView);
+        lay_loading_transparent = findViewById(R.id.loadingPanel_transparent);
     }
 
     Runnable runnableInsertViewed = new Runnable() {
@@ -183,18 +188,13 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
     };
 
     private void setViews() {
+
         //Update views of product
 
 //        dbVolley.updateViewsProduct(product);
+        MyClass.callPanel(lay_loading, 1500);
 
         setViewPager();
-
-        viewPagerImageProduct.setOnDragListener(new View.OnDragListener() {
-            @Override
-            public boolean onDrag(View view, DragEvent dragEvent) {
-                return false;
-            }
-        });
 
         //set Product Information
         getProduct(product.getId());
@@ -328,9 +328,11 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
 //                    tvViews.setText(views + "");
 
                     if (product.getRate() > 0) {
-                        Log.d("thang", "rateProduct: " + product.getRate());
+
                         setRate(ivStar1, ivStar2, ivStar3, ivStar4, ivStar5, product.getRate());
                         setRate(ivStarDetail_1, ivStarDetail_2, ivStarDetail_3, ivStarDetail_4, ivStarDetail_5, product.getRate());
+
+
                     } else {
                         layoutRate.setVisibility(View.GONE);
                         layoutReview.setVisibility(View.GONE);
@@ -487,8 +489,8 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                 } else {
                     if (MainActivity.idUser != 0) {
                         addToCart(product);
-                        MyClass.callPanel(lay_loading, 500);
-                        callPanel(lay_loading, 500);
+//                        MyClass.callPanel(lay_loading_transparent, 500);
+                        callPanel(lay_loading_transparent, 500);
                     } else {
                         Intent intent = new Intent(ProductDetailActivity.this, LoginActivity.class);
                         intent.putExtra("CODE", 1);
@@ -527,7 +529,6 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         if (MainActivity.idUser == 0) return;
 
         handler.postDelayed(runnableInsertViewed, 19000);
-
     }
 
     @Override
@@ -697,6 +698,19 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
                                 }
                             });
 
+                            tvRateQuantity.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Intent intent = new Intent(ProductDetailActivity.this, ProductReviewsActivity.class);
+                                    Bundle extra = new Bundle();
+                                    extra.putSerializable("rates", rates);
+                                    intent.putExtra("extra", extra);
+                                    startActivity(intent);
+                                }
+                            });
+
+                            Log.d("thang", "ProductDetail - getPosition of recyclerView: "+ layoutReview.getTop());
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -718,7 +732,6 @@ public class ProductDetailActivity extends AppCompatActivity implements SuccessA
         };
         requestQueue.add(stringRequest);
     }
-
 
 
 }
