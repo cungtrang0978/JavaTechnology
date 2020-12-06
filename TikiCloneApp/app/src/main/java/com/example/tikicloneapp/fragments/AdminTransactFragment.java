@@ -20,36 +20,16 @@ import java.util.ArrayList;
 
 public class AdminTransactFragment extends Fragment {
 
-    private final TransactStatus transactStatus;
+
     private int status;
     private final ArrayList<Transact> transacts;
 
 
     private static final String TAG = AdminTransactFragment.class.getSimpleName();
 
-    public AdminTransactFragment(TransactStatus transactStatus, ArrayList<Transact> transacts) {
-        this.transactStatus = transactStatus;
-        this.transacts = transacts;
-        switch (transactStatus) {
-            case cancelled:
-                status = -1;
-                break;
-            case notConfirm:
-                status = 1;
-                break;
-            case pickingGoods:
-                status = 2;
-                break;
-            case delivering:
-                status = 3;
-                break;
-            case delivered:
-                status = 4;
-                break;
-        }
+    public AdminTransactFragment(ArrayList<Transact> transacts) {
+               this.transacts = transacts;
     }
-
-
 
     public enum TransactStatus {cancelled, notConfirm, pickingGoods, delivering, delivered}
 
@@ -78,7 +58,6 @@ public class AdminTransactFragment extends Fragment {
 
     private void setViews() {
         setRecyclerView();
-
     }
 
 
@@ -88,6 +67,4 @@ public class AdminTransactFragment extends Fragment {
         rvTransacts.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTransacts.setAdapter(transactAdapter);
     }
-
-
 }

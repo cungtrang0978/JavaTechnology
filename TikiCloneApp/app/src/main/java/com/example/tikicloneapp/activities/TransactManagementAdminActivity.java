@@ -3,20 +3,18 @@ package com.example.tikicloneapp.activities;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.adapters.TransactAdapter;
+import com.example.tikicloneapp.adapters.TabLayoutViewPagerAdapter;
 import com.example.tikicloneapp.fragments.AdminTransactFragment;
 import com.example.tikicloneapp.models.Transact;
+import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,45 +27,40 @@ import static com.example.tikicloneapp.activities.AdminManagementActivity.httpHa
 
 public class TransactManagementAdminActivity extends AppCompatActivity {
     private ImageButton ibBack;
-    private TextView tvNonConfirm,
-            tvPickingGoods,
-            tvDelivering,
-            tvDelivered,
-            tvCancelled;
-    private LinearLayout layPanel_nonOrder;
-    private RecyclerView rvTransacts;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
 
+    AdminTransactFragment notConfirmFragment;
+    AdminTransactFragment pickingGoodsFragment;
+    AdminTransactFragment deliveringFragment;
+    AdminTransactFragment deliveredFragment;
+    AdminTransactFragment cancelledFragment;
 
-    private ArrayList<Transact> transacts = new ArrayList<>();
-    private TransactAdapter transactAdapter;
-    private static final String TAG = AdminTransactFragment.class.getSimpleName();
+    ArrayList<Transact> notConfirmTransacts;
+    ArrayList<Transact> pickingGoodsTransacts;
+    ArrayList<Transact> deliveringTransacts;
+    ArrayList<Transact> deliveredTransacts;
+    ArrayList<Transact> cancelledTransacts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transact_management_admin);
+
         initWidget();
 
         setViews();
     }
 
     private void initWidget() {
-        rvTransacts = findViewById(R.id.recyclerView_transact);
-        layPanel_nonOrder = findViewById(R.id.layout_panel_nonOrder);
+        tabLayout = findViewById(R.id.tabLayout);
+        viewPager = findViewById(R.id.viewPager);
         ibBack = findViewById(R.id.imageButton_back);
-        tvNonConfirm = findViewById(R.id.textView_nonConfirm);
-        tvPickingGoods = findViewById(R.id.textView_pickingGoods);
-        tvDelivering = findViewById(R.id.textView_delivering);
-        tvDelivered = findViewById(R.id.textView_delivered);
-        tvCancelled = findViewById(R.id.textView_cancelled);
     }
 
     private void setViews() {
-//        new FetchTransacts().execute();
-
         setOnClickView();
-//        new FetchTransacts().execute(1);
-
+        new FetchTransacts().execute();
     }
 
 
@@ -81,50 +74,41 @@ public class TransactManagementAdminActivity extends AppCompatActivity {
             }
         });
 
-        tvNonConfirm.setOnClickListener(onClickListener(1));
-        tvPickingGoods.setOnClickListener(onClickListener(2));
-        tvDelivering.setOnClickListener(onClickListener(3));
-        tvDelivered.setOnClickListener(onClickListener(4));
-        tvCancelled.setOnClickListener(onClickListener(-1));
-
-
     }
 
-    View.OnClickListener onClickListener(final int status) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FetchTransacts().execute(status);
-            }
-        };
+    private void setViewPager() {
+        TabLayoutViewPagerAdapter adapter = new TabLayoutViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        adapter.addFragment(notConfirmFragment, "Chưa xác nhận");
+        adapter.addFragment(pickingGoodsFragment, "Đang lấy hàng");
+        adapter.addFragment(deliveringFragment, "Đang giao hàng");
+        adapter.addFragment(deliveredFragment, "Đã nhận hàng");
+        adapter.addFragment(cancelledFragment, "Đã hủy");
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    private class FetchTransacts extends AsyncTask<Integer, Void, ArrayList<Transact>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+    private class FetchTransacts extends AsyncTask<Void, Void, Void> {
 
 
         @Override
-        protected ArrayList<Transact> doInBackground(Integer... integers) {
-            return getTransacts(integers[0]);
-        }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-            super.onProgressUpdate(values);
+        protected Void doInBackground(Void... voids) {
+            notConfirmTransacts = getTransacts(1);
+            pickingGoodsTransacts = getTransacts(2);
+            deliveringTransacts = getTransacts(3);
+            deliveredTransacts = getTransacts(4);
+            cancelledTransacts = getTransacts(-1);
+            return null;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Transact> _transacts) {
-            super.onPostExecute(_transacts);
-            transacts = _transacts;
-            Log.d(TAG, "onPostExecute: "+ transacts.toString());
-            transactAdapter = new TransactAdapter(getApplicationContext(), transacts, R.layout.row_item_transact);
-            rvTransacts.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            rvTransacts.setAdapter(transactAdapter);
-//            transactAdapter.notifyDataSetChanged();
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            notConfirmFragment = new AdminTransactFragment(notConfirmTransacts);
+            pickingGoodsFragment = new AdminTransactFragment(pickingGoodsTransacts);
+            deliveringFragment = new AdminTransactFragment(deliveringTransacts);
+            deliveredFragment = new AdminTransactFragment(deliveredTransacts);
+            cancelledFragment = new AdminTransactFragment(cancelledTransacts);
+            setViewPager();
         }
     }
 
@@ -157,5 +141,4 @@ public class TransactManagementAdminActivity extends AppCompatActivity {
         }
         return _transact;
     }
-
 }

@@ -37,99 +37,22 @@
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:background="@drawable/custom_item_2"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"
+            />
     </LinearLayout>
 
-
-    <HorizontalScrollView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbarFadeDuration="1">
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorTikiToolbar"
+        app:tabMode="scrollable"/>
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:id="@+id/textView_nonConfirm"
-                android:text="Chưa xác nhận" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/textView_pickingGoods"
-                android:text="Đang lấy hàng" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/textView_delivering"
-                android:text="Đang giao" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/textView_delivered"
-                android:text="Đã nhận" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp" android:id="@+id/textView_cancelled"
-                android:text="Đã hủy" />
-        </LinearLayout>
-    </HorizontalScrollView>
-
-    <FrameLayout
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView_transact"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <LinearLayout
-            android:id="@+id/layout_panel_nonOrder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorTikiBackgroundWhite"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="gone">
-
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginTop="40dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/non_cart2" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Chưa có đơn hàng nào" />
-
-            <Button
-                android:id="@+id/button_shopping"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_margin="10dp"
-                android:text="Tiếp tục mua sắm"
-                android:textColor="#fff"
-                android:textSize="18sp"
-                app:backgroundTint="@color/colorTikiRedLight" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:background="@color/colorTikiBackground" />
-
-        </LinearLayout>
-    </FrameLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </LinearLayout>

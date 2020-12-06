@@ -15,7 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.TestManagementActivity"></activity>
         <activity android:name=".activities.TransactManagementAdminActivity" />
         <activity android:name=".activities.AdminManagementActivity" />
         <activity android:name=".activities.ProductReviewsActivity" />
