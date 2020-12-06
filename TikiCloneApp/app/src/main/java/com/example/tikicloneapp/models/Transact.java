@@ -2,7 +2,6 @@ package com.example.tikicloneapp.models;
 
 import android.widget.TextView;
 
-import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONException;
@@ -52,6 +51,8 @@ public class Transact implements Serializable {
     private Timestamp mCreated;
 
     private Timestamp mModified;
+
+    private Integer shippingFee;
 
 
     public static int STATUS_CANCEL = -1;
@@ -129,6 +130,9 @@ public class Transact implements Serializable {
         if (!jsonTransact.getString("modified").equals("null")) {
             this.mModified = Timestamp.valueOf(jsonTransact.getString("modified"));
         }
+
+        this.shippingFee = jsonTransact.getInt("shippingFee");
+
     }
 
 
