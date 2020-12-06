@@ -35,14 +35,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-
-import static com.example.tikicloneapp.MyClass.convertTime;
 import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHolder> {
-    private Context mContext;
+    private final Context mContext;
     private ArrayList<Transact> mTransactArrayList;
-    private int mResource;
+    private final int mResource;
 
     public TransactAdapter(Context mContext, ArrayList<Transact> mTransactArrayList, int mResource) {
         this.mContext = mContext;
@@ -55,9 +53,8 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         View view = layoutInflater.inflate(mResource, parent, false);
-        ViewHolder viewHolder = new ViewHolder(view);
 
-        return viewHolder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
 
         setTvStatus(holder.tvStatus, transact.getmStatus());
 
-        getNameTransact(holder, transact.getmId());
+//        getNameTransact(holder, transact.getmId());
 
         if (transact.getmStatus() == Transact.STATUS_CANCEL) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_cancel_red_64);

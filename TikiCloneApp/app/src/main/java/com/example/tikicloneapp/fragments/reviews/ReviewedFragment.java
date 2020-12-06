@@ -29,7 +29,7 @@ public class ReviewedFragment extends Fragment {
     private ReviewedAdapter reviewedAdapter;
     private ArrayList<Rate> rateArrayList = new ArrayList<>();
 
-    @Nullable
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reviewed, container, false);

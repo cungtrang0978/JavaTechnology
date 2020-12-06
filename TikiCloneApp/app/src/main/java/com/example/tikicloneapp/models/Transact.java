@@ -307,6 +307,7 @@ public class Transact implements Serializable {
                 ", mMessage='" + mMessage + '\'' +
                 ", mCreated=" + mCreated +
                 ", mModified=" + mModified +
+                ", shippingFee=" + shippingFee +
                 '}';
     }
 
