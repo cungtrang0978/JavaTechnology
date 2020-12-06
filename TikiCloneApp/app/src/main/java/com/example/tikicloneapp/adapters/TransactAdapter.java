@@ -70,7 +70,7 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
 
         setTvStatus(holder.tvStatus, transact.getmStatus());
 
-//        getNameTransact(holder, transact.getmId());
+        getNameTransact(holder, transact.getmId());
 
         if (transact.getmStatus() == Transact.STATUS_CANCEL) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_cancel_red_64);

@@ -279,7 +279,7 @@
                                 android:textColor="@android:color/black" />
 
                             <TextView
-                                android:id="@+id/textView_transportFee"
+                                android:id="@+id/textView_shippingFee"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="0đ"

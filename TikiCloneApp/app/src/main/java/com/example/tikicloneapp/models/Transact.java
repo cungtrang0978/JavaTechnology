@@ -177,6 +177,15 @@ public class Transact implements Serializable {
         this.mAmount = mAmount;
     }
 
+
+    public Integer getShippingFee() {
+        return shippingFee;
+    }
+
+    public void setShippingFee(Integer shippingFee) {
+        this.shippingFee = shippingFee;
+    }
+
     public String getmProvince() {
         return mProvince;
     }

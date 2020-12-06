@@ -1,9 +1,5 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
@@ -14,6 +10,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,10 +37,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.tikicloneapp.MyClass.convertTime;
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.activities.CartActivity.formatCurrency;
-
 import static com.example.tikicloneapp.activities.MainActivity.dbVolley;
 import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
@@ -174,7 +172,7 @@ public class TransactActivity extends AppCompatActivity {
                     tvUserName.setText(transact.getmUser_name());
                     tvPhoneNumber.setText(transact.getmUser_phone());
                     tvAddress.setText(address);
-                    Log.d("thang", "transact: " + transact.toString());
+//                    Log.d("thang", "transact: " + transact.toString());
 
 
                     if (transact.getmCreated() != null) {

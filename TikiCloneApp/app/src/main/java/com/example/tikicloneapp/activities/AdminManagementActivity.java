@@ -67,8 +67,6 @@ public class AdminManagementActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
 
     void checkIdUser() {

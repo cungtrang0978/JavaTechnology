@@ -13,22 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.adapters.TransactAdapter;
+import com.example.tikicloneapp.adapters.AdminTransactAdapter;
 import com.example.tikicloneapp.models.Transact;
 
 import java.util.ArrayList;
 
 public class AdminTransactFragment extends Fragment {
 
-
-    private int status;
     private final ArrayList<Transact> transacts;
 
 
     private static final String TAG = AdminTransactFragment.class.getSimpleName();
 
     public AdminTransactFragment(ArrayList<Transact> transacts) {
-               this.transacts = transacts;
+        this.transacts = transacts;
     }
 
     public enum TransactStatus {cancelled, notConfirm, pickingGoods, delivering, delivered}
@@ -36,7 +34,7 @@ public class AdminTransactFragment extends Fragment {
     private RecyclerView rvTransacts;
     private LinearLayout layPanel_nonOrder;
 
-    private TransactAdapter transactAdapter;
+    private AdminTransactAdapter adminTransactAdapter;
 
     @Nullable
     @Override
@@ -46,6 +44,7 @@ public class AdminTransactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_admin_transact, container, false);
 
         initWidget(view);
+
         setViews();
 
         return view;
@@ -57,14 +56,19 @@ public class AdminTransactFragment extends Fragment {
     }
 
     private void setViews() {
-        setRecyclerView();
+        if (transacts.isEmpty()) {
+            layPanel_nonOrder.setVisibility(View.VISIBLE);
+        } else {
+            layPanel_nonOrder.setVisibility(View.GONE);
+            setRecyclerView();
+        }
     }
 
 
     public void setRecyclerView() {
 //        callLoadingPanel_parent();
-        transactAdapter = new TransactAdapter(getContext(), transacts, R.layout.row_item_transact);
+        adminTransactAdapter = new AdminTransactAdapter(getContext(), transacts);
         rvTransacts.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvTransacts.setAdapter(transactAdapter);
+        rvTransacts.setAdapter(adminTransactAdapter);
     }
 }
