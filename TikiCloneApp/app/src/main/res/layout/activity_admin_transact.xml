@@ -289,6 +289,8 @@
                         android:textSize="20sp" />
                 </LinearLayout>
 
+
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -298,6 +300,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/colorTikiBackgroundWhite"
+                    android:orientation="vertical"
                     android:padding="10dp">
 
                     <Button
@@ -309,6 +312,16 @@
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         app:backgroundTint="@color/colorTikiToolbar" />
+
+                    <Button
+                        android:id="@+id/button_confirmTransact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Xác nhận đơn hàng"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        app:backgroundTint="@color/colorTikiRedLight" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

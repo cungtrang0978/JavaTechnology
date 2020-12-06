@@ -150,6 +150,13 @@ public class Product implements Serializable {
         this.imageUrl = imageUrl;
     }
 
+    public Product(int id, String name, int price, int discount) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.discount = discount;
+    }
+
     public Product(JSONObject jsonProduct) throws JSONException {
         this.id = jsonProduct.getInt("id");
 

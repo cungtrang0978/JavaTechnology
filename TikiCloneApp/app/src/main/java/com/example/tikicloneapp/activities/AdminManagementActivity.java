@@ -21,6 +21,8 @@ import java.util.HashMap;
 public class AdminManagementActivity extends AppCompatActivity {
     public static DBManager dbManager;
     public static DBVolley dbVolley;
+    public static int role;
+
     public final static HttpHandler httpHandler = new HttpHandler();
     public static int idUser;
     private static final String TAG = AdminManagementActivity.class.getSimpleName();
@@ -36,6 +38,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         setViews();
         dbManager = new DBManager(this);
         dbVolley = new DBVolley(this);
+        role = getIntent().getIntExtra("role", 0);
 
         checkIdUser();
     }

@@ -18,6 +18,7 @@ import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Transact;
+import com.example.tikicloneapp.models.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ import static com.example.tikicloneapp.models.Transact.setTvStatus;
 public class AdminTransactActivity extends AppCompatActivity {
     private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress,
             tvPriceProvisional, tvPriceLast, tvShippingFee;
-    private Button btnCancelTransact;
+    private Button btnCancelTransact, btnConfirmTransact;
     private ImageButton ibBack;
     private RecyclerView rvCart;
     private LinearLayout layout_loading;
@@ -65,32 +66,39 @@ public class AdminTransactActivity extends AppCompatActivity {
         ibBack = findViewById(R.id.imageButton_back);
         layout_loading = findViewById(R.id.loadingPanel_parent);
         tvShippingFee = findViewById(R.id.textView_shippingFee);
+        btnConfirmTransact = findViewById(R.id.button_confirmTransact);
     }
+
     private void setEachView() {
         MyClass.callPanel(layout_loading, 700);
+
+        btnCancelTransact.setVisibility(View.GONE);
+        if(AdminManagementActivity.role== User.ROLE_ADMIN){
+            if(transact.getmStatus()!=Transact.STATUS_TIKI_RECEIVED){
+                btnConfirmTransact.setVisibility(View.GONE);
+            }
+        }else if(AdminManagementActivity.role== User.ROLE_SHIPPER){
+            if(transact.getmStatus()!=Transact.STATUS_SELLER_RECEIVED){
+                btnConfirmTransact.setVisibility(View.GONE);
+            }
+        }
+
         tvIdTransact.setText(String.valueOf(transact.getmId()));
 
         setTransact();
 
         setCartProductAdapter();
 
-//        btnCancelTransact.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dbVolley.updateStatusTransact(idTransact, Transact.STATUS_CANCEL);
-//                MainActivity.dbVolley.getOrder_updateProduct(Transact.STATUS_CANCEL);
-//                if (idActivity == R.layout.activity_order_success) {
-//                    Intent intent = new Intent(TransactActivity.this, MainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    startActivity(intent);
-//                } else if (idActivity == R.layout.activity_list_transact) {
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                        finishAfterTransition();
-//                    } else finish();
-//                    setResult(RESULT_OK);
-//                }
-//            }
-//        });
+        btnConfirmTransact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AdminManagementActivity.dbVolley.updateStatusTransact(transact.getmId(), Transact.STATUS_SELLER_RECEIVED);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else finish();
+//                setResult(RESULT_OK);
+            }
+        });
 
         ibBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +109,7 @@ public class AdminTransactActivity extends AppCompatActivity {
             }
         });
     }
+
     private void setCartProductAdapter() {
 //        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //        itemDecoration.setDrawable(ContextCompat.getDrawable(rvCart.getContext(), R.drawable.divider_product_cart));
@@ -111,12 +120,13 @@ public class AdminTransactActivity extends AppCompatActivity {
         rvCart.setAdapter(cartProductAdapter);
         resetRvCart();
     }
+
     public void resetRvCart() {
         AdminManagementActivity.dbVolley.getOrder(transact.getmId(), orderArrayList, cartProductAdapter);
     }
 
     @SuppressLint("SetTextI18n")
-    private void setTransact(){
+    private void setTransact() {
         setTvStatus(tvStatus, transact.getmStatus());
 
         if (transact.getmStatus() != Transact.STATUS_TIKI_RECEIVED) {

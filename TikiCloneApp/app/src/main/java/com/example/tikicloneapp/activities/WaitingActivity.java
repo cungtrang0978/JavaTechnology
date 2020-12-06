@@ -1,13 +1,13 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -81,11 +81,14 @@ public class WaitingActivity extends AppCompatActivity {
                         public void run() {
                             Intent intent = new Intent();
                             if (user.getmRoleId() == User.ROLE_ADMIN) {
+                                intent.putExtra("role", User.ROLE_USER);
                                 intent = new Intent(WaitingActivity.this, AdminManagementActivity.class);
                             } else if (user.getmRoleId() == User.ROLE_USER) {
+
                                 intent = new Intent(WaitingActivity.this, MainActivity.class);
                             } else if (user.getmRoleId() == User.ROLE_SHIPPER) {
-
+                                intent.putExtra("role", User.ROLE_USER);
+                                intent = new Intent(WaitingActivity.this, AdminManagementActivity.class);
                             }
 
                             //goto Next Activity;

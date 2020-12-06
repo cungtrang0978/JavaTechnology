@@ -2,6 +2,9 @@ package com.example.tikicloneapp.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 public class Order implements Serializable {
@@ -19,6 +22,11 @@ public class Order implements Serializable {
 
     @SerializedName("amount")
     private int mAmount;
+
+    private String name;
+    private int price;
+    private int discount;
+    private String imageUrl;
 
     public Order(int mId, int mIdTransact, int mIdProduct, int mQty, int mAmount) {
         this.mId = mId;
@@ -39,6 +47,25 @@ public class Order implements Serializable {
         this.mIdProduct = mIdProduct;
         this.mQty = mQty;
         this.mAmount = mAmount;
+    }
+
+    public Order(JSONObject jsonOrder) throws JSONException {
+        this.mId = jsonOrder.getInt("id");
+        this.mIdTransact = jsonOrder.getInt("idTransact");
+        this.mIdProduct = jsonOrder.getInt("idProduct");
+        this.mQty = jsonOrder.getInt("qty");
+        this.mAmount = jsonOrder.getInt("amount");
+
+        if (!jsonOrder.getString("name").equals("null")) {
+            this.name = jsonOrder.getString("name");
+        }
+
+        this.price = jsonOrder.getInt("price");
+        this.discount = jsonOrder.getInt("discount");
+
+        if (!jsonOrder.getString("imageUrl").equals("null")) {
+            this.imageUrl = jsonOrder.getString("imageUrl");
+        }
     }
 
     public int getmId() {
@@ -79,5 +106,52 @@ public class Order implements Serializable {
 
     public void setmAmount(int mAmount) {
         this.mAmount = mAmount;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "mId=" + mId +
+                ", mIdTransact=" + mIdTransact +
+                ", mIdProduct=" + mIdProduct +
+                ", mQty=" + mQty +
+                ", mAmount=" + mAmount +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", discount=" + discount +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }

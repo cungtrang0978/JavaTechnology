@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 import static com.example.tikicloneapp.MyClass.setTextView_StrikeThrough;
 
 public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.ViewHolder> {
@@ -117,8 +116,10 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             holder.tvIdOrder.setText(String.valueOf(order.getmId()));
         }
 
-        MainActivity.dbVolley.getFirstImageProduct(holder.ivProduct, idProduct);
-        getProduct(idProduct, holder);
+//        MainActivity.dbVolley.getFirstImageProduct(holder.ivProduct, idProduct);
+        ProductListAdapter.loadImageFromUrl(order.getImageUrl(), holder.ivProduct);
+        setViews(holder, order);
+//        getProduct(idProduct, holder);
     }
 
     @Override
@@ -234,49 +235,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
                             productObject.getInt("qty")
                     );
 
-                    String name = productObject.getString("name");
-                    holder.tvName.setText(name);
 
-                    int discount = productObject.getInt("discount");
-                    int priceOrigin = productObject.getInt("price");
-                    int priceDiscount = priceOrigin - priceOrigin * discount / 100;
-
-                    if (mResource == R.layout.row_cart) {
-                        String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
-                        holder.tvPriceDiscount.setText(priceDiscountString);
-                        if (discount != 0) {
-
-                            String priceOriginString = CartActivity.formatCurrency(priceOrigin);
-
-                            holder.tvPriceOrigin.setText(priceOriginString);
-                        }
-
-                        holder.layout_row_cart.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                gotoProductDetailActi(product);
-                            }
-                        });
-                    } else if (mResource == R.layout.row_comfirmation) {
-                        int price = Integer.parseInt(holder.tvCount.getText().toString()) * priceDiscount;
-                        String priceString = CartActivity.formatCurrency(price);
-                        holder.tvPrice.setText(priceString);
-                        holder.layout_row_confirmation.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                gotoProductDetailActi(product);
-                            }
-                        });
-                    } else if (mResource == R.layout.row_item_cart_transact) {
-                        String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
-                        holder.tvPriceDiscount.setText(priceDiscountString);
-                        holder.layout_row_item_cart_transact.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                gotoProductDetailActi(product);
-                            }
-                        });
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -296,6 +255,53 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    private void setViews(ViewHolder holder, Order order) {
+        String name = order.getName();
+        holder.tvName.setText(name);
+
+        int discount = order.getDiscount();
+        int priceOrigin = order.getPrice();
+        int priceDiscount = priceOrigin - priceOrigin * discount / 100;
+        final Product product = new Product(order.getmIdProduct(), order.getName(), order.getPrice(), order.getDiscount());
+        if (mResource == R.layout.row_cart) {
+            String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
+            holder.tvPriceDiscount.setText(priceDiscountString);
+            if (discount != 0) {
+
+                String priceOriginString = CartActivity.formatCurrency(priceOrigin);
+
+                holder.tvPriceOrigin.setText(priceOriginString);
+            }
+
+
+            holder.layout_row_cart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoProductDetailActi(product);
+                }
+            });
+        } else if (mResource == R.layout.row_comfirmation) {
+            int price = Integer.parseInt(holder.tvCount.getText().toString()) * priceDiscount;
+            String priceString = CartActivity.formatCurrency(price);
+            holder.tvPrice.setText(priceString);
+            holder.layout_row_confirmation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoProductDetailActi(product);
+                }
+            });
+        } else if (mResource == R.layout.row_item_cart_transact) {
+            String priceDiscountString = CartActivity.formatCurrency(priceDiscount);
+            holder.tvPriceDiscount.setText(priceDiscountString);
+            holder.layout_row_item_cart_transact.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    gotoProductDetailActi(product);
+                }
+            });
+        }
     }
 
     public void checkQtyProduct(final int idProduct, final int idOrder, final ViewHolder holder, final int CODE) {
