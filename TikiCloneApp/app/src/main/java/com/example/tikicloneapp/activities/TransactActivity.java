@@ -95,7 +95,7 @@ public class TransactActivity extends AppCompatActivity {
         btnCancelTransact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbVolley.updateStatusTransact(idTransact, Transact.STATUS_CANCEL);
+                dbVolley.updateStatusTransact(idTransact, Transact.STATUS_CANCEL, null);
                 MainActivity.dbVolley.getOrder_updateProduct(Transact.STATUS_CANCEL);
                 if (idActivity == R.layout.activity_order_success) {
                     Intent intent = new Intent(TransactActivity.this, MainActivity.class);

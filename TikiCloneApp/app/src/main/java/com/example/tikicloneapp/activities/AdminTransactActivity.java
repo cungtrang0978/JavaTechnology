@@ -1,6 +1,7 @@
 package com.example.tikicloneapp.activities;
 
 import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -23,12 +24,15 @@ import com.example.tikicloneapp.models.User;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.activities.CartActivity.formatCurrency;
 import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class AdminTransactActivity extends AppCompatActivity {
+    private static final String TAG = AdminTransactActivity.class.getSimpleName();
+
     private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress,
             tvPriceProvisional, tvPriceLast, tvShippingFee;
     private Button btnCancelTransact, btnConfirmTransact;
@@ -78,7 +82,7 @@ public class AdminTransactActivity extends AppCompatActivity {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         }else if(AdminManagementActivity.role== User.ROLE_SHIPPER){
-            if(transact.getmStatus()!=Transact.STATUS_SELLER_RECEIVED){
+            if(transact.getmStatus()!=Transact.STATUS_PICKING_GOODS){
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         }
@@ -92,7 +96,8 @@ public class AdminTransactActivity extends AppCompatActivity {
         btnConfirmTransact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AdminManagementActivity.dbVolley.updateStatusTransact(transact.getmId(), Transact.STATUS_SELLER_RECEIVED);
+
+                new InsertShipping().execute();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
                 } else finish();
@@ -108,6 +113,24 @@ public class AdminTransactActivity extends AppCompatActivity {
                 } else finish();
             }
         });
+    }
+
+    private class InsertShipping extends AsyncTask<Void, Void, Integer>{
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("idTransact", transact.getmId()+"");
+            String response = AdminManagementActivity.httpHandler.performPostCall(AdminManagementActivity.dbVolley.URL_INSERT_SHIPPING, params);
+//            Log.d(TAG, "InsertShipping: " + response);
+            return Integer.valueOf(response);
+        }
+
+        @Override
+        protected void onPostExecute(Integer shipperId) {
+            super.onPostExecute(shipperId);
+            AdminManagementActivity.dbVolley.updateStatusTransact(transact.getmId(), Transact.STATUS_PICKING_GOODS, shipperId);
+        }
     }
 
     private void setCartProductAdapter() {

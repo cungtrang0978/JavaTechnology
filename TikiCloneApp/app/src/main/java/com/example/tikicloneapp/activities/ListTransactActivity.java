@@ -93,7 +93,7 @@ public class ListTransactActivity extends AppCompatActivity {
             label = "Thành công";
         } else if (status == Transact.STATUS_DELIVERING) {
             label = "Đang vận chuyển";
-        } else if (status == Transact.STATUS_SELLER_RECEIVED) {
+        } else if (status == Transact.STATUS_PICKING_GOODS) {
             label = "Đang lấy hàng";
         } else if (status == Transact.CODE_GET_ALL) {
             label = "Quản lý đơn hàng";

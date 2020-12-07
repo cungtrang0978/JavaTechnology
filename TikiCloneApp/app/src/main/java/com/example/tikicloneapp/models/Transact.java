@@ -54,13 +54,15 @@ public class Transact implements Serializable {
 
     private Integer shippingFee;
 
+    private Integer shipperId;
 
-    public static int STATUS_CANCEL = -1;
-    public static int STATUS_NOT_ORDER = 0;
-    public static int STATUS_TIKI_RECEIVED = 1;
-    public static int STATUS_SELLER_RECEIVED = 2;
-    public static int STATUS_DELIVERING = 3;
-    public static int STATUS_SUCCESS = 4;
+
+    public static final int STATUS_CANCEL = -1;
+    public static final int STATUS_NOT_ORDER = 0;
+    public static final int STATUS_TIKI_RECEIVED = 1;
+    public static final int STATUS_PICKING_GOODS = 2;
+    public static final int STATUS_DELIVERING = 3;
+    public static final int STATUS_SUCCESS = 4;
 
     public static int CODE_GET_ALL = 1234;
 
@@ -133,6 +135,9 @@ public class Transact implements Serializable {
 
         this.shippingFee = jsonTransact.getInt("shippingFee");
 
+//        if (!jsonTransact.getString("idShipper").equals("null")) {
+//            this.shipperId = jsonTransact.getInt("shipperId");
+//        }
     }
 
 
@@ -299,6 +304,14 @@ public class Transact implements Serializable {
         this.mModified = mModified;
     }
 
+    public Integer getShipperId() {
+        return shipperId;
+    }
+
+    public void setShipperId(Integer shipperId) {
+        this.shipperId = shipperId;
+    }
+
     @Override
     public String toString() {
         return "Transact{" +
@@ -317,6 +330,7 @@ public class Transact implements Serializable {
                 ", mCreated=" + mCreated +
                 ", mModified=" + mModified +
                 ", shippingFee=" + shippingFee +
+                ", shipperId=" + shipperId +
                 '}';
     }
 
@@ -334,7 +348,7 @@ public class Transact implements Serializable {
         if (status == STATUS_DELIVERING) {
             staString = "Đang giao";
         }
-        if (status == STATUS_SELLER_RECEIVED) {
+        if (status == STATUS_PICKING_GOODS) {
             staString = "Đang lấy hàng";
         }
         tvStatus.setText(staString);

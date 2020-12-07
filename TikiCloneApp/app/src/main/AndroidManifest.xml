@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.AdminTransactActivity"></activity>
-        <activity android:name=".activities.TransactManagementAdminActivity" />
+        <activity android:name=".activities.AdminTransactManagementActivity" />
         <activity android:name=".activities.AdminManagementActivity" />
         <activity android:name=".activities.ProductReviewsActivity" />
         <activity android:name=".activities.WriteReviewActivity" />
