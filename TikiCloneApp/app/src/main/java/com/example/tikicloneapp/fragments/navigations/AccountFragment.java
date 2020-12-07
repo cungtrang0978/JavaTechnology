@@ -232,7 +232,7 @@ public class AccountFragment extends Fragment {
         lay_seller_receive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onClickTransact(Transact.STATUS_SELLER_RECEIVED);
+                onClickTransact(Transact.STATUS_PICKING_GOODS);
             }
         });
         lay_transact_delivering.setOnClickListener(new View.OnClickListener() {

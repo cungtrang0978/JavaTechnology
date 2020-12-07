@@ -106,6 +106,7 @@ public class DBVolley {
     public String URL_GET_REVIEW_PRODUCTS_BY_USER_ID = IP_ADDRESS + "getReviewProductsByIdUser.php";
     public String URL_INSERT_RATE = IP_ADDRESS + "insertRate.php";
     public String URL_GET_REVIEW_PRODUCTS_BY_PRODUCT_ID = IP_ADDRESS + "getReviewProductsByProductId.php";
+    public String URL_INSERT_SHIPPING = IP_ADDRESS + "insertShipping.php";
 
 
     private final Context context;
@@ -1030,7 +1031,7 @@ public class DBVolley {
         requestQueue.add(stringRequest);
     }
 
-    public void updateStatusTransact(final int idTransact, final Integer status) {
+    public void updateStatusTransact(final int idTransact, final Integer status, final Integer shipperId) {
         final String update_success = "update_success";
         final String update_fail = "update_fail";
         final String non_value = "non_value";
@@ -1078,6 +1079,9 @@ public class DBVolley {
                 }
                 Timestamp modified = new Timestamp(System.currentTimeMillis());
                 params.put("modified", modified.toString());
+                if(shipperId!=null){
+                    params.put("idShipper", shipperId.toString());
+                }
 
                 params.put("code", "CODE_UPDATE_TRANSACT");
                 return params;

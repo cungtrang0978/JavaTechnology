@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TabLayoutViewPagerAdapter extends FragmentPagerAdapter {
-    private final List<Fragment>  mFragmentList = new ArrayList<>();
-    private final List<String>  mFragmentTitleList = new ArrayList<>();
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
 
     public TabLayoutViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+    }
+
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return POSITION_NONE;
     }
 
 
@@ -32,6 +37,7 @@ public class TabLayoutViewPagerAdapter extends FragmentPagerAdapter {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
+
     @Override
     public CharSequence getPageTitle(int position) {
         return mFragmentTitleList.get(position);

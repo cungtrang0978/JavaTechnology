@@ -66,7 +66,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         btnManageOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AdminManagementActivity.this, TransactManagementAdminActivity.class);
+                Intent intent = new Intent(AdminManagementActivity.this, AdminTransactManagementActivity.class);
                 startActivity(intent);
             }
         });

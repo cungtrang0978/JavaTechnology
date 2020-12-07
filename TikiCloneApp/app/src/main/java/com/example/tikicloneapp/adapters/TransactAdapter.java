@@ -80,7 +80,7 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
             holder.ivIconStatus.setImageResource(R.drawable.icons8_synchronize_64);
         } else if (transact.getmStatus() == Transact.STATUS_DELIVERING) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_motocross_64);
-        } else if (transact.getmStatus() == Transact.STATUS_SELLER_RECEIVED) {
+        } else if (transact.getmStatus() == Transact.STATUS_PICKING_GOODS) {
             holder.ivIconStatus.setImageResource(R.drawable.icons8_received_64);
 
         }
