@@ -145,4 +145,5 @@ public class TransactAdapter extends RecyclerView.Adapter<TransactAdapter.ViewHo
         };
         requestQueue.add(stringRequest);
     }
+
 }

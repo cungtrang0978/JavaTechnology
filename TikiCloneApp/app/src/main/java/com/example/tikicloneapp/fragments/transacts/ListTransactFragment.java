@@ -97,11 +97,5 @@ public class ListTransactFragment extends Fragment {
         }, 800);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_LIST_TRANSACT && resultCode == ListTransactActivity.RESULT_OK) {
-            setRecyclerView(statusTransact);
-        }
-    }
+
 }

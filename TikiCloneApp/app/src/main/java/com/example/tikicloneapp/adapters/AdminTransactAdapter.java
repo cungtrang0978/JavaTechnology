@@ -1,8 +1,11 @@
 package com.example.tikicloneapp.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static com.example.tikicloneapp.activities.AdminTransactManagementActivity.REFRESH_CODE_REFRESH;
 import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdapter.ViewHolder> {
@@ -61,11 +65,10 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AdminTransactActivity.class);
                 intent.putExtra("transact", transact);
-                mContext.startActivity(intent);
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    ((Activity) mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
-//                } else
-//                    ((Activity) mContext).startActivityForResult(intent, ListTransactFragment.REQUEST_CODE_LIST_TRANSACT);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    ((Activity) mContext).startActivityForResult(intent, REFRESH_CODE_REFRESH, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+                } else
+                    ((Activity) mContext).startActivityForResult(intent, REFRESH_CODE_REFRESH);
             }
         });
     }

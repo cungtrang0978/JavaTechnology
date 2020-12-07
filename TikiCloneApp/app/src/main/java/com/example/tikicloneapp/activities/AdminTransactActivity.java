@@ -1,6 +1,7 @@
 package com.example.tikicloneapp.activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -101,7 +102,9 @@ public class AdminTransactActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
                 } else finish();
-//                setResult(RESULT_OK);
+                Intent intent = new Intent();
+                intent.putExtra("status", transact.getmStatus());
+                setResult(RESULT_OK, intent);
             }
         });
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class AdminTransactFragment extends Fragment {
 
-    private final ArrayList<Transact> transacts;
+    private ArrayList<Transact> transacts;
 
 
     private static final String TAG = AdminTransactFragment.class.getSimpleName();
@@ -71,4 +71,10 @@ public class AdminTransactFragment extends Fragment {
         rvTransacts.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTransacts.setAdapter(adminTransactAdapter);
     }
+
+    public void refreshRecyclerView(ArrayList<Transact> _transacts){
+        transacts = _transacts;
+        adminTransactAdapter.notifyDataSetChanged();
+    }
+
 }

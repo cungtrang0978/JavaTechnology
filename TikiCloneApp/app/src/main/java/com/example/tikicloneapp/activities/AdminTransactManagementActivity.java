@@ -1,5 +1,6 @@
 package com.example.tikicloneapp.activities;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
@@ -50,6 +52,8 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
 
     final int CODE_GET_ALL = 123;
 
+    public final static int REFRESH_CODE_REFRESH = 31314;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +91,7 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                refreshTransact(CODE_GET_ALL);
+                new RefreshTransacts().execute(1);
             }
         });
 
@@ -105,8 +109,6 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
     }
 
     private class FetchTransacts extends AsyncTask<Integer, Void, Void> {
-
-
         @Override
         protected Void doInBackground(Integer... status) {
             switch (status[0]) {
@@ -151,26 +153,39 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
         }
     }
 
-    private class ReFetchTransacts extends AsyncTask<Integer, Void, Void> {
+    private class RefreshTransacts extends AsyncTask<Integer, Void, Void> {
         @Override
         protected Void doInBackground(Integer... status) {
             switch (status[0]) {
                 case Transact.STATUS_CANCEL:
-                    cancelledTransacts = getTransacts(status[0]);
+                    cancelledTransacts = getTransacts(Transact.STATUS_CANCEL);
+                    cancelledFragment.refreshRecyclerView(cancelledTransacts);
                     break;
                 case Transact.STATUS_TIKI_RECEIVED:
-                    notConfirmTransacts = getTransacts(status[0]);
-                    pickingGoodsTransacts = getTransacts(status[0]);
+                    notConfirmTransacts = getTransacts(Transact.STATUS_TIKI_RECEIVED);
+                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
+
+                    notConfirmFragment.refreshRecyclerView(notConfirmTransacts);
+                    pickingGoodsFragment.refreshRecyclerView(pickingGoodsTransacts);
                     break;
                 case Transact.STATUS_PICKING_GOODS:
-                    pickingGoodsTransacts = getTransacts(status[0]);
-                    deliveringTransacts = getTransacts(status[0]);
+                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
+                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
+
+                    pickingGoodsFragment.refreshRecyclerView(pickingGoodsTransacts);
+                    deliveringFragment.refreshRecyclerView(deliveringTransacts);
                     break;
                 case Transact.STATUS_DELIVERING:
-                    deliveringTransacts = getTransacts(status[0]);
+                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
+                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
+
+                    deliveringFragment.refreshRecyclerView(deliveringTransacts);
+                    deliveredFragment.refreshRecyclerView(deliveredTransacts);
                     break;
                 case Transact.STATUS_SUCCESS:
-                    deliveredTransacts = getTransacts(status[0]);
+                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
+
+                    deliveredFragment.refreshRecyclerView(deliveredTransacts);
                     break;
                 case CODE_GET_ALL:
                     notConfirmTransacts = getTransacts(Transact.STATUS_TIKI_RECEIVED);
@@ -187,20 +202,8 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            notConfirmFragment = new AdminTransactFragment(notConfirmTransacts);
-            pickingGoodsFragment = new AdminTransactFragment(pickingGoodsTransacts);
-            deliveringFragment = new AdminTransactFragment(deliveringTransacts);
-            deliveredFragment = new AdminTransactFragment(deliveredTransacts);
-            cancelledFragment = new AdminTransactFragment(cancelledTransacts);
-            Log.d(TAG, /*"pickingGoodsTransacts: " + pickingGoodsTransacts.toString()*/
-                     "; deliveringTransacts: " + deliveringTransacts.toString());
 
-            adapter.notifyDataSetChanged();
         }
-    }
-
-    private void refreshTransact(Integer status) {
-        new ReFetchTransacts().execute(status);
     }
 
     private ArrayList<Transact> getTransacts(int status) {
@@ -233,5 +236,13 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
         return _transact;
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REFRESH_CODE_REFRESH && requestCode == RESULT_OK) {
+            int status = data.getIntExtra("status", 0);
+            Log.d(TAG, "onActivityResult: " + status);
+            new RefreshTransacts().execute(status);
+        }
+    }
 }

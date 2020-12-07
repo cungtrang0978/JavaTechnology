@@ -1,16 +1,16 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.TabLayoutViewPagerAdapter;
@@ -104,7 +104,7 @@ public class ListTransactActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ListTransactFragment.REQUEST_CODE_LIST_TRANSACT && resultCode == ListTransactActivity.RESULT_OK) {
+        if (requestCode == ListTransactFragment.REQUEST_CODE_LIST_TRANSACT && resultCode == RESULT_OK) {
             listTransactFragment.setRecyclerView(status);
         }
     }
