@@ -29,7 +29,6 @@ import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.activities.AdminManagementActivity;
 import com.example.tikicloneapp.activities.MainActivity;
-import com.example.tikicloneapp.database.DBVolley;
 import com.example.tikicloneapp.models.User;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -145,10 +144,11 @@ public class LoginFragment extends Fragment {
                     User user = new User(jsonUser.getInt("id"), jsonUser.getInt("roleId"));
                     int idUser = user.getmId();
 
-                    if (user.getmRoleId() == User.ROLE_ADMIN) {
+                    if (user.getmRoleId() == User.ROLE_ADMIN || user.getmRoleId() == User.ROLE_SHIPPER) {
                         getActivity().finishAffinity();
                         Intent intent = new Intent(getContext(), AdminManagementActivity.class);
                         intent.putExtra("idUser", idUser);
+                        intent.putExtra("role", user.getmRoleId());
                         startActivity(intent);
                     } else if (user.getmRoleId() == User.ROLE_USER) {
                         if (code == 0) {

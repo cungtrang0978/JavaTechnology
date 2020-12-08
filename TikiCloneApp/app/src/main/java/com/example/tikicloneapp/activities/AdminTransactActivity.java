@@ -78,12 +78,12 @@ public class AdminTransactActivity extends AppCompatActivity {
         MyClass.callPanel(layout_loading, 700);
 
         btnCancelTransact.setVisibility(View.GONE);
-        if(AdminManagementActivity.role== User.ROLE_ADMIN){
-            if(transact.getmStatus()!=Transact.STATUS_TIKI_RECEIVED){
+        if (AdminManagementActivity.role == User.ROLE_ADMIN) {
+            if (transact.getmStatus() != Transact.STATUS_TIKI_RECEIVED) {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
-        }else if(AdminManagementActivity.role== User.ROLE_SHIPPER){
-            if(transact.getmStatus()!=Transact.STATUS_PICKING_GOODS){
+        } else if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
+            if (transact.getmStatus() != Transact.STATUS_PICKING_GOODS) {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         }
@@ -118,12 +118,11 @@ public class AdminTransactActivity extends AppCompatActivity {
         });
     }
 
-    private class InsertShipping extends AsyncTask<Void, Void, Integer>{
-
+    private class InsertShipping extends AsyncTask<Void, Void, Integer> {
         @Override
         protected Integer doInBackground(Void... voids) {
             HashMap<String, String> params = new HashMap<>();
-            params.put("idTransact", transact.getmId()+"");
+            params.put("idTransact", transact.getmId() + "");
             String response = AdminManagementActivity.httpHandler.performPostCall(AdminManagementActivity.dbVolley.URL_INSERT_SHIPPING, params);
 //            Log.d(TAG, "InsertShipping: " + response);
             return Integer.valueOf(response);

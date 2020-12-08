@@ -75,15 +75,12 @@ public class AdminManagementActivity extends AppCompatActivity {
     void checkIdUser() {
         int idUserOld = dbManager.getIdUser();
         idUser = getIntent().getIntExtra("idUser", idUserOld);
-        Log.d("thang", "checkIdUser: " + idUser + "; idUserOld: " + idUserOld);
-//        if(idUserOld == 0){
-//            dbManager.clearAllData_Order();
-//        }
+        Log.d("thang", "checkIdUser: " + idUser + "; idUserOld: " + idUserOld+ "; roleId: "+ role);
 
         if (idUser != idUserOld) {
             dbManager.updateData_User(idUser, idUserOld);
         }
-//        new TestTask().execute();
+
     }
 
     private class TestTask extends AsyncTask<Void, Void, Void> {

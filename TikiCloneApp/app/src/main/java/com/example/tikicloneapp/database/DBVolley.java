@@ -92,6 +92,7 @@ public class DBVolley {
     public String URL_UPDATE_TRANSACT = IP_ADDRESS + "updateTransact.php";
     public String URL_GET_TRANSACT = IP_ADDRESS + "getTransact.php";
     public String URL_GET_TRANSACT_BY_ADMIN = IP_ADDRESS + "getTransactByAdmin.php";
+    public String URL_GET_TRANSACT_BY_SHIPPER = IP_ADDRESS + "getTransactByShipper.php";
     public String URL_DELETE_ORDER = IP_ADDRESS + "deleteOrder.php";
     public String URL_GET_NAME_PRODUCT = IP_ADDRESS + "getNameProduct.php";
     public String URL_GET_NAME_TRANSACT = IP_ADDRESS + "getNameTransact.php";

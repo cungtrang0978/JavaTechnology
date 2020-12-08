@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.example.tikicloneapp.activities.AdminTransactManagementActivity.REFRESH_CODE_REFRESH;
+import static com.example.tikicloneapp.activities.AdminTransactManagementActivity.REQUEST_CODE_REFRESH;
 import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdapter.ViewHolder> {
@@ -65,10 +65,12 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, AdminTransactActivity.class);
                 intent.putExtra("transact", transact);
+                Activity activity = (Activity) mContext;
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    ((Activity) mContext).startActivityForResult(intent, REFRESH_CODE_REFRESH, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
+                    ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_REFRESH, ActivityOptions.makeSceneTransitionAnimation((Activity) mContext).toBundle());
                 } else
-                    ((Activity) mContext).startActivityForResult(intent, REFRESH_CODE_REFRESH);
+                    ((Activity) mContext).startActivityForResult(intent, REQUEST_CODE_REFRESH);
             }
         });
     }

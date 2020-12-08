@@ -32,6 +32,8 @@ public class WaitingActivity extends AppCompatActivity {
     DBManager dbManager;
     DBVolley dbVolley;
 
+    private static final String TAG = WaitingActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,20 +77,19 @@ public class WaitingActivity extends AppCompatActivity {
                 try {
                     JSONObject userObject = new JSONObject(response);
                     final User user = new User(userObject.getInt("id"), userObject.getInt("roleId"));
-
+                    Log.d(TAG, "getUser: " + user.getmRoleId());
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             Intent intent = new Intent();
                             if (user.getmRoleId() == User.ROLE_ADMIN) {
-                                intent.putExtra("role", User.ROLE_USER);
                                 intent = new Intent(WaitingActivity.this, AdminManagementActivity.class);
+                                intent.putExtra("role", user.getmRoleId());
                             } else if (user.getmRoleId() == User.ROLE_USER) {
-
                                 intent = new Intent(WaitingActivity.this, MainActivity.class);
                             } else if (user.getmRoleId() == User.ROLE_SHIPPER) {
-                                intent.putExtra("role", User.ROLE_USER);
                                 intent = new Intent(WaitingActivity.this, AdminManagementActivity.class);
+                                intent.putExtra("role", user.getmRoleId());
                             }
 
                             //goto Next Activity;

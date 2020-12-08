@@ -4,20 +4,22 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.adapters.TabLayoutViewPagerAdapter;
+import com.example.tikicloneapp.adapters.AdminTransactAdapter;
 import com.example.tikicloneapp.fragments.AdminTransactFragment;
 import com.example.tikicloneapp.models.Transact;
-import com.google.android.material.tabs.TabLayout;
+import com.example.tikicloneapp.models.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,52 +30,50 @@ import java.util.HashMap;
 
 import static com.example.tikicloneapp.activities.AdminManagementActivity.httpHandler;
 
-public class AdminTransactManagementActivity extends AppCompatActivity {
+public class AdminTransactManagementActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private ImageButton ibBack;
+    private TextView tvNonConfirm,
+            tvPickingGoods,
+            tvDelivering,
+            tvDelivered,
+            tvCancelled;
+    private LinearLayout layPanel_nonOrder, lay_loading;
+    private RecyclerView rvTransacts;
+    private SwipeRefreshLayout swipeRLTransact;
 
-    private static final String TAG = AdminTransactManagementActivity.class.getSimpleName();
+    private int lastIndex = 1;
+    private ArrayList<Transact> transacts = new ArrayList<>();
+    private AdminTransactAdapter transactAdapter;
+    private static final String TAG = AdminTransactFragment.class.getSimpleName();
 
-    private ImageButton ibBack, ibRefresh;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-    TabLayoutViewPagerAdapter adapter;
-
-    AdminTransactFragment notConfirmFragment;
-    AdminTransactFragment pickingGoodsFragment;
-    AdminTransactFragment deliveringFragment;
-    AdminTransactFragment deliveredFragment;
-    AdminTransactFragment cancelledFragment;
-
-    ArrayList<Transact> notConfirmTransacts;
-    ArrayList<Transact> pickingGoodsTransacts;
-    ArrayList<Transact> deliveringTransacts;
-    ArrayList<Transact> deliveredTransacts;
-    ArrayList<Transact> cancelledTransacts;
-
-    final int CODE_GET_ALL = 123;
-
-    public final static int REFRESH_CODE_REFRESH = 31314;
+    public static int REQUEST_CODE_REFRESH = 113;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_transact_management);
-
         initWidget();
 
         setViews();
     }
 
     private void initWidget() {
-        tabLayout = findViewById(R.id.tabLayout);
-        viewPager = findViewById(R.id.viewPager);
+        rvTransacts = findViewById(R.id.recyclerView_transact);
+        layPanel_nonOrder = findViewById(R.id.layout_panel_nonOrder);
         ibBack = findViewById(R.id.imageButton_back);
-        ibRefresh = findViewById(R.id.imageButton_refresh);
+        tvNonConfirm = findViewById(R.id.textView_nonConfirm);
+        tvPickingGoods = findViewById(R.id.textView_pickingGoods);
+        tvDelivering = findViewById(R.id.textView_delivering);
+        tvDelivered = findViewById(R.id.textView_delivered);
+        tvCancelled = findViewById(R.id.textView_cancelled);
+        lay_loading = findViewById(R.id.loadingPanel_parent);
+        swipeRLTransact = findViewById(R.id.swipeRefreshLayout);
     }
 
     private void setViews() {
+        setRvTransacts(Transact.STATUS_TIKI_RECEIVED);
+
         setOnClickView();
-        new FetchTransacts().execute(CODE_GET_ALL);
     }
 
 
@@ -87,162 +87,122 @@ public class AdminTransactManagementActivity extends AppCompatActivity {
             }
         });
 
-        ibRefresh.setOnClickListener(new View.OnClickListener() {
+        tvNonConfirm.setOnClickListener(onClickListener(1));
+        tvPickingGoods.setOnClickListener(onClickListener(2));
+        tvDelivering.setOnClickListener(onClickListener(3));
+        tvDelivered.setOnClickListener(onClickListener(4));
+        tvCancelled.setOnClickListener(onClickListener(-1));
+
+        swipeRLTransact.setOnRefreshListener(this);
+        swipeRLTransact.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+    }
+
+    View.OnClickListener onClickListener(final int status) {
+        return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                new RefreshTransacts().execute(1);
+                setRvTransacts(status);
+                lastIndex = status;
             }
-        });
-
+        };
     }
 
-    private void setViewPager() {
-        adapter = new TabLayoutViewPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        adapter.addFragment(notConfirmFragment, "Chưa xác nhận");
-        adapter.addFragment(pickingGoodsFragment, "Đang lấy hàng");
-        adapter.addFragment(deliveringFragment, "Đang giao hàng");
-        adapter.addFragment(deliveredFragment, "Đã nhận hàng");
-        adapter.addFragment(cancelledFragment, "Đã hủy");
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
+    private void setTransactAdapter() {
+        transactAdapter = new AdminTransactAdapter(this, transacts);
+        rvTransacts.setLayoutManager(new LinearLayoutManager(this));
+        rvTransacts.setAdapter(transactAdapter);
     }
 
-    private class FetchTransacts extends AsyncTask<Integer, Void, Void> {
-        @Override
-        protected Void doInBackground(Integer... status) {
-            switch (status[0]) {
-                case Transact.STATUS_CANCEL:
-                    cancelledTransacts = getTransacts(status[0]);
-                    break;
-                case Transact.STATUS_TIKI_RECEIVED:
-                    notConfirmTransacts = getTransacts(status[0]);
-                    pickingGoodsTransacts = getTransacts(status[0]);
-                    break;
-                case Transact.STATUS_PICKING_GOODS:
-                    pickingGoodsTransacts = getTransacts(status[0]);
-                    deliveringTransacts = getTransacts(status[0]);
-                    break;
-                case Transact.STATUS_DELIVERING:
-                    deliveringTransacts = getTransacts(status[0]);
-                    break;
-                case Transact.STATUS_SUCCESS:
-                    deliveredTransacts = getTransacts(status[0]);
-                    break;
-                case CODE_GET_ALL:
-                    notConfirmTransacts = getTransacts(Transact.STATUS_TIKI_RECEIVED);
-                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
-                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
-                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
-                    cancelledTransacts = getTransacts(Transact.STATUS_CANCEL);
-                    break;
-            }
+    @Override
+    public void onRefresh() {
+        setRvTransacts(lastIndex);
+    }
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            notConfirmFragment = new AdminTransactFragment(notConfirmTransacts);
-            pickingGoodsFragment = new AdminTransactFragment(pickingGoodsTransacts);
-            deliveringFragment = new AdminTransactFragment(deliveringTransacts);
-            deliveredFragment = new AdminTransactFragment(deliveredTransacts);
-            cancelledFragment = new AdminTransactFragment(cancelledTransacts);
-            setViewPager();
+    private void setRvTransacts(int status) {
+        if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
+            new FetchTransacts().execute(status, AdminManagementActivity.idUser);
+        } else {
+            new FetchTransacts().execute(status);
         }
     }
 
-    private class RefreshTransacts extends AsyncTask<Integer, Void, Void> {
+    private class FetchTransacts extends AsyncTask<Integer, Void, ArrayList<Transact>> {
         @Override
-        protected Void doInBackground(Integer... status) {
-            switch (status[0]) {
-                case Transact.STATUS_CANCEL:
-                    cancelledTransacts = getTransacts(Transact.STATUS_CANCEL);
-                    cancelledFragment.refreshRecyclerView(cancelledTransacts);
-                    break;
-                case Transact.STATUS_TIKI_RECEIVED:
-                    notConfirmTransacts = getTransacts(Transact.STATUS_TIKI_RECEIVED);
-                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            lay_loading.setVisibility(View.VISIBLE);
+            swipeRLTransact.setRefreshing(true);
+        }
 
-                    notConfirmFragment.refreshRecyclerView(notConfirmTransacts);
-                    pickingGoodsFragment.refreshRecyclerView(pickingGoodsTransacts);
-                    break;
-                case Transact.STATUS_PICKING_GOODS:
-                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
-                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
+        @Override
+        protected ArrayList<Transact> doInBackground(Integer... integers) {
+            if (integers.length > 1) {
+                return getTransacts(integers[0], integers[1]);
+            }
+            return getTransacts(integers[0], null);
+        }
 
-                    pickingGoodsFragment.refreshRecyclerView(pickingGoodsTransacts);
-                    deliveringFragment.refreshRecyclerView(deliveringTransacts);
-                    break;
-                case Transact.STATUS_DELIVERING:
-                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
-                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
-
-                    deliveringFragment.refreshRecyclerView(deliveringTransacts);
-                    deliveredFragment.refreshRecyclerView(deliveredTransacts);
-                    break;
-                case Transact.STATUS_SUCCESS:
-                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
-
-                    deliveredFragment.refreshRecyclerView(deliveredTransacts);
-                    break;
-                case CODE_GET_ALL:
-                    notConfirmTransacts = getTransacts(Transact.STATUS_TIKI_RECEIVED);
-                    pickingGoodsTransacts = getTransacts(Transact.STATUS_PICKING_GOODS);
-                    deliveringTransacts = getTransacts(Transact.STATUS_DELIVERING);
-                    deliveredTransacts = getTransacts(Transact.STATUS_SUCCESS);
-                    cancelledTransacts = getTransacts(Transact.STATUS_CANCEL);
-                    break;
+        @Override
+        protected void onPostExecute(ArrayList<Transact> _transacts) {
+            super.onPostExecute(_transacts);
+//            lay_loading.setVisibility(View.GONE);
+            if (_transacts.isEmpty()) {
+                layPanel_nonOrder.setVisibility(View.VISIBLE);
+            } else {
+                layPanel_nonOrder.setVisibility(View.GONE);
             }
 
-            return null;
+            transacts = _transacts;
+            setTransactAdapter();
+            swipeRLTransact.setRefreshing(false);
         }
 
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        private ArrayList<Transact> getTransacts(int status, Integer shipperId) {
+            ArrayList<Transact> _transact = new ArrayList<>();
 
-        }
-    }
-
-    private ArrayList<Transact> getTransacts(int status) {
-        ArrayList<Transact> _transact = new ArrayList<>();
-
-        HashMap<String, String> params = new HashMap<>();
-        params.put("status", String.valueOf(status));
-        String jsonStr = httpHandler.performPostCall(AdminManagementActivity.dbVolley.URL_GET_TRANSACT_BY_ADMIN, params);
-        if (jsonStr != null) {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("status", String.valueOf(status));
+            String jsonStr = "";
+            if (shipperId == null) {
+                jsonStr = httpHandler.performPostCall(AdminManagementActivity.dbVolley.URL_GET_TRANSACT_BY_ADMIN, params);
+            } else {
+                params.put("idShipper", String.valueOf(shipperId));
+                jsonStr = httpHandler.performPostCall(AdminManagementActivity.dbVolley.URL_GET_TRANSACT_BY_SHIPPER, params);
+            }
+            if (jsonStr != null) {
 //            Log.d(TAG, "jsonStr: " + jsonStr);
-            try {
+                try {
 
-                JSONArray jsonArray = new JSONArray(jsonStr);
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    try {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        Transact transact = new Transact(
-                                object
-                        );
-                        _transact.add(transact);
+                    JSONArray jsonArray = new JSONArray(jsonStr);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Transact transact = new Transact(
+                                    object
+                            );
+                            _transact.add(transact);
 
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
+            return _transact;
         }
-        return _transact;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REFRESH_CODE_REFRESH && requestCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE_REFRESH && resultCode == RESULT_OK) {
             int status = data.getIntExtra("status", 0);
-            Log.d(TAG, "onActivityResult: " + status);
-            new RefreshTransacts().execute(status);
+            setRvTransacts(status);
         }
     }
 }
