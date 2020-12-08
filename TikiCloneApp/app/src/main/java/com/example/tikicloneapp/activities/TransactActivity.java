@@ -107,7 +107,7 @@ public class TransactActivity extends AppCompatActivity {
 
         setCartProductAdapter();
 
-        setIvQRCode();
+
 
         btnCancelTransact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,7 +211,6 @@ public class TransactActivity extends AppCompatActivity {
                     tvAddress.setText(address);
 //                    Log.d("thang", "transact: " + transact.toString());
 
-
                     if (transact.getmCreated() != null) {
                         Date createdAt = new Date(transact.getmCreated().getTime());
                         @SuppressLint("SimpleDateFormat")
@@ -219,6 +218,9 @@ public class TransactActivity extends AppCompatActivity {
                         tvTimeCreated.setText(dateFormat);
                     }
 
+                    if(transact.getmStatus() == Transact.STATUS_DELIVERING){
+                        setIvQRCode();
+                    }
 
                     String price = formatCurrency(transact.getmAmount());
 
