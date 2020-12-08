@@ -2,12 +2,17 @@ package com.example.tikicloneapp.activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,6 +31,7 @@ import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Transact;
+import com.google.zxing.WriterException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +43,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+
 import static com.example.tikicloneapp.MyClass.getTextAddress;
 import static com.example.tikicloneapp.activities.CartActivity.formatCurrency;
 import static com.example.tikicloneapp.activities.MainActivity.dbVolley;
@@ -44,14 +53,19 @@ import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class TransactActivity extends AppCompatActivity {
 
+    private static final String TAG = TransactActivity.class.getSimpleName();
+
     private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress, tvPriceProvisional, tvPriceLast;
     private Button btnCancelTransact;
     private ImageButton ibBack;
     private RecyclerView rvCart;
     private LinearLayout layout_loading;
+    private ImageView ivQRCode;
 
     private ArrayList<Order> orderArrayList = new ArrayList<>();
     private CartProductAdapter cartProductAdapter;
+
+    private Bitmap bitmap;
 
     private int idTransact;
     private int idActivity;
@@ -82,6 +96,7 @@ public class TransactActivity extends AppCompatActivity {
         rvCart = findViewById(R.id.recyclerView_cart);
         ibBack = findViewById(R.id.imageButton_back);
         layout_loading = findViewById(R.id.loadingPanel_parent);
+        ivQRCode = findViewById(R.id.imageView_qrCode);
     }
 
     private void setEachView() {
@@ -91,6 +106,8 @@ public class TransactActivity extends AppCompatActivity {
         setTransact();
 
         setCartProductAdapter();
+
+        setIvQRCode();
 
         btnCancelTransact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +135,26 @@ public class TransactActivity extends AppCompatActivity {
                 } else finish();
             }
         });
+    }
+
+    private void setIvQRCode(){
+        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        Display display = manager.getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x;
+        int height = point.y;
+        int smallerDimension = Math.min(width, height);
+        smallerDimension = smallerDimension * 3 / 4;
+        QRGEncoder qrgEncoder = new QRGEncoder(String.valueOf(idTransact), null, QRGContents.Type.TEXT, smallerDimension);
+        try {
+            // Getting QR-Code as Bitmap
+            bitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            ivQRCode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            Log.v(TAG, e.toString());
+        }
     }
 
     private void setCartProductAdapter() {
@@ -208,6 +245,4 @@ public class TransactActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
-
 }

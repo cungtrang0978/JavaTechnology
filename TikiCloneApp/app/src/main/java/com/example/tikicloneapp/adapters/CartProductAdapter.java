@@ -213,49 +213,6 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
             activity.startActivityForResult(intent, ListProductActivity.REQUEST_CODE);
     }
 
-    private void getProduct(final int idProduct, final ViewHolder holder) {
-        String URL_GET_PRODUCT = MainActivity.dbVolley.URL_GET_PRODUCT;
-        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_PRODUCT, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONArray jsonArray = new JSONArray(response);
-
-                    JSONObject productObject = jsonArray.getJSONObject(0);
-                    final Product product = new Product(
-                            productObject.getInt("id"),
-                            productObject.getInt("idCatalog"),
-                            productObject.getString("name"),
-                            productObject.getString("description"),
-                            productObject.getInt("price"),
-                            productObject.getInt("discount"),
-                            productObject.getInt("created"),
-                            productObject.getInt("views"),
-                            productObject.getInt("qty")
-                    );
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("AAA", error.toString());
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("idProduct", String.valueOf(idProduct));
-                return params;
-            }
-        };
-        requestQueue.add(stringRequest);
-    }
 
     private void setViews(ViewHolder holder, Order order) {
         String name = order.getName();

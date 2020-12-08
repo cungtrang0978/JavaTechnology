@@ -1,9 +1,5 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
@@ -13,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +25,7 @@ import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
 import com.example.tikicloneapp.models.Order;
+import com.example.tikicloneapp.models.Transact;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
 
     }
 
-    private void initWidget(){
+    private void initWidget() {
         tvUserName = findViewById(R.id.textView_userName);
         tvAmount = findViewById(R.id.textView_amount);
         rvCart = findViewById(R.id.recyclerView_cart);
@@ -63,7 +64,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
         layout_loading = findViewById(R.id.loadingPanel_parent);
     }
 
-    private void setEachView(){
+    private void setEachView() {
         MyClass.callPanel(layout_loading, 700);
         setCartProductAdapter();
         rvCart.setNestedScrollingEnabled(false);
@@ -108,13 +109,13 @@ public class OrderSuccessActivity extends AppCompatActivity {
             public void onResponse(String response) {
 //                Log.d("thang", "getCart: ");
 
-                if(response.equals(non_post)){
+                if (response.equals(non_post)) {
                     return;
                 }
-                if (response.equals(wrong_query)){
+                if (response.equals(wrong_query)) {
                     return;
                 }
-                if(response.equals(non_value)){
+                if (response.equals(non_value)) {
                     return;
                 }
 
@@ -122,13 +123,14 @@ public class OrderSuccessActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(response);
                     JSONObject objectTransact = jsonArray.getJSONObject(0);
 
-                    int amount = objectTransact.getInt("amount");
-                    String userName = "Chúc mừng " + objectTransact.getString("user_name") +'!';
+                    Transact transact = new Transact(objectTransact);
 
-                    tvAmount.setText(CartActivity.formatCurrency(amount));
+                    String userName = "Chúc mừng " + transact.getmUser_name() + '!';
+
+                    tvAmount.setText(CartActivity.formatCurrency(transact.getmAmount() + transact.getShippingFee()));
                     tvUserName.setText(userName);
 
-                    tvIdTransact.setText(String.valueOf(objectTransact.getInt("id")));
+                    tvIdTransact.setText(String.valueOf(transact.getmId()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -137,7 +139,7 @@ public class OrderSuccessActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("thang", "getCart: "+ error.toString());
+                        Log.d("thang", "getCart: " + error.toString());
                     }
                 }) {
             @Override

@@ -41,7 +41,7 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
     private RecyclerView rvTransacts;
     private SwipeRefreshLayout swipeRLTransact;
 
-    private int lastIndex = 1;
+    private int lastIndex;
     private ArrayList<Transact> transacts = new ArrayList<>();
     private AdminTransactAdapter transactAdapter;
     private static final String TAG = AdminTransactFragment.class.getSimpleName();
@@ -71,7 +71,15 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
     }
 
     private void setViews() {
-        setRvTransacts(Transact.STATUS_TIKI_RECEIVED);
+        if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
+            tvNonConfirm.setVisibility(View.GONE);
+            setRvTransacts(Transact.STATUS_PICKING_GOODS);
+            lastIndex = Transact.STATUS_PICKING_GOODS;
+        } else if (AdminManagementActivity.role == User.ROLE_ADMIN) {
+            tvNonConfirm.setVisibility(View.VISIBLE);
+            setRvTransacts(Transact.STATUS_TIKI_RECEIVED);
+            lastIndex = Transact.STATUS_TIKI_RECEIVED;
+        }
 
         setOnClickView();
     }
@@ -124,7 +132,7 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
     private void setRvTransacts(int status) {
         if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
             new FetchTransacts().execute(status, AdminManagementActivity.idUser);
-        } else {
+        } else if (AdminManagementActivity.role == User.ROLE_ADMIN) {
             new FetchTransacts().execute(status);
         }
     }

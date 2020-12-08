@@ -1,7 +1,9 @@
 package com.example.tikicloneapp.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,17 +12,23 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
+import com.example.tikicloneapp.captureActs.CaptureAct;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Transact;
 import com.example.tikicloneapp.models.User;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,7 +83,7 @@ public class AdminTransactActivity extends AppCompatActivity {
     }
 
     private void setEachView() {
-        MyClass.callPanel(layout_loading, 700);
+
 
         btnCancelTransact.setVisibility(View.GONE);
         if (AdminManagementActivity.role == User.ROLE_ADMIN) {
@@ -83,7 +91,7 @@ public class AdminTransactActivity extends AppCompatActivity {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         } else if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
-            if (transact.getmStatus() != Transact.STATUS_PICKING_GOODS) {
+            if (transact.getmStatus() != Transact.STATUS_PICKING_GOODS && transact.getmStatus() != Transact.STATUS_DELIVERING) {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         }
@@ -98,13 +106,36 @@ public class AdminTransactActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                new InsertShipping().execute();
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    finishAfterTransition();
-                } else finish();
-                Intent intent = new Intent();
-                intent.putExtra("status", transact.getmStatus());
-                setResult(RESULT_OK, intent);
+                if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
+                    switch (transact.getmStatus()) {
+                        case Transact.STATUS_PICKING_GOODS:
+                            AdminManagementActivity.dbVolley.updateStatusTransact(transact.getmId(), Transact.STATUS_DELIVERING, null);
+
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                finishAfterTransition();
+                            } else finish();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("status", transact.getmStatus());
+                            setResult(RESULT_OK, intent);
+
+                            break;
+                        case Transact.STATUS_DELIVERING:
+                            scanCode();
+                            break;
+                    }
+
+                } else if (AdminManagementActivity.role == User.ROLE_ADMIN) {
+                    new InsertShipping().execute();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        finishAfterTransition();
+                    } else finish();
+                    Intent intent = new Intent();
+                    intent.putExtra("status", transact.getmStatus());
+                    setResult(RESULT_OK, intent);
+                }
+
+
             }
         });
 
@@ -136,6 +167,7 @@ public class AdminTransactActivity extends AppCompatActivity {
     }
 
     private void setCartProductAdapter() {
+//        MyClass.callPanel(layout_loading, 700);
 //        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
 //        itemDecoration.setDrawable(ContextCompat.getDrawable(rvCart.getContext(), R.drawable.divider_product_cart));
 
@@ -176,5 +208,61 @@ public class AdminTransactActivity extends AppCompatActivity {
 
         tvPriceProvisional.setText(price);
         tvPriceLast.setText(price);
+    }
+
+    void scanCode() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
+        } else {
+            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
+            intentIntegrator.setCaptureActivity(CaptureAct.class);
+            intentIntegrator.setOrientationLocked(true);
+            intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
+            intentIntegrator.setPrompt("Scanning Code");
+            intentIntegrator.initiateScan();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
+            if (result.getContents() != null) {
+
+                if (result.getContents().equals(String.valueOf(transact.getmId()))) {
+                    AdminManagementActivity.dbVolley.updateStatusTransact(transact.getmId(), Transact.STATUS_SUCCESS, null);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        finishAfterTransition();
+                    } else finish();
+                    Intent intent = new Intent();
+                    intent.putExtra("status", transact.getmStatus());
+                    setResult(RESULT_OK, intent);
+                    Toast.makeText(this, "Giao hàng thành công!!!", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(this, "Quét thất bại!!!", Toast.LENGTH_SHORT).show();
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(result.getContents());
+                builder.setTitle("Scanning Result");
+                builder
+                        .setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                scanCode();
+                            }
+                        })
+                        .setNegativeButton("Finish", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                finish();
+                            }
+                        });
+                AlertDialog dialog = builder.create();
+                dialog.show();*/
+            } else {
+                Toast.makeText(this, "No results", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -25,6 +25,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="Trang Admin"
+            android:id="@+id/textView_label"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -50,7 +51,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quản lí đơn hàng" />
+
+        <ImageButton
+            android:id="@+id/imageButton_scan"
+            android:layout_margin="10dp"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/custom_item_2"
+            android:scaleType="fitCenter"
+            android:src="@drawable/icons8_qr_code_64" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView_qrCode"/>
     </LinearLayout>
-
-
 </LinearLayout>

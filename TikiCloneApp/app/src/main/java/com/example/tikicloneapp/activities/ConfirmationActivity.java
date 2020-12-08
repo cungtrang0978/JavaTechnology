@@ -1,12 +1,5 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
@@ -20,7 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -39,7 +38,6 @@ import org.json.JSONObject;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +47,7 @@ import static com.example.tikicloneapp.MyClass.getTextAddress;
 public class ConfirmationActivity extends AppCompatActivity {
     private ImageButton ibBack;
     private TextView tvChangeCart, tvNamePhone, tvAddress, tvPriceProvisional,
-            tvPriceLast, tvNonAddress, tvChangeInfoOrder;
+            tvPriceLast, tvNonAddress, tvChangeInfoOrder, tvShippingFee;
     private Button btnOrder;
     private RecyclerView rvCart;
     private LinearLayout layout_loading;
@@ -82,6 +80,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         tvNonAddress = findViewById(R.id.textView_nonAddress);
         tvChangeInfoOrder = findViewById(R.id.textView_changeInfoOrder);
         layout_loading = findViewById(R.id.loadingPanel_parent);
+        tvShippingFee = findViewById(R.id.textView_shippingFee);
     }
 
     private void setEachView() {
@@ -155,15 +154,7 @@ public class ConfirmationActivity extends AppCompatActivity {
                     JSONArray jsonArray = new JSONArray(response);
                     JSONObject object = jsonArray.getJSONObject(0);
                     Transact transact = new Transact(
-                            object.getInt("id_user"),
-                            object.getString("user_name"),
-                            object.getString("user_phone"),
-                            object.getString("province"),
-                            object.getString("district"),
-                            object.getString("ward"),
-                            object.getString("address"),
-                            object.getInt("qty"),
-                            object.getInt("amount")
+                            object
                     );
                     boolean goto_getUser = false;
                     if (transact.getmUser_name().equals("null")) {
@@ -184,9 +175,11 @@ public class ConfirmationActivity extends AppCompatActivity {
                         getUser(transact.getmId_User());
                     }
                     String price = CartActivity.formatCurrency(transact.getmAmount());
+                    String lastPrice = CartActivity.formatCurrency(transact.getmAmount() + transact.getShippingFee());
 
+                    tvShippingFee.setText(CartActivity.formatCurrency(transact.getShippingFee()));
                     tvPriceProvisional.setText(price);
-                    tvPriceLast.setText(price);
+                    tvPriceLast.setText(lastPrice);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
