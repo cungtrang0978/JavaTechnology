@@ -241,24 +241,6 @@ public class AdminTransactActivity extends AppCompatActivity {
                     Toast.makeText(this, "Giao hàng thành công!!!", Toast.LENGTH_SHORT).show();
                 } else
                     Toast.makeText(this, "Quét thất bại!!!", Toast.LENGTH_SHORT).show();
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(result.getContents());
-                builder.setTitle("Scanning Result");
-                builder
-                        .setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                scanCode();
-                            }
-                        })
-                        .setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();*/
             } else {
                 Toast.makeText(this, "No results", Toast.LENGTH_SHORT).show();
             }

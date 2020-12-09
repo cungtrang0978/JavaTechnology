@@ -21,7 +21,7 @@
 
 - fix shippingFee when update status = 1;  DONE
 
-- add shippingFee UI;
+- add shippingFee UI; 
 
 - fix api of get listProduct; DONE
 
@@ -32,4 +32,6 @@
 - fix: filter price 
 
 - update: amount user + shipper + admin
+
+- update feature: getUser;
 

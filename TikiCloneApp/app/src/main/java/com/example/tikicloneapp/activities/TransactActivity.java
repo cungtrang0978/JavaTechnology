@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,6 +30,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.tikicloneapp.MyClass;
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.CartProductAdapter;
+import com.example.tikicloneapp.handlers.HttpHandler;
 import com.example.tikicloneapp.models.Order;
 import com.example.tikicloneapp.models.Transact;
 import com.google.zxing.WriterException;
@@ -71,6 +73,8 @@ public class TransactActivity extends AppCompatActivity {
     private int idTransact;
     private int idActivity;
 
+    private HttpHandler httpHandler = new HttpHandler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,13 +107,13 @@ public class TransactActivity extends AppCompatActivity {
 
     private void setEachView() {
         MyClass.callPanel(layout_loading, 700);
+
+        new WaitingForScanning().execute();
         tvIdTransact.setText(String.valueOf(idTransact));
 
         setTransact();
 
         setCartProductAdapter();
-
-
 
         btnCancelTransact.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +143,7 @@ public class TransactActivity extends AppCompatActivity {
         });
     }
 
-    private void setIvQRCode(){
+    private void setIvQRCode() {
         WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point point = new Point();
@@ -220,11 +224,11 @@ public class TransactActivity extends AppCompatActivity {
                         tvTimeCreated.setText(dateFormat);
                     }
 
-                    if(transact.getmStatus() == Transact.STATUS_DELIVERING){
+                    if (transact.getmStatus() == Transact.STATUS_DELIVERING) {
                         setIvQRCode();
                     }
 
-                    String priceLast = formatCurrency(transact.getmAmount()+ transact.getShippingFee());
+                    String priceLast = formatCurrency(transact.getmAmount() + transact.getShippingFee());
 
                     tvPriceProvisional.setText(formatCurrency(transact.getmAmount()));
                     tvPriceLast.setText(priceLast);
@@ -248,5 +252,53 @@ public class TransactActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
+    }
+
+    private class WaitingForScanning extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... booleans) {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Log.d(TAG, "WaitingForScanning: loading");
+            return isSuccessTransact();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isSuccess) {
+            super.onPostExecute(isSuccess);
+            if (isSuccess) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    finishAfterTransition();
+                } else finish();
+                setResult(RESULT_OK);
+            } else {
+                new WaitingForScanning().execute();
+            }
+        }
+
+
+        private Boolean isSuccessTransact() {
+            HashMap<String, String> params = new HashMap<>();
+            params.put("idTransact", String.valueOf(idTransact));
+
+            String response = httpHandler.performPostCall(MainActivity.dbVolley.URL_GET_TRANSACT, params);
+
+            try {
+                JSONArray jsonArray = new JSONArray(response);
+                JSONObject object = jsonArray.getJSONObject(0);
+
+                int status = object.getInt("status");
+                if (status == Transact.STATUS_SUCCESS) {
+                    return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 }
