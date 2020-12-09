@@ -1,6 +1,8 @@
 package com.example.tikicloneapp.activities;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -75,13 +77,50 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
             tvNonConfirm.setVisibility(View.GONE);
             setRvTransacts(Transact.STATUS_PICKING_GOODS);
             lastIndex = Transact.STATUS_PICKING_GOODS;
+            setTabChanged(Transact.STATUS_PICKING_GOODS);
         } else if (AdminManagementActivity.role == User.ROLE_ADMIN) {
             tvNonConfirm.setVisibility(View.VISIBLE);
             setRvTransacts(Transact.STATUS_TIKI_RECEIVED);
             lastIndex = Transact.STATUS_TIKI_RECEIVED;
+            setTabChanged(Transact.STATUS_TIKI_RECEIVED);
         }
 
         setOnClickView();
+    }
+
+    private void setTabChanged(int status){
+        setUnselectedTab(tvCancelled);
+        setUnselectedTab(tvNonConfirm);
+        setUnselectedTab(tvPickingGoods);
+        setUnselectedTab(tvDelivering);
+        setUnselectedTab(tvDelivered);
+
+        switch (status){
+            case Transact.STATUS_CANCEL:
+                setSelectedTab(tvCancelled);
+                break;
+            case Transact.STATUS_TIKI_RECEIVED:
+                setSelectedTab(tvNonConfirm);
+                break;
+            case Transact.STATUS_PICKING_GOODS:
+                setSelectedTab(tvPickingGoods);
+                break;
+            case Transact.STATUS_DELIVERING:
+                setSelectedTab(tvDelivering);
+                break;
+            case Transact.STATUS_SUCCESS:
+                setSelectedTab(tvDelivered);
+                break;
+        }
+    }
+
+    private void setUnselectedTab(TextView textView){
+        textView.setTypeface(Typeface.DEFAULT);
+        textView.setTextColor(Color.GRAY);
+    }
+    private void setSelectedTab(TextView textView){
+        textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+        textView.setTextColor(Color.parseColor("#000000"));
     }
 
 
@@ -112,6 +151,7 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setTabChanged(status);
                 setRvTransacts(status);
                 lastIndex = status;
             }

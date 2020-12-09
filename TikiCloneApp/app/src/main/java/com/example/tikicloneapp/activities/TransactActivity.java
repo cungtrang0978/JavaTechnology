@@ -55,7 +55,8 @@ public class TransactActivity extends AppCompatActivity {
 
     private static final String TAG = TransactActivity.class.getSimpleName();
 
-    private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress, tvPriceProvisional, tvPriceLast;
+    private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber,
+            tvAddress, tvPriceProvisional, tvPriceLast, tvShippingFee;
     private Button btnCancelTransact;
     private ImageButton ibBack;
     private RecyclerView rvCart;
@@ -97,6 +98,7 @@ public class TransactActivity extends AppCompatActivity {
         ibBack = findViewById(R.id.imageButton_back);
         layout_loading = findViewById(R.id.loadingPanel_parent);
         ivQRCode = findViewById(R.id.imageView_qrCode);
+        tvShippingFee = findViewById(R.id.textView_shippingFee);
     }
 
     private void setEachView() {
@@ -222,11 +224,11 @@ public class TransactActivity extends AppCompatActivity {
                         setIvQRCode();
                     }
 
-                    String price = formatCurrency(transact.getmAmount());
+                    String priceLast = formatCurrency(transact.getmAmount()+ transact.getShippingFee());
 
-                    tvPriceProvisional.setText(price);
-                    tvPriceLast.setText(price);
-
+                    tvPriceProvisional.setText(formatCurrency(transact.getmAmount()));
+                    tvPriceLast.setText(priceLast);
+                    tvShippingFee.setText(formatCurrency(transact.getShippingFee()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

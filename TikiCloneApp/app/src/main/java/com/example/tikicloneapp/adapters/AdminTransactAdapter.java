@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.example.tikicloneapp.activities.AdminTransactManagementActivity.REQUEST_CODE_REFRESH;
-import static com.example.tikicloneapp.models.Transact.setTvStatus;
 
 public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdapter.ViewHolder> {
 
@@ -54,11 +54,26 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
         holder.tvUserId.setText(String.valueOf(transact.getmId_User()));
 
         Date createdAt = new Date(transact.getmCreated().getTime());
+        Date modifiedAt = new Date(transact.getmModified().getTime());
         @SuppressLint("SimpleDateFormat")
-        String dateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy").format(createdAt);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy");
+
+        String dateFormat = simpleDateFormat.format(createdAt);
         holder.tvTimeCreated.setText(dateFormat);
 
-        setTvStatus(holder.tvStatus, transact.getmStatus());
+        if (transact.getmModified() != null) {
+            holder.tvModified.setText(simpleDateFormat.format(modifiedAt));
+        } else {
+            holder.tvModified.setText("Đang cập nhật");
+            holder.tvModified.setTypeface(holder.tvModified.getTypeface(), Typeface.ITALIC);
+        }
+
+        if (transact.getShipperId() != null) {
+            holder.tvShipperId.setText(String.valueOf(transact.getShipperId()));
+        } else {
+            holder.tvShipperId.setText("Đang cập nhật");
+            holder.tvShipperId.setTypeface(holder.tvModified.getTypeface(), Typeface.ITALIC);
+        }
 
         holder.layItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,7 +96,7 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final TextView tvUserId, tvIdTransact, tvTimeCreated, tvStatus;
+        final TextView tvUserId, tvIdTransact, tvTimeCreated, tvModified, tvShipperId;
         //        final ImageView ivIconStatus;
         final LinearLayout layItem;
 
@@ -90,9 +105,10 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
             tvUserId = itemView.findViewById(R.id.textView_userId);
             tvIdTransact = itemView.findViewById(R.id.textView_idTransact);
             tvTimeCreated = itemView.findViewById(R.id.textView_timeCreated);
-            tvStatus = itemView.findViewById(R.id.textView_status);
-//            ivIconStatus = itemView.findViewById(R.id.imageView_iconStatus);
+            tvModified = itemView.findViewById(R.id.textView_modified);
+
             layItem = itemView.findViewById(R.id.layout_item);
+            tvShipperId = itemView.findViewById(R.id.textView_shipperId);
         }
     }
 

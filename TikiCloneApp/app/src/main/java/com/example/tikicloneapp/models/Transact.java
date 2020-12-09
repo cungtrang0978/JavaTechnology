@@ -135,9 +135,9 @@ public class Transact implements Serializable {
 
         this.shippingFee = jsonTransact.getInt("shippingFee");
 
-//        if (!jsonTransact.getString("idShipper").equals("null")) {
-//            this.shipperId = jsonTransact.getInt("shipperId");
-//        }
+        if (!jsonTransact.getString("idShipper").equals("null")) {
+            this.shipperId = jsonTransact.getInt("idShipper");
+        }
     }
 
 

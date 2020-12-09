@@ -321,5 +321,4 @@
 
         <include layout="@layout/panel_loading" />
     </FrameLayout>
-
 </LinearLayout>
