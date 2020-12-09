@@ -1,0 +1,32 @@
+- change image url(product, catalog)
+
+- insert products (Viet);
+
+- hide filter bar;	DONE
+
+- add filter discount order; 	DONE
+
+- redesign filter dialog; 	DONE
+
+- recommended Products in DetailProductActivity; DONE 
+ 
+- transact activity: line 176: fix time; 	DONE
+- transact adapter: line 71: fix time;	 DONE
+
+- add loading layout; 	DONE
+
+- view all reviews;  	DONE
+
+- fix scroll registration/login; 	DONE (maybe)
+
+- fix shippingFee when update status = 1;  DONE
+
+- add shippingFee UI;
+
+- fix api of get listProduct; DONE
+
+- fix non_product UI in listTransact; DONE
+
+- fix keyboard in writeReview + editAddress + register + login
+
+- fix: filter price 

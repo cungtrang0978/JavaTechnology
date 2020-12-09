@@ -205,9 +205,10 @@ public class AdminTransactActivity extends AppCompatActivity {
         tvShippingFee.setText(formatCurrency(transact.getShippingFee()));
 
         String price = formatCurrency(transact.getmAmount());
+        String priceLast = formatCurrency(transact.getmAmount()+ transact.getShippingFee());
 
         tvPriceProvisional.setText(price);
-        tvPriceLast.setText(price);
+        tvPriceLast.setText(priceLast);
     }
 
     void scanCode() {

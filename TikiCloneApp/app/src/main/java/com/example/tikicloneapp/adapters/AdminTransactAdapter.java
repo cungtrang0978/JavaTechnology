@@ -54,7 +54,7 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
         holder.tvUserId.setText(String.valueOf(transact.getmId_User()));
 
         Date createdAt = new Date(transact.getmCreated().getTime());
-        Date modifiedAt = new Date(transact.getmModified().getTime());
+
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm, dd/MM/yyyy");
 
@@ -62,6 +62,7 @@ public class AdminTransactAdapter extends RecyclerView.Adapter<AdminTransactAdap
         holder.tvTimeCreated.setText(dateFormat);
 
         if (transact.getmModified() != null) {
+            Date modifiedAt = new Date(transact.getmModified().getTime());
             holder.tvModified.setText(simpleDateFormat.format(modifiedAt));
         } else {
             holder.tvModified.setText("Đang cập nhật");

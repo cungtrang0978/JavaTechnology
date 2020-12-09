@@ -66,8 +66,8 @@ public class DBVolley {
 //    public static String IP_ADDRESS = "http://192.168.0.117/"; //wifi QuocViet
 //    public String IP_ADDRESS = "http://tikiclone.maitrongvinh.cf/";
 //    public String IP_ADDRESS = "https://vinhmai.tk/tiki/";
-//    public String IP_ADDRESS = "http://192.168.1.107/server/"; // wifi ChoAnhLamQUenNha
-    public String IP_ADDRESS = "https://hdh.webtaunhanh.com/";
+    public String IP_ADDRESS = "http://192.168.137.1/server/"; // wifi ChoAnhLamQUenNha
+//    public String IP_ADDRESS = "https://hdh.webtaunhanh.com/";
 
     public String URL_GET_CATALOG = IP_ADDRESS + "getCatalog.php";
     public String URL_INSERT_CATALOG = IP_ADDRESS + "insertCatalog.php";
@@ -365,37 +365,37 @@ public class DBVolley {
                 try {
                     ArrayList<Product> productList = new ArrayList<>();
                     JSONArray jsonArray = new JSONArray(response);
-                    if (jsonArray.length() != 0) {
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            try {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                Product product = new Product(
-                                        object.getInt("id"),
-                                        object.getInt("idCatalog"),
-                                        object.getString("name"),
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        try {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Product product = new Product(
+                                    object.getInt("id"),
+                                    object.getInt("idCatalog"),
+                                    object.getString("name"),
 //                                        object.getString("description"),
-                                        object.getInt("price"),
-                                        object.getInt("discount"),
+                                    object.getInt("price"),
+                                    object.getInt("discount"),
 //                                        object.getInt("created"),
 //                                        object.getInt("views"),
-                                        object.getInt("qty"),
-                                        object.getDouble("rate"),
-                                        object.getInt("rateQty")
-                                );
-                                productList.add(product);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                                    object.getInt("qty"),
+                                    object.getDouble("rate"),
+                                    object.getInt("rateQty")
+                            );
+                            productList.add(product);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        if (!productList.isEmpty()) {
-                            productArrayList.clear();
-                            Toast.makeText(context, "Có " + productList.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
-                            productArrayList.addAll(productList);
-                            productListAdapter.notifyDataSetChanged();
-                        }
-                    } else {
-                        tvNonProduct.setVisibility(View.VISIBLE);
                     }
+                    productArrayList.clear();
+
+                    if (!productList.isEmpty()) {
+                        tvNonProduct.setVisibility(View.GONE);
+                        Toast.makeText(context, "Có " + productList.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
+                        productArrayList.addAll(productList);
+                    } else
+                        tvNonProduct.setVisibility(View.VISIBLE);
+
+                    productListAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -847,7 +847,7 @@ public class DBVolley {
                     if (transactArrayList.isEmpty()) {
                         assert layPanel_nonOrder != null;
                         layPanel_nonOrder.setVisibility(View.VISIBLE);
-                    }else {
+                    } else {
                         layPanel_nonOrder.setVisibility(View.GONE);
                     }
                     adapter.notifyDataSetChanged();
@@ -1080,7 +1080,7 @@ public class DBVolley {
                 }
                 Timestamp modified = new Timestamp(System.currentTimeMillis());
                 params.put("modified", modified.toString());
-                if(shipperId!=null){
+                if (shipperId != null) {
                     params.put("idShipper", shipperId.toString());
                 }
 
@@ -1514,9 +1514,9 @@ public class DBVolley {
                                 }
                             }
                             rates.clear();
-                            if(_rates.isEmpty()){
+                            if (_rates.isEmpty()) {
                                 layout_none.setVisibility(View.VISIBLE);
-                            }else{
+                            } else {
                                 layout_none.setVisibility(View.GONE);
                                 rates.addAll(_rates);
                             }

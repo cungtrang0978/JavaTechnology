@@ -1,11 +1,5 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.Dialog;
@@ -25,7 +19,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,7 +37,6 @@ import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
 import com.example.tikicloneapp.adapters.ProductsAdapter;
 import com.example.tikicloneapp.database.DBVolley;
-
 import com.example.tikicloneapp.enums.OrderBy;
 import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
@@ -577,18 +575,22 @@ public class ListProductActivity extends AppCompatActivity {
 //        rvProductList.addItemDecoration(itemDecoration);
         rvProductList.setAdapter(productAdapter);
 
+        //with catalog
         if (catalog != null) {
             dbVolley.getProducts(products, productAdapter, tvNonProduct, catalog.getmId(), null,
                     null, null, null, null, priceFrom, priceTo,
                     rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
             return;
         }
+        //with catalog Parent
         if (cataParent != null) {
             dbVolley.getProducts(products, productAdapter, tvNonProduct, null, null,
                     null, cataParent.getmId(), null, null, priceFrom, priceTo,
                     rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
             return;
         }
+
+        //with array id
         dbVolley.getProducts(products, productAdapter, tvNonProduct, null, idArray,
                 null, null, null, null, priceFrom, priceTo,
                 rate, orderCreated, orderPrice, orderRate, orderDiscount, limit, start);
@@ -694,7 +696,7 @@ public class ListProductActivity extends AppCompatActivity {
 
 
                     if (idArray.size() > 0) {
-                        Toast.makeText(ListProductActivity.this, "Có " + idArray.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ListProductActivity.this, "Có " + idArray.size() + " sản phẩm!", Toast.LENGTH_SHORT).show();
                         setAdapterRecyclerView(idArray);
                         tvNonProduct.setVisibility(View.GONE);
                     } else

@@ -157,14 +157,14 @@ public class ConfirmationActivity extends AppCompatActivity {
                             object
                     );
                     boolean goto_getUser = false;
-                    if (transact.getmUser_name().equals("null")) {
+                    if (transact.getmUser_name()==null) {
                         goto_getUser = true;
                     } else {
                         setTextNamePhone(transact.getmUser_name(), transact.getmUser_phone());
                     }
 
                     // check address of transact. if isExist, will get address of transact. else get address of user
-                    if (transact.getmProvince().equals("null")) {
+                    if (transact.getmProvince()==null) {
                         goto_getUser = true;
                     } else {
                         String address = getTextAddress(transact.getmProvince(), transact.getmDistrict(), transact.getmWard(), transact.getmAddress());
