@@ -144,13 +144,16 @@
             android:id="@+id/textInputLayout_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#000">
+            android:textColorHint="#000"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Địa chỉ"
                 android:textSize="14sp"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
                 />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>

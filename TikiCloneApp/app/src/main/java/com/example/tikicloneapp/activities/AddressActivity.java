@@ -1,8 +1,6 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +15,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -134,6 +134,7 @@ public class AddressActivity extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("SetTextI18n")
     private void showDialogAddress(final int key) {
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_address);
@@ -283,7 +284,7 @@ public class AddressActivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
                 params.put("idTransact", String.valueOf(MainActivity.idTransact));
                 return params;
@@ -354,7 +355,7 @@ public class AddressActivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
                 params.put("id", MainActivity.idUser + "");
                 params.put("province", province);

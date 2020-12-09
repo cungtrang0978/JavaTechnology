@@ -30,3 +30,6 @@
 - fix keyboard in writeReview + editAddress + register + login
 
 - fix: filter price 
+
+- update: amount user + shipper + admin
+

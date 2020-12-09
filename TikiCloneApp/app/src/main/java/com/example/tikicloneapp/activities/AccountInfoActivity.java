@@ -1,9 +1,6 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -15,9 +12,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,7 +24,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.database.DBVolley;
 import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONException;
@@ -37,12 +35,15 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class AccountInfoActivity extends AppCompatActivity {
+    private static final String TAG = AccountInfoActivity.class.getSimpleName();
+
     private TextInputLayout ipLayoutName, ipLayoutEmail, ipLayoutPhone;
     private EditText edtBirthDate;
     private Button btnSave;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     private RadioButton rbMale, rbFemale;
     private LinearLayout layBtnExit;
+    private TextView tvAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class AccountInfoActivity extends AppCompatActivity {
         rbFemale = findViewById(R.id.radioButton_female);
         rbMale = findViewById(R.id.radioButton_male);
         layBtnExit = findViewById(R.id.layoutButton_exit);
+        tvAmount = findViewById(R.id.textView_amount);
     }
 
 
@@ -213,7 +215,7 @@ public class AccountInfoActivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
 
                 params.put("id", String.valueOf(idUser));
@@ -255,6 +257,12 @@ public class AccountInfoActivity extends AppCompatActivity {
 
                     ipLayoutName.getEditText().setText(userObject.getString("name"));
                     ipLayoutPhone.getEditText().setText(userObject.getString("phoneNumber"));
+
+                    Log.d(TAG, "amount: " + userObject.getString("amount"));
+
+                    String amount = CartActivity.formatCurrency(userObject.getInt("amount"));
+                    tvAmount.setText(amount);
+
                     if (userObject.getString("email").equals("null")) {
                         ipLayoutEmail.getEditText().setText("");
                     } else {
@@ -286,7 +294,7 @@ public class AccountInfoActivity extends AppCompatActivity {
                     }
                 }) {
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<>();
                 params.put("idUser", String.valueOf(idUser));
                 return params;
