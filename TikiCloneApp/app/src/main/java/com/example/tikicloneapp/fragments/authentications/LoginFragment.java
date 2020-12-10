@@ -158,15 +158,18 @@ public class LoginFragment extends Fragment {
                             intent.putExtra("idUser", idUser);
                             startActivity(intent);
                         } else {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                getActivity().finishAfterTransition();
-                            } else getActivity().finish();
-                            Intent intent = new Intent();
-                            intent.putExtra("idUser", idUser);
-                            getActivity().setResult(Activity.RESULT_OK, intent);
+
+
                             MainActivity.idUser = idUser;
                             int idUserOld = MainActivity.dbManager.getIdUser();
                             MainActivity.dbManager.updateData_User(idUser, idUserOld);
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                getActivity().finishAfterTransition();
+                            } else getActivity().finish();
+
+                            Intent intent = new Intent();
+                            intent.putExtra("idUser", idUser);
+                            getActivity().setResult(Activity.RESULT_OK, intent);
                         }
                     }
                 } catch (JSONException e) {

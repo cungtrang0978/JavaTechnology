@@ -924,7 +924,6 @@ public class DBVolley {
                     context.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation((Activity) context).toBundle());
                 } else
                     context.startActivity(intent);
-
             }
         },
                 new Response.ErrorListener() {

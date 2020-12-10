@@ -108,13 +108,7 @@ public class AccountFragment extends Fragment {
 
     private void setEachView(final int idUser) {
         MyClass.callPanel(lay_loading, 800);
-        ibCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                MainActivity.dbVolley.checkTransact_goToCart(MainActivity.idUser);
-            }
-        });
 
         lay_setting.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,6 +141,7 @@ public class AccountFragment extends Fragment {
         layBtn_favoritePros.setOnClickListener(mOnClickLogin);
         layBtn_prosInCart.setOnClickListener(mOnClickLogin);
         layBtn_myComments.setOnClickListener(mOnClickLogin);
+        ibCart.setOnClickListener(mOnClickLogin);
     }
 
     private void view_login(int idUser) {
@@ -181,6 +176,14 @@ public class AccountFragment extends Fragment {
                 } else {
                     startActivityForResult(intent, REQUEST_CODE_UPDATE);
                 }
+            }
+        });
+
+        ibCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                MainActivity.dbVolley.checkTransact_goToCart(MainActivity.idUser);
             }
         });
 
@@ -308,7 +311,6 @@ public class AccountFragment extends Fragment {
                     JSONObject userObject = new JSONObject(response);
 
                     tvFullName.setText(userObject.getString("name"));
-
 
                     tvCreated.setText("Thành viên từ " +convertDate(userObject.getLong("created")));
                     if (userObject.getString("email").equals("null")) {

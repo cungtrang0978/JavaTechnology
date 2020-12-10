@@ -119,10 +119,13 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
     private void setUnselectedTab(TextView textView){
         textView.setTypeface(Typeface.DEFAULT);
         textView.setTextColor(Color.GRAY);
+        textView.setBackgroundResource(R.drawable.bg_border_unselected);
     }
     private void setSelectedTab(TextView textView){
         textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
         textView.setTextColor(Color.parseColor("#000000"));
+        textView.setBackgroundResource(R.drawable.bg_border_selected);
+
     }
 
 

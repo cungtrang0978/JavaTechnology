@@ -302,5 +302,4 @@ public class AccountInfoActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-
 }

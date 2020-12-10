@@ -105,6 +105,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:id="@+id/linearLayout_address"
                     android:paddingVertical="2dp">
 
                     <ImageView
@@ -118,8 +119,7 @@
                         android:layout_height="wrap_content"
                         android:ellipsize="end"
                         android:maxLines="1"
-                        android:text=""
-                        android:textStyle="" />
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -138,6 +138,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
+                            android:id="@+id/linearLayout_order"
+                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <TextView
@@ -233,6 +235,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
+                            android:id="@+id/linearLayout_filter"
+                            android:visibility="gone"
                             android:orientation="horizontal">
 
                             <TextView

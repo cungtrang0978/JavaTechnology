@@ -3,6 +3,7 @@ package com.example.tikicloneapp.activities;
 import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.CatalogGrandParent;
 import com.example.tikicloneapp.models.CatalogParent;
 import com.example.tikicloneapp.models.Product;
+import com.example.tikicloneapp.models.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -50,10 +52,12 @@ import org.json.JSONObject;
 import java.text.Normalizer;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
-import static com.example.tikicloneapp.database.DBVolley.getAddress;
+import static com.example.tikicloneapp.MyClass.getTextAddress;
 
 public class ListProductActivity extends AppCompatActivity {
     RecyclerView rvProductList;
@@ -80,7 +84,7 @@ public class ListProductActivity extends AppCompatActivity {
     ImageButton ibFilter;
     TextView tvNonProduct, tvTitle;
     TextView tvOrderPrice, tvOrderCreated, tvOrderRate, tvFilterPrice, tvFilterStars, tvOrderDiscount;
-    LinearLayout llCollapsing;
+    LinearLayout llCollapsing, layoutAddress, layoutFilter, layoutOrder;
 
     //dialog
     TextView tvExit, tvUnSelect;
@@ -121,6 +125,9 @@ public class ListProductActivity extends AppCompatActivity {
         tvFilterStars = findViewById(R.id.textView_filterStars);
         tvOrderDiscount = findViewById(R.id.textView_orderDiscount);
         llCollapsing = findViewById(R.id.layout_collapsing);
+        layoutAddress = findViewById(R.id.linearLayout_address);
+        layoutFilter = findViewById(R.id.linearLayout_filter);
+        layoutOrder = findViewById(R.id.linearLayout_order);
     }
 
     private void setEachView() {
@@ -405,48 +412,115 @@ public class ListProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.cancel();
+
+                int isFilterVisible = View.GONE;
+                int isOrderVisible = View.GONE;
+
                 if (edtPriceFrom.getText().toString().isEmpty()) {
                     priceFrom = null;
                 } else {
+                    isFilterVisible = View.VISIBLE;
                     priceFrom = Integer.valueOf(edtPriceFrom.getText().toString().replaceAll("[.,]", ""));
                 }
 
                 if (edtPriceTo.getText().toString().isEmpty()) {
                     priceTo = null;
                 } else {
+                    isFilterVisible = View.VISIBLE;
                     priceTo = Integer.valueOf(edtPriceTo.getText().toString().replaceAll("[.,]", ""));
                 }
 
                 if (isFrom3Stars) {
                     rate = 3;
+                    isFilterVisible = View.VISIBLE;
                 } else if (isFrom4Stars) {
                     rate = 4;
+                    isFilterVisible = View.VISIBLE;
                 } else if (isFrom5Stars) {
                     rate = 5;
+                    isFilterVisible = View.VISIBLE;
                 } else {
                     rate = null;
                 }
+
+
                 if (cbAcsPrice.isChecked()) {
                     orderPrice = OrderBy.ASC;
+                    isOrderVisible = View.VISIBLE;
                 } else if (cbDescPrice.isChecked()) {
+                    isOrderVisible = View.VISIBLE;
                     orderPrice = OrderBy.DESC;
                 } else orderPrice = null;
+
                 if (cbNewest.isChecked()) {
+                    isOrderVisible = View.VISIBLE;
                     orderCreated = OrderBy.DESC;
                 } else orderCreated = null;
+
                 if (cbDescRating.isChecked()) {
                     orderRate = OrderBy.DESC;
+                    isOrderVisible = View.VISIBLE;
                 } else orderRate = null;
+
                 if (cbDescDiscount.isChecked()) {
                     orderDiscount = OrderBy.DESC;
+                    isOrderVisible = View.VISIBLE;
                 } else orderDiscount = null;
 
+                layoutFilter.setVisibility(isFilterVisible);
+                layoutOrder.setVisibility(isOrderVisible);
 
                 refreshRecyclerView();
             }
         });
 
         dialog.show();
+    }
+
+    private void getAddress(Context context, final TextView textView) {
+        if (MainActivity.idUser == 0) {
+            layoutAddress.setVisibility(View.GONE);
+            llCollapsing.setPadding(0,20,20,20);
+            return;
+        }
+        layoutAddress.setVisibility(View.VISIBLE);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, MainActivity.dbVolley.URL_GET_USER, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject userObject = new JSONObject(response);
+                    if (userObject.getString("province").equals("null")) {
+                        underlineTextView(textView, "Thêm địa chỉ giao hàng");
+                    } else {
+                        User user = new User(
+                                userObject.getString("province"),
+                                userObject.getString("district"),
+                                userObject.getString("ward")
+                        );
+                        underlineTextView(textView, getTextAddress(user.getmProvince(), user.getmDistrict(), user.getmWard()));
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("thang", error.toString());
+                    }
+                }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("idUser", String.valueOf(MainActivity.idUser));
+                return params;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     @SuppressLint("SetTextI18n")
@@ -663,10 +737,10 @@ public class ListProductActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            Log.d(ListProductActivity.class.getName(), "getAddress: true");
             getAddress(getApplicationContext(), tvAddress);
         }
     }
-
 
     public void getNameProduct() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
