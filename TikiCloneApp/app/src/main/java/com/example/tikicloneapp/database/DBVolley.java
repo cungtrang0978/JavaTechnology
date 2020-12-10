@@ -116,7 +116,6 @@ public class DBVolley {
         this.context = context;
     }
 
-
     public void getCatalog(final ArrayList<Catalog> catalogArrayList, final CatalogAdapter catalogAdapter, @Nullable final Integer idParents, @Nullable final Integer views) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_CATALOG, new Response.Listener<String>() {

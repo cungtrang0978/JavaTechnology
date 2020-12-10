@@ -7,6 +7,7 @@ import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -74,6 +75,7 @@ public class TransactActivity extends AppCompatActivity {
     private int idActivity;
 
     private HttpHandler httpHandler = new HttpHandler();
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,7 @@ public class TransactActivity extends AppCompatActivity {
         MyClass.callPanel(layout_loading, 700);
 
         new WaitingForScanning().execute();
+
         tvIdTransact.setText(String.valueOf(idTransact));
 
         setTransact();
