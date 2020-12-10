@@ -157,6 +157,74 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
+                        android:text="Thông tin người giao hàng"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ID người giao hàng: " />
+
+                        <TextView
+                            android:id="@+id/textView_shipperId"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tên: " />
+
+                        <TextView
+                            android:id="@+id/textView_shipperName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="SĐT: " />
+
+                        <TextView
+                            android:id="@+id/textView_shipperPhoneNumber"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
+                    android:background="@color/colorTikiBackgroundDark" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
                         android:text="Hình thức giao hàng"
                         android:textColor="@android:color/black"
                         android:textSize="16sp" />
@@ -290,7 +358,6 @@
                 </LinearLayout>
 
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -328,5 +395,4 @@
 
         <include layout="@layout/panel_loading" />
     </FrameLayout>
-
 </LinearLayout>

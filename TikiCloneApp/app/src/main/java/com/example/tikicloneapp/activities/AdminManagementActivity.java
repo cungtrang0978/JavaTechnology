@@ -1,31 +1,20 @@
 package com.example.tikicloneapp.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.tikicloneapp.R;
-import com.example.tikicloneapp.captureActs.CaptureAct;
 import com.example.tikicloneapp.database.DBManager;
 import com.example.tikicloneapp.database.DBVolley;
 import com.example.tikicloneapp.handlers.HttpHandler;
 import com.example.tikicloneapp.models.User;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 
 public class AdminManagementActivity extends AppCompatActivity {
@@ -37,7 +26,7 @@ public class AdminManagementActivity extends AppCompatActivity {
     public static int idUser;
     private static final String TAG = AdminManagementActivity.class.getSimpleName();
 
-    private ImageButton ibLogout, ibScan;
+    private ImageButton ibLogout;
     private Button btnManageOrder;
     private TextView tvLabel;
 
@@ -60,7 +49,7 @@ public class AdminManagementActivity extends AppCompatActivity {
         ibLogout = findViewById(R.id.imageButton_logout);
         btnManageOrder = findViewById(R.id.button_manageOrder);
         tvLabel = findViewById(R.id.textView_label);
-        ibScan = findViewById(R.id.imageButton_scan);
+
 
     }
 
@@ -90,13 +79,6 @@ public class AdminManagementActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        ibScan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                scanCode();
-            }
-        });
     }
 
 
@@ -110,47 +92,5 @@ public class AdminManagementActivity extends AppCompatActivity {
         }
     }
 
-    public  void scanCode() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 50);
-        } else {
-            IntentIntegrator intentIntegrator = new IntentIntegrator(this);
-            intentIntegrator.setCaptureActivity(CaptureAct.class);
-            intentIntegrator.setOrientationLocked(false);
-            intentIntegrator.setDesiredBarcodeFormats(IntentIntegrator.ALL_CODE_TYPES);
-            intentIntegrator.setPrompt("Scanning Code");
-            intentIntegrator.initiateScan();
-        }
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(result.getContents());
-                builder.setTitle("Scanning Result");
-                builder
-                        .setPositiveButton("Scan Again", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                scanCode();
-                            }
-                        })
-                        .setNegativeButton("Finish", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            } else {
-                Toast.makeText(this, "No results", Toast.LENGTH_SHORT).show();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 }

@@ -75,11 +75,13 @@ public class AdminTransactManagementActivity extends AppCompatActivity implement
     private void setViews() {
         if (AdminManagementActivity.role == User.ROLE_SHIPPER) {
             tvNonConfirm.setVisibility(View.GONE);
+            tvCancelled.setVisibility(View.GONE);
             setRvTransacts(Transact.STATUS_PICKING_GOODS);
             lastIndex = Transact.STATUS_PICKING_GOODS;
             setTabChanged(Transact.STATUS_PICKING_GOODS);
         } else if (AdminManagementActivity.role == User.ROLE_ADMIN) {
             tvNonConfirm.setVisibility(View.VISIBLE);
+            tvCancelled.setVisibility(View.VISIBLE);
             setRvTransacts(Transact.STATUS_TIKI_RECEIVED);
             lastIndex = Transact.STATUS_TIKI_RECEIVED;
             setTabChanged(Transact.STATUS_TIKI_RECEIVED);

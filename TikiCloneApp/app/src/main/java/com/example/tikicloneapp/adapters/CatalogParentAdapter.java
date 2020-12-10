@@ -5,7 +5,6 @@ import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +58,8 @@ public class CatalogParentAdapter extends RecyclerView.Adapter<CatalogParentAdap
         holder.rvCatalog.setAdapter(catalogAdapter);
 
         if (catalogParent.getmGrParents() == 0) {
-            dbVolley.getCatalog(catalogArrayList, catalogAdapter, null, 50);
+            final int sold = 10;
+            dbVolley.getCatalog(catalogArrayList, catalogAdapter, null, sold);
             holder.tvViewAll.setVisibility(View.GONE);
         } else {
             dbVolley.getCatalog(catalogArrayList, catalogAdapter, catalogParent.getmId(), null);

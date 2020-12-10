@@ -21,7 +21,7 @@
 
 - fix shippingFee when update status = 1;  	DONE
 
-- add shippingFee UI; 
+- add shippingFee UI; DONE
 
 - fix api of get listProduct; 	DONE
 
@@ -33,7 +33,10 @@
 
 - update: amount user + shipper + admin; 	DONE
 
-- update UI shipper + admin;
+- update UI shipper + admin: name, amount, id, 
 
+- fix giảm giá nhiều;		DONE
+
+- add id shipper to admin's transact ui: id, name
 
 

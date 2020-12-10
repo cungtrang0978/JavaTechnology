@@ -5,17 +5,13 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-
 import android.widget.LinearLayout;
-
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -42,10 +38,8 @@ import com.example.tikicloneapp.models.Catalog;
 import com.example.tikicloneapp.models.Product;
 import com.example.tikicloneapp.transformers.ZoomOutPageTransformer;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
-
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -56,7 +50,7 @@ import static com.example.tikicloneapp.activities.MainActivity.dbVolley;
 public class HomeFragment extends Fragment {
     private LinearLayout laySearch, layViewedProducts, layRecommendedProducts, layHotCategories;
     //    private ViewFlipper viewFlipper;
-    private Button btnViewAllViewed, btnViewAllRecommended, btnViewHotCategories;
+    private TextView tvViewAllViewed, tvViewHotCategories;
     private ImageButton ibCart;
     private RecyclerView rvViewedProducts, rvRecommendedProducts, rvHotCategories;
     private ViewPager vpAdverts;
@@ -90,13 +84,12 @@ public class HomeFragment extends Fragment {
         ibCart = view.findViewById(R.id.imageButton_cart);
         layViewedProducts = view.findViewById(R.id.layout_viewedProducts);
         rvViewedProducts = view.findViewById(R.id.recyclerView_viewedProducts);
-        btnViewAllViewed = view.findViewById(R.id.button_viewAllViewed);
-        btnViewAllRecommended = view.findViewById(R.id.button_viewAllRecommended);
+        tvViewAllViewed = view.findViewById(R.id.textView_viewAllViewed);
         layRecommendedProducts = view.findViewById(R.id.layout_recommendedProducts);
         rvRecommendedProducts = view.findViewById(R.id.recyclerView_recommendedProducts);
         rvHotCategories = view.findViewById(R.id.recyclerView_hotCategories);
         layHotCategories = view.findViewById(R.id.layout_hotCategories);
-        btnViewHotCategories = view.findViewById(R.id.button_viewHotCategories);
+        tvViewHotCategories = view.findViewById(R.id.button_viewHotCategories);
         layout_loading = view.findViewById(R.id.loadingPanel);
     }
 
@@ -122,7 +115,7 @@ public class HomeFragment extends Fragment {
         setRecommendedProductsRV();
         setViewPager();
 
-        btnViewAllViewed.setOnClickListener(new View.OnClickListener() {
+        tvViewAllViewed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), ListProductActivity.class);
@@ -137,7 +130,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        btnViewHotCategories.setOnClickListener(new View.OnClickListener() {
+        tvViewHotCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                ((MainActivity) getActivity()).previous_Of_SearchFragment = R.id.menu_BottomHome;
@@ -166,7 +159,8 @@ public class HomeFragment extends Fragment {
         categoryAdapter = new CatalogAdapter(getActivity(), hotCategories, CatalogAdapter.CatalogType.Home);
         rvHotCategories.setAdapter(categoryAdapter);
         rvHotCategories.setLayoutManager(new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false));
-        dbVolley.getCatalog(hotCategories, categoryAdapter, null, 50);
+        final int sold = 10;
+        dbVolley.getCatalog(hotCategories, categoryAdapter, null, sold);
     }
 
 
@@ -289,6 +283,4 @@ public class HomeFragment extends Fragment {
                 });
         requestQueue.add(stringRequest);
     }
-
-
 }

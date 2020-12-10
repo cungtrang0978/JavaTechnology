@@ -116,7 +116,8 @@ public class DBVolley {
         this.context = context;
     }
 
-    public void getCatalog(final ArrayList<Catalog> catalogArrayList, final CatalogAdapter catalogAdapter, @Nullable final Integer idParents, @Nullable final Integer views) {
+    public void getCatalog(final ArrayList<Catalog> catalogArrayList, final CatalogAdapter catalogAdapter,
+                           @Nullable final Integer idParents, @Nullable final Integer sold) {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_GET_CATALOG, new Response.Listener<String>() {
             @Override
@@ -159,8 +160,8 @@ public class DBVolley {
                 if (idParents != null) {
                     params.put("idParents", String.valueOf(idParents));
                 }
-                if (views != null) {
-                    params.put("views", String.valueOf(views));
+                if (sold != null) {
+                    params.put("sold", String.valueOf(sold));
                 }
                 return params;
             }
@@ -176,8 +177,6 @@ public class DBVolley {
             public void onResponse(String response) {
 
                 try {
-
-
                     JSONArray jsonArray = new JSONArray(response);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         try {

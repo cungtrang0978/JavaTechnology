@@ -43,7 +43,8 @@ public class AdminTransactActivity extends AppCompatActivity {
     private static final String TAG = AdminTransactActivity.class.getSimpleName();
 
     private TextView tvIdTransact, tvTimeCreated, tvStatus, tvUserName, tvPhoneNumber, tvAddress,
-            tvPriceProvisional, tvPriceLast, tvShippingFee;
+            tvPriceProvisional, tvPriceLast, tvShippingFee,
+            tvShipperId, tvShipperName, tvShipperPhoneNumber;
     private Button btnCancelTransact, btnConfirmTransact;
     private ImageButton ibBack;
     private RecyclerView rvCart;
@@ -80,8 +81,12 @@ public class AdminTransactActivity extends AppCompatActivity {
         layout_loading = findViewById(R.id.loadingPanel_parent);
         tvShippingFee = findViewById(R.id.textView_shippingFee);
         btnConfirmTransact = findViewById(R.id.button_confirmTransact);
+        tvShipperId = findViewById(R.id.textView_shipperId);
+        tvShipperName = findViewById(R.id.textView_shipperName);
+        tvShipperPhoneNumber = findViewById(R.id.textView_shipperPhoneNumber);
     }
 
+    @SuppressLint("SetTextI18n")
     private void setEachView() {
 
 
@@ -95,8 +100,6 @@ public class AdminTransactActivity extends AppCompatActivity {
                 btnConfirmTransact.setVisibility(View.GONE);
             }
         }
-
-        tvIdTransact.setText(String.valueOf(transact.getmId()));
 
         setTransact();
 
@@ -186,6 +189,7 @@ public class AdminTransactActivity extends AppCompatActivity {
     private void setTransact() {
         setTvStatus(tvStatus, transact.getmStatus());
 
+        tvIdTransact.setText(String.valueOf(transact.getmId()));
         if (transact.getmStatus() != Transact.STATUS_TIKI_RECEIVED) {
             btnCancelTransact.setVisibility(View.GONE);
         }
@@ -202,10 +206,18 @@ public class AdminTransactActivity extends AppCompatActivity {
             tvTimeCreated.setText(dateFormat);
         }
 
+        if (transact.getShipperId() != null) {
+            tvShipperId.setText(String.valueOf(transact.getShipperId()));
+
+        }
+        tvShipperName.setText("Đang cập nhật");
+        tvShipperPhoneNumber.setText("Đang cập nhật");
+
+
         tvShippingFee.setText(formatCurrency(transact.getShippingFee()));
 
         String price = formatCurrency(transact.getmAmount());
-        String priceLast = formatCurrency(transact.getmAmount()+ transact.getShippingFee());
+        String priceLast = formatCurrency(transact.getmAmount() + transact.getShippingFee());
 
         tvPriceProvisional.setText(price);
         tvPriceLast.setText(priceLast);

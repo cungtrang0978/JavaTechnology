@@ -293,12 +293,13 @@ public class ListProductActivity extends AppCompatActivity {
                 edtPriceFrom.setText(null);
                 edtPriceTo.setText(null);
                 isFrom3Stars = isFrom4Stars = isFrom5Stars = false;
-                orderPrice = orderCreated = orderRate = null;
+                orderPrice = orderCreated = orderRate = orderDiscount = null;
 
                 cbAcsPrice.setChecked(false);
                 cbDescPrice.setChecked(false);
                 cbNewest.setChecked(false);
                 cbDescRating.setChecked(false);
+                cbDescDiscount.setChecked(false);
 
                 cv5Stars.setCardBackgroundColor(finalUnSelectedColor);
                 cv4Stars.setCardBackgroundColor(finalUnSelectedColor);

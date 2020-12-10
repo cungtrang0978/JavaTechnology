@@ -110,7 +110,6 @@ public class TransactActivity extends AppCompatActivity {
     private void setEachView() {
         MyClass.callPanel(layout_loading, 700);
 
-        new WaitingForScanning().execute();
 
         tvIdTransact.setText(String.valueOf(idTransact));
 
@@ -177,6 +176,12 @@ public class TransactActivity extends AppCompatActivity {
         resetRvCart();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
+
     public void resetRvCart() {
         dbVolley.getOrder(idTransact, orderArrayList, cartProductAdapter);
     }
@@ -229,6 +234,7 @@ public class TransactActivity extends AppCompatActivity {
 
                     if (transact.getmStatus() == Transact.STATUS_DELIVERING) {
                         setIvQRCode();
+                        new WaitingForScanning().execute();
                     }
 
                     String priceLast = formatCurrency(transact.getmAmount() + transact.getShippingFee());
@@ -282,7 +288,6 @@ public class TransactActivity extends AppCompatActivity {
                 new WaitingForScanning().execute();
             }
         }
-
 
         private Boolean isSuccessTransact() {
             HashMap<String, String> params = new HashMap<>();

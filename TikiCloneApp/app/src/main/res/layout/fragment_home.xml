@@ -57,6 +57,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -104,20 +105,20 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/colorAccent"
                             app:cardCornerRadius="10dp"
                             app:cardElevation="5dp"
                             app:cardUseCompatPadding="true"
-                            >
+                            app:contentPadding="5dp">
 
-                            <Button
+                            <TextView
                                 android:id="@+id/button_viewHotCategories"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/colorTikiRedLight"
-                                android:text="Xem thêm"
-                                android:textAllCaps="false"
-                                android:textColor="@color/colorTikiBackgroundWhite" />
+                                android:text="Xem tất cả"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorTikiBlueDark"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
 
@@ -157,20 +158,21 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:cardBackgroundColor="@color/colorAccent"
                             app:cardCornerRadius="10dp"
-                            app:cardElevation="20dp"
-                            app:cardPreventCornerOverlap="true">
+                            app:cardElevation="5dp"
+                            app:cardUseCompatPadding="true"
+                            app:contentPadding="5dp">
 
-                            <Button
-                                android:id="@+id/button_viewAllViewed"
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:background="@color/colorTikiRedLight"
-                                android:padding="0dp"
-                                android:text="Xem thêm"
-                                android:textAllCaps="false"
-                                android:textColor="@color/colorTikiBackgroundWhite" />
+                                android:text="Xem tất cả"
+                                android:id="@+id/textView_viewAllViewed"
+                                android:textAllCaps="true"
+                                android:textColor="@color/colorTikiBlueDark"
+                                android:textSize="13sp"
+                                android:textStyle="bold" />
+
                         </androidx.cardview.widget.CardView>
                     </LinearLayout>
 
@@ -217,7 +219,7 @@
                             app:cardPreventCornerOverlap="true">
 
                             <Button
-                                android:id="@+id/button_viewAllRecommended"
+                                android:id="@+id/textView_viewAllRecommended"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@color/colorTikiRedLight"
@@ -237,11 +239,12 @@
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
         <include
+            android:id="@+id/loadingPanel"
             layout="@layout/panel_loading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/loadingPanel"/>
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 
