@@ -66,8 +66,8 @@ public class DBVolley {
 //    public static String IP_ADDRESS = "http://192.168.0.117/"; //wifi QuocViet
 //    public String IP_ADDRESS = "http://tikiclone.maitrongvinh.cf/";
 //    public String IP_ADDRESS = "https://vinhmai.tk/tiki/";
-    public String IP_ADDRESS = "http://192.168.1.107/server/"; // wifi ChoAnhLamQUenNha
-//    public String IP_ADDRESS = "https://hdh.webtaunhanh.com/";
+//    public String IP_ADDRESS = "http://192.168.1.107/server/"; // wifi ChoAnhLamQUenNha
+    public String IP_ADDRESS = "https://hdh.webtaunhanh.com/";
 
     public String URL_GET_CATALOG = IP_ADDRESS + "getCatalog.php";
     public String URL_INSERT_CATALOG = IP_ADDRESS + "insertCatalog.php";

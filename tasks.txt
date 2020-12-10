@@ -19,19 +19,21 @@
 
 - fix scroll registration/login; 	DONE (maybe)
 
-- fix shippingFee when update status = 1;  DONE
+- fix shippingFee when update status = 1;  	DONE
 
 - add shippingFee UI; 
 
-- fix api of get listProduct; DONE
+- fix api of get listProduct; 	DONE
 
-- fix non_product UI in listTransact; DONE
+- fix non_product UI in listTransact; 	DONE
 
-- fix keyboard in writeReview + editAddress + register + login
+- fix keyboard in writeReview + editAddress + register + login; 	DONE
 
-- fix: filter price 
+- fix: filter price;
 
-- update: amount user + shipper + admin
+- update: amount user + shipper + admin; 	DONE
 
-- update feature: getUser;
+- update UI shipper + admin;
+
+
 
