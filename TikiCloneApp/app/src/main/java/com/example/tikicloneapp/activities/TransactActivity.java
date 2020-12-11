@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -280,6 +281,8 @@ public class TransactActivity extends AppCompatActivity {
         protected void onPostExecute(Boolean isSuccess) {
             super.onPostExecute(isSuccess);
             if (isSuccess) {
+                Toast.makeText(TransactActivity.this,
+                        "Đã xác nhận mua hàng thành công!\nTiền thanh toán mua hàng đã được trừ vào tài khoản của bạn", Toast.LENGTH_SHORT).show();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     finishAfterTransition();
                 } else finish();

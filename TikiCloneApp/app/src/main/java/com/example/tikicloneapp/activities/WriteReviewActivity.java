@@ -1,7 +1,5 @@
 package com.example.tikicloneapp.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +9,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tikicloneapp.R;
 import com.example.tikicloneapp.adapters.ProductListAdapter;
@@ -85,6 +86,7 @@ public class WriteReviewActivity extends AppCompatActivity {
                     Timestamp createdAt = new Timestamp(System.currentTimeMillis());
                     Rate rate = new Rate(ratePoint, edtReview.getText().toString(), createdAt,product.getId(), MainActivity.idUser);
                     MainActivity.dbVolley.insertRate(rate);
+                    Toast.makeText(WriteReviewActivity.this, "Đã thêm đánh giá thành công!", Toast.LENGTH_SHORT).show();
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         finishAfterTransition();
                     } else finish();

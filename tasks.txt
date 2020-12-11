@@ -33,10 +33,10 @@
 
 - update: amount user + shipper + admin; 	DONE
 
-- update UI shipper + admin: name, amount, id, 
+- update UI shipper + admin: name, amount, id;		  DONE
 
 - fix giảm giá nhiều;		DONE
 
-- add id shipper to admin's transact ui: id, name
+- add id shipper to admin's transact ui: id, name; 	 DONE
 
 
